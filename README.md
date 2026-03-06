@@ -88,6 +88,28 @@ That writes:
 You can publish that folder with GitHub Pages from the repository branch you
 push to.
 
+## Local Agent -> GitHub Pages
+
+If you want the local agent to keep GitHub Pages updated, use the publishing
+commands instead of manually exporting and pushing:
+
+```bash
+python3 -m war_sandbox.cli publish-pages --repo-root . --output-dir docs
+python3 -m war_sandbox.cli publish-loop --repo-root . --output-dir docs --sleep-seconds 300
+```
+
+Behavior:
+
+- `publish-pages`
+  - runs a normal pipeline tick
+  - exports the latest static snapshot into `docs/`
+  - commits only if `docs/` changed
+  - pushes to `origin main`
+- `publish-loop`
+  - keeps running locally
+  - periodically repeats the same export + commit + push cycle
+  - this is the mode to use if your local machine is the publishing agent
+
 ## Optional RSS configuration
 
 Edit [examples/rss_sources.json](/Users/occ/work/mesimulation/examples/rss_sources.json)

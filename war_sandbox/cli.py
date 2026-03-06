@@ -20,6 +20,7 @@ from .db import (
     list_forecasts,
 )
 from .report import categorical_brier, render_markdown
+from .publisher import build_service, publish_loop, publish_once
 from .scenario import generate_forecast
 from .service import SandboxService, bootstrap_state
 from .webapp import render_static_snapshot
@@ -190,6 +191,41 @@ def cmd_export_pages(args: argparse.Namespace) -> None:
     )
 
 
+def cmd_publish_pages(args: argparse.Namespace) -> None:
+    repo_root = Path(args.repo_root).resolve()
+    service = build_service(
+        rss_path=args.rss or str(args.default_rss_path),
+        model=args.model,
+    )
+    result = publish_once(
+        service=service,
+        repo_root=repo_root,
+        output_dir=(repo_root / args.output_dir).resolve(),
+        remote=args.remote,
+        branch=args.branch,
+        commit_message_prefix=args.commit_prefix,
+        tick=not args.no_tick,
+    )
+    print(json.dumps(result, ensure_ascii=False))
+
+
+def cmd_publish_loop(args: argparse.Namespace) -> None:
+    repo_root = Path(args.repo_root).resolve()
+    service = build_service(
+        rss_path=args.rss or str(args.default_rss_path),
+        model=args.model,
+    )
+    publish_loop(
+        service=service,
+        repo_root=repo_root,
+        output_dir=(repo_root / args.output_dir).resolve(),
+        remote=args.remote,
+        branch=args.branch,
+        commit_message_prefix=args.commit_prefix,
+        sleep_seconds=args.sleep_seconds,
+    )
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Iran war sandbox")
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -239,6 +275,30 @@ def build_parser() -> argparse.ArgumentParser:
     export_parser.add_argument("--model")
     export_parser.add_argument("--default-rss-path", default=str(RSS_CONFIG_PATH))
     export_parser.set_defaults(func=cmd_export_pages)
+
+    publish_parser = subparsers.add_parser("publish-pages")
+    publish_parser.add_argument("--repo-root", default=".")
+    publish_parser.add_argument("--output-dir", default="docs")
+    publish_parser.add_argument("--remote", default="origin")
+    publish_parser.add_argument("--branch", default="main")
+    publish_parser.add_argument("--commit-prefix", default="Update Pages snapshot")
+    publish_parser.add_argument("--rss")
+    publish_parser.add_argument("--model")
+    publish_parser.add_argument("--default-rss-path", default=str(RSS_CONFIG_PATH))
+    publish_parser.add_argument("--no-tick", action="store_true")
+    publish_parser.set_defaults(func=cmd_publish_pages)
+
+    publish_loop_parser = subparsers.add_parser("publish-loop")
+    publish_loop_parser.add_argument("--repo-root", default=".")
+    publish_loop_parser.add_argument("--output-dir", default="docs")
+    publish_loop_parser.add_argument("--remote", default="origin")
+    publish_loop_parser.add_argument("--branch", default="main")
+    publish_loop_parser.add_argument("--commit-prefix", default="Update Pages snapshot")
+    publish_loop_parser.add_argument("--sleep-seconds", type=int, default=300)
+    publish_loop_parser.add_argument("--rss")
+    publish_loop_parser.add_argument("--model")
+    publish_loop_parser.add_argument("--default-rss-path", default=str(RSS_CONFIG_PATH))
+    publish_loop_parser.set_defaults(func=cmd_publish_loop)
 
     return parser
 
