@@ -185,9 +185,9 @@ python3 -m war_sandbox.cli publish-loop --repo-root . --output-dir docs --sleep-
 ## Background services
 
 - `launchd/com.occ.mesandbox.publish-loop.plist`: login-time auto-publish to GitHub Pages
-- `launchd/com.occ.mesandbox.serve-8080.plist`: login-time local dashboard on `http://127.0.0.1:8080`
+- `launchd/com.occ.mesandbox.serve-8080.plist`: login-time static local mirror of `docs/` on `http://127.0.0.1:8080`
 - `scripts/publish_loop.sh`: wrapper for the publish loop
-- `scripts/serve_8080.sh`: wrapper for the local web server
+- `scripts/serve_8080.sh`: wrapper for the local static server
 
 ## GitHub Pages mode
 
@@ -198,6 +198,7 @@ Use GitHub Pages in `Deploy from a branch` mode:
 
 The local `publish-loop` updates `docs/index.html` and pushes commits directly.
 `docs/.nojekyll` is included so Pages serves the static snapshot without a Jekyll build.
+Local `http://127.0.0.1:8080` also serves `docs/` directly, so the localhost page and GitHub Pages use the same generated files.
 
 ## Files
 
