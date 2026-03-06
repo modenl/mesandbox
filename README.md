@@ -189,6 +189,16 @@ python3 -m war_sandbox.cli publish-loop --repo-root . --output-dir docs --sleep-
 - `scripts/publish_loop.sh`: wrapper for the publish loop
 - `scripts/serve_8080.sh`: wrapper for the local web server
 
+## GitHub Pages mode
+
+Use GitHub Pages in `Deploy from a branch` mode:
+
+- Branch: `main`
+- Folder: `/docs`
+
+The local `publish-loop` updates `docs/index.html` and pushes commits directly.
+`docs/.nojekyll` is included so Pages serves the static snapshot without a Jekyll build.
+
 ## Files
 
 - [war_sandbox/cli.py](/Users/occ/work/mesimulation/war_sandbox/cli.py)
