@@ -1,4 +1,6 @@
 import json
+import os
+import shutil
 import subprocess
 from functools import lru_cache
 from typing import Any, Dict, List, Optional
@@ -6,6 +8,19 @@ from typing import Any, Dict, List, Optional
 
 class GeminiError(RuntimeError):
     pass
+
+
+def _gemini_executable() -> str:
+    candidates = [
+        os.environ.get("GEMINI_BIN"),
+        shutil.which("gemini"),
+        "/opt/homebrew/bin/gemini",
+        "/usr/local/bin/gemini",
+    ]
+    for candidate in candidates:
+        if candidate and os.path.exists(candidate):
+            return candidate
+    raise GeminiError("Could not locate gemini executable")
 
 
 def extract_json_value(text: str) -> Any:
@@ -38,7 +53,7 @@ def extract_json_blob(text: str) -> Dict[str, Any]:
 
 
 def run_text_prompt(prompt: str, model: Optional[str] = None) -> str:
-    cmd = ["gemini", "-p", prompt, "-o", "json"]
+    cmd = [_gemini_executable(), "-p", prompt, "-o", "json"]
     if model:
         cmd.extend(["-m", model])
 

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "https://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.occ.mesandbox.publish-loop</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/zsh</string>
+    <string>/Users/occ/work/mesimulation/scripts/publish_loop.sh</string>
+  </array>
+
+  <key>WorkingDirectory</key>
+  <string>/Users/occ/work/mesimulation</string>
+
+  <key>RunAtLoad</key>
+  <true/>
+
+  <key>KeepAlive</key>
+  <true/>
+
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>HOME</key>
+    <string>/Users/occ</string>
+    <key>PATH</key>
+    <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+  </dict>
+
+  <key>StandardOutPath</key>
+  <string>/Users/occ/work/mesimulation/data/logs/publish-loop.stdout.log</string>
+
+  <key>StandardErrorPath</key>
+  <string>/Users/occ/work/mesimulation/data/logs/publish-loop.stderr.log</string>
+</dict>
+</plist>
