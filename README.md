@@ -178,7 +178,16 @@ python3 -m war_sandbox.cli report --latest
 python3 -m war_sandbox.cli list-forecasts
 python3 -m war_sandbox.cli score --forecast-id <id> --resolved-outcome negotiated_ceasefire
 python3 -m war_sandbox.cli serve --port 8080
+python3 -m war_sandbox.cli publish-pages --repo-root . --output-dir docs
+python3 -m war_sandbox.cli publish-loop --repo-root . --output-dir docs --sleep-seconds 300
 ```
+
+## Background services
+
+- `launchd/com.occ.mesandbox.publish-loop.plist`: login-time auto-publish to GitHub Pages
+- `launchd/com.occ.mesandbox.serve-8080.plist`: login-time local dashboard on `http://127.0.0.1:8080`
+- `scripts/publish_loop.sh`: wrapper for the publish loop
+- `scripts/serve_8080.sh`: wrapper for the local web server
 
 ## Files
 
