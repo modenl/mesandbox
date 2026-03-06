@@ -38,6 +38,7 @@ from .db import (
     list_forecasts,
     list_runtime_settings,
     list_source_configs,
+    prune_source_configs,
     set_runtime_setting,
     update_source_config,
     update_source_runtime,
@@ -109,6 +110,23 @@ def _source_block_reason(source: Dict[str, Any]) -> Optional[str]:
     return None
 
 
+def _source_group(source: Dict[str, Any]) -> str:
+    kind = source.get("kind")
+    if kind in {"gdelt", "gdelt_timeline"}:
+        return "wire"
+    if kind in {"liveuamap", "acled"}:
+        return "geo"
+    if kind in {"centcom", "idf"}:
+        return "official_west"
+    if kind in {"irna", "tasnim"}:
+        return "official_iran"
+    if kind in {"adsb", "firms", "vesselfinder"}:
+        return "sensor"
+    if kind == "rss":
+        return "aggregator"
+    return "other"
+
+
 def _safe_ratio(numerator: float, denominator: float) -> float:
     if denominator <= 0:
         return 0.0
@@ -151,13 +169,14 @@ GRAPH_TEXT = {
         "termination_title": "战争结束预测",
         "succession_title": "继任与政策预测",
         "confidence_title": "置信度校准",
-        "formula": "C = 100 x (0.30H + 0.25E + 0.20D + 0.15R + 0.10S)",
+        "formula": "C = 100 x clamp(0.30H + 0.20E + 0.15D + 0.10R + 0.10S + 0.15K - 0.18P)",
         "formula_terms": [
-            "H = 健康启用源数 / 启用源数",
-            "E = min(证据条目数 / 30, 1)",
-            "D = min(来源类型数 / 3, 1)",
+            "H = 健康源占比，经关键源覆盖修正",
+            "E = min(唯一高价值信号数 / 18, 1)",
+            "D = min(来源数 / 5, 1)",
             "R = 24小时内证据占比",
             "S = min((最高结果概率 - 次高结果概率) / 0.35, 1)",
+            "K = 关键源组覆盖率，故障组会额外扣分",
         ],
         "source_summary": "{healthy}/{enabled} 个启用源当前健康",
         "evidence_summary": "{items} 条证据，覆盖 {source_count} 类来源",
@@ -203,13 +222,14 @@ GRAPH_TEXT = {
         "termination_title": "War-End Projection",
         "succession_title": "Succession & Policy",
         "confidence_title": "Confidence Calibration",
-        "formula": "C = 100 x (0.30H + 0.25E + 0.20D + 0.15R + 0.10S)",
+        "formula": "C = 100 x clamp(0.30H + 0.20E + 0.15D + 0.10R + 0.10S + 0.15K - 0.18P)",
         "formula_terms": [
-            "H = healthy enabled sources / enabled sources",
-            "E = min(evidence items / 30, 1)",
-            "D = min(source-type count / 3, 1)",
+            "H = healthy-source ratio adjusted by critical-source coverage",
+            "E = min(unique high-value signals / 18, 1)",
+            "D = min(source count / 5, 1)",
             "R = share of evidence published in the last 24h",
             "S = min((top outcome probability - second outcome probability) / 0.35, 1)",
+            "K = critical source-group coverage, with outage penalty",
         ],
         "source_summary": "{healthy}/{enabled} enabled sources are currently healthy",
         "evidence_summary": "{items} items across {source_count} source types",
@@ -256,12 +276,32 @@ def _confidence_metrics(
     source_mix = summary.get("source_mix", {})
     evidence_items = summary.get("all_scored_events") or summary.get("top_events") or summary.get("evidence", [])
     item_count = int(summary.get("item_count", 0))
+    unique_signals = {
+        (
+            str(item.get("source", "")).lower(),
+            re.sub(r"[^a-z0-9]+", " ", str(item.get("title", "")).lower()).strip(),
+        )
+        for item in evidence_items
+        if item.get("title")
+    }
     now = datetime.now(timezone.utc)
     recent_24h = 0
     for item in evidence_items:
         published = _parse_timestamp(item.get("published_at"))
         if published and published >= now - timedelta(hours=24):
             recent_24h += 1
+
+    enabled_groups = {_source_group(source) for source in enabled_sources}
+    healthy_groups = {_source_group(source) for source in healthy_sources}
+    critical_groups = {"wire", "geo", "official_west", "official_iran", "sensor"}
+    required_groups = critical_groups & enabled_groups
+    critical_coverage = _safe_ratio(len(healthy_groups & required_groups), len(required_groups))
+    blocked_groups = {
+        _source_group(source)
+        for source in enabled_sources
+        if source.get("last_status") in {"error", "blocked"}
+    }
+    outage_penalty = _clamp(_safe_ratio(len(blocked_groups & required_groups), len(required_groups)))
 
     outcome_probs = sorted(
         [float(outcome.get("probability", 0.0)) for outcome in forecast.get("outcome_probabilities", [])],
@@ -273,13 +313,14 @@ def _confidence_metrics(
     elif outcome_probs:
         top_gap = max(0.0, outcome_probs[0])
 
-    health = _clamp(_safe_ratio(len(healthy_sources), len(enabled_sources)))
-    evidence = _clamp(item_count / 30.0)
-    diversity = _clamp(len(source_mix) / 3.0)
+    base_health = _clamp(_safe_ratio(len(healthy_sources), len(enabled_sources)))
+    health = _clamp(base_health * (0.55 + 0.45 * critical_coverage))
+    evidence = _clamp(len(unique_signals) / 18.0)
+    diversity = _clamp(len({value for value in source_mix if value}) / 5.0)
     recency = _clamp(_safe_ratio(recent_24h, item_count))
     separation = _clamp(top_gap / 0.35)
-    raw = 0.30 * health + 0.25 * evidence + 0.20 * diversity + 0.15 * recency + 0.10 * separation
-    score = round(raw * 100.0, 1)
+    raw = 0.30 * health + 0.20 * evidence + 0.15 * diversity + 0.10 * recency + 0.10 * separation + 0.15 * critical_coverage
+    score = round(_clamp(raw - 0.18 * outage_penalty) * 100.0, 1)
 
     return {
         "score": score,
@@ -288,6 +329,9 @@ def _confidence_metrics(
         "diversity": round(diversity, 4),
         "recency": round(recency, 4),
         "separation": round(separation, 4),
+        "critical_coverage": round(critical_coverage, 4),
+        "outage_penalty": round(outage_penalty, 4),
+        "unique_signals": len(unique_signals),
         "enabled_sources": len(enabled_sources),
         "healthy_sources": len(healthy_sources),
         "recent_24h": recent_24h,
@@ -473,6 +517,8 @@ def _build_reasoning_graph(
                 {"label": "D", "value": str(confidence["diversity"])},
                 {"label": "R", "value": str(confidence["recency"])},
                 {"label": "S", "value": str(confidence["separation"])},
+                {"label": "K", "value": str(confidence["critical_coverage"])},
+                {"label": "P", "value": str(confidence["outage_penalty"])},
             ],
             "details": text["formula_terms"],
             "formula": text["formula"],
@@ -685,7 +731,9 @@ class SandboxService:
         self.lock = threading.Lock()
 
     def sync_sources(self) -> None:
-        upsert_source_configs(default_source_configs(rss_path=self.rss_path))
+        configs = default_source_configs(rss_path=self.rss_path)
+        upsert_source_configs(configs)
+        prune_source_configs(row["id"] for row in configs)
         for row in list_source_configs():
             source = _row_to_source(row)
             block_reason = _source_block_reason(source)

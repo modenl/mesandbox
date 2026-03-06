@@ -104,6 +104,41 @@ STRATEGIC_TERMS = [
     "awacs",
 ]
 
+IRAN_CONTEXT_TERMS = [
+    "iran",
+    "tehran",
+    "irgc",
+    "israel",
+    "hormuz",
+    "persian gulf",
+    "gulf",
+    "beirut",
+    "lebanon",
+    "iraq",
+    "syria",
+    "u.s.",
+    "united states",
+    "centcom",
+]
+
+CONFLICT_TERMS = [
+    "missile",
+    "drone",
+    "strike",
+    "airstrike",
+    "attack",
+    "war",
+    "ceasefire",
+    "bomber",
+    "intercept",
+    "naval",
+    "military",
+    "base",
+    "launcher",
+    "tanker",
+    "air defense",
+]
+
 
 DISPLAY_THRESHOLD = {"credibility": 0.62, "importance": 0.68}
 
@@ -150,6 +185,10 @@ def _count_term_hits(text: str, terms: List[str]) -> int:
     return hits
 
 
+def _normalized_title(value: str) -> str:
+    return re.sub(r"[^a-z0-9]+", " ", value.lower()).strip()
+
+
 def classify_source(item: Dict[str, Any]) -> str:
     source = str(item.get("source", "")).lower()
     title = str(item.get("title", "")).lower()
@@ -190,12 +229,18 @@ def score_importance(item: Dict[str, Any]) -> float:
         )
     ).lower()
     strategic_hits = _count_term_hits(text, STRATEGIC_TERMS)
+    context_hits = _count_term_hits(text, IRAN_CONTEXT_TERMS)
+    conflict_hits = _count_term_hits(text, CONFLICT_TERMS)
     variable_hits = 0
     for variable in VARIABLES:
         variable_hits += _count_term_hits(text, variable["up_terms"])
         variable_hits += _count_term_hits(text, variable["down_terms"])
     official_bonus = 1 if classify_source(item) in {"sensor", "official", "wire"} else 0
     raw = 0.45 * min(strategic_hits / 2.0, 1.0) + 0.35 * min(variable_hits / 3.0, 1.0) + 0.20 * official_bonus
+    if not context_hits or not conflict_hits:
+        raw *= 0.25
+    elif context_hits == 1 and conflict_hits == 1:
+        raw *= 0.8
     return round(_clamp(raw), 4)
 
 
@@ -216,28 +261,72 @@ def map_event_to_variables(item: Dict[str, Any]) -> Dict[str, float]:
 
 
 def build_signal_events(items: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-    events = []
+    deduped: Dict[tuple[str, str], Dict[str, Any]] = {}
     for item in items:
         credibility = score_credibility(item)
         importance = score_importance(item)
         variable_impacts = map_event_to_variables(item)
         combined = round(0.55 * credibility + 0.45 * importance, 4)
         display = credibility >= DISPLAY_THRESHOLD["credibility"] and importance >= DISPLAY_THRESHOLD["importance"]
-        events.append(
-            {
-                "title": item.get("title", ""),
-                "source": item.get("source", ""),
-                "url": item.get("url", ""),
-                "published_at": item.get("published_at"),
-                "credibility": credibility,
-                "importance": importance,
-                "combined": combined,
-                "display": display,
-                "variable_impacts": variable_impacts,
-            }
+        event = {
+            "title": item.get("title", ""),
+            "source": item.get("source", ""),
+            "url": item.get("url", ""),
+            "published_at": item.get("published_at"),
+            "credibility": credibility,
+            "importance": importance,
+            "combined": combined,
+            "display": display,
+            "variable_impacts": variable_impacts,
+            "duplicate_count": 1,
+        }
+        key = (
+            str(event["source"]).lower(),
+            _normalized_title(str(event["title"])),
         )
-    events.sort(key=lambda event: (event["display"], event["combined"]), reverse=True)
+        existing = deduped.get(key)
+        if not existing:
+            deduped[key] = event
+            continue
+        existing["duplicate_count"] += 1
+        if combined > existing["combined"]:
+            event["duplicate_count"] = existing["duplicate_count"]
+            deduped[key] = event
+        else:
+            existing["duplicate_count"] = max(existing["duplicate_count"], event["duplicate_count"])
+            if event.get("published_at") and (
+                not existing.get("published_at") or str(event["published_at"]) > str(existing["published_at"])
+            ):
+                existing["published_at"] = event["published_at"]
+            for variable_id, impact in variable_impacts.items():
+                current = existing["variable_impacts"].get(variable_id, 0.0)
+                if abs(impact) > abs(current):
+                    existing["variable_impacts"][variable_id] = impact
+    events = list(deduped.values())
+    events.sort(
+        key=lambda event: (
+            event["display"],
+            event["importance"],
+            event["combined"],
+            event.get("duplicate_count", 1),
+        ),
+        reverse=True,
+    )
     return events
+
+
+def select_diverse_events(events: List[Dict[str, Any]], limit: int = 20, per_source_cap: int = 2) -> List[Dict[str, Any]]:
+    selected = []
+    source_counts: Dict[str, int] = {}
+    for event in events:
+        source = str(event.get("source", ""))
+        if source_counts.get(source, 0) >= per_source_cap:
+            continue
+        selected.append(event)
+        source_counts[source] = source_counts.get(source, 0) + 1
+        if len(selected) >= limit:
+            break
+    return selected
 
 
 def compute_state_variables(events: List[Dict[str, Any]], language: str) -> List[Dict[str, Any]]:
@@ -376,7 +465,7 @@ def build_analysis_package(
     events = build_signal_events(items)
     displayed_events = [event for event in events if event["display"]]
     ranked_events = displayed_events or events
-    top_events = ranked_events[:20]
+    top_events = select_diverse_events(ranked_events, limit=20, per_source_cap=2)
     state_list = compute_state_variables(top_events, language)
     state_map = {state["id"]: state for state in state_list}
     windows = termination_windows(state_map)
@@ -416,7 +505,7 @@ def build_analysis_package(
         ),
         "state_variables": state_list,
         "top_events": decisive,
-        "all_scored_events": events[:20],
+        "all_scored_events": select_diverse_events(events, limit=20, per_source_cap=3),
         "contradictions": contradictions,
         "decision_panel": {
             "current_state": phase,

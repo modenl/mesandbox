@@ -192,6 +192,20 @@ def upsert_source_configs(configs: Iterable[Dict[str, Any]]) -> None:
         conn.commit()
 
 
+def prune_source_configs(valid_ids: Iterable[str]) -> None:
+    ids = sorted(set(valid_ids))
+    with connect() as conn:
+        if not ids:
+            conn.execute("DELETE FROM source_configs")
+        else:
+            placeholders = ", ".join("?" for _ in ids)
+            conn.execute(
+                f"DELETE FROM source_configs WHERE id NOT IN ({placeholders})",
+                ids,
+            )
+        conn.commit()
+
+
 def list_source_configs() -> List[sqlite3.Row]:
     with connect() as conn:
         return conn.execute(
