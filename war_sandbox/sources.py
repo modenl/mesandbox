@@ -282,6 +282,47 @@ def fetch_liveuamap_iran(max_records: int = 20) -> List[Dict[str, Any]]:
     return items
 
 
+def fetch_iaea_news(max_records: int = 12) -> List[Dict[str, Any]]:
+    url = "https://www.iaea.org/newscenter/news"
+    body = http_get_text(url)
+    fetched_at = utc_now()
+    items = []
+    for match in re.finditer(r'<div class="card w-100 mb-4">(.+?)</div>\s*</div>\s*</div>', body, re.I | re.S):
+        block = match.group(1)
+        link = _extract(r'<h3 class="card__title">\s*<a href="([^"]+)"', block)
+        title = _extract(r'<h3 class="card__title">\s*<a [^>]+>(.*?)</a>', block)
+        date_text = _extract(r'<p class="card__date[^"]*">([^<]+)</p>', block)
+        if not link or not title:
+            continue
+        published_at = None
+        if date_text:
+            try:
+                published_at = datetime.strptime(date_text.strip(), "%d %B %Y").replace(
+                    tzinfo=timezone.utc
+                ).strftime("%Y-%m-%d %H:%M:%S")
+            except ValueError:
+                published_at = normalize_timestamp(date_text)
+        full_url = urljoin("https://www.iaea.org", link)
+        items.append(
+            {
+                "id": stable_id("iaea_news", full_url, title),
+                "source": "iaea_news",
+                "fetched_at": fetched_at,
+                "published_at": published_at,
+                "title": _strip_html(title),
+                "url": full_url,
+                "content_text": _strip_html(title),
+                "payload": {
+                    "link": full_url,
+                    "date_text": date_text,
+                },
+            }
+        )
+        if len(items) >= max_records:
+            break
+    return items
+
+
 def fetch_centcom_dvids(max_records: int = 12) -> List[Dict[str, Any]]:
     url = "https://www.dvidshub.net/cocom/USCENTCOM"
     body = http_get_text(url)

@@ -54,6 +54,7 @@ from .sources import (
     fetch_gdelt,
     fetch_gdelt_timeline,
     fetch_idf_releases,
+    fetch_iaea_news,
     fetch_irna_english,
     fetch_liveuamap_iran,
     fetch_reliefweb,
@@ -99,6 +100,12 @@ def _reliefweb_available(source: Dict[str, Any]) -> bool:
 def _source_block_reason(source: Dict[str, Any]) -> Optional[str]:
     kind = source["kind"]
     params = source["params"]
+    if kind == "idf":
+        return "IDF media releases are currently blocked by Incapsula for non-browser access"
+    if kind == "irna":
+        return "IRNA English is currently behind a JavaScript anti-bot challenge"
+    if kind == "tasnim":
+        return "Tasnim English is currently not resolvable from this runtime"
     if kind == "reliefweb" and not params.get("appname"):
         return "ReliefWeb requires an approved RELIEFWEB_APPNAME"
     if kind == "firms" and not params.get("map_key"):
@@ -120,6 +127,8 @@ def _source_group(source: Dict[str, Any]) -> str:
         return "official_west"
     if kind in {"irna", "tasnim"}:
         return "official_iran"
+    if kind == "iaea":
+        return "official_international"
     if kind in {"adsb", "firms", "vesselfinder"}:
         return "sensor"
     if kind == "rss":
@@ -599,7 +608,7 @@ def default_source_configs(rss_path: str = str(RSS_CONFIG_PATH)) -> List[Dict[st
             "id": "idf_releases",
             "name": "IDF Media Releases",
             "kind": "idf",
-            "enabled": True,
+            "enabled": False,
             "interval_seconds": DEFAULT_OFFICIAL_INTERVAL_SECONDS,
             "params": {
                 "hours": DEFAULT_HOURS,
@@ -609,7 +618,7 @@ def default_source_configs(rss_path: str = str(RSS_CONFIG_PATH)) -> List[Dict[st
             "id": "irna_english",
             "name": "IRNA English",
             "kind": "irna",
-            "enabled": True,
+            "enabled": False,
             "interval_seconds": DEFAULT_OFFICIAL_INTERVAL_SECONDS,
             "params": {
                 "hours": DEFAULT_HOURS,
@@ -619,9 +628,53 @@ def default_source_configs(rss_path: str = str(RSS_CONFIG_PATH)) -> List[Dict[st
             "id": "tasnim_english",
             "name": "Tasnim English",
             "kind": "tasnim",
+            "enabled": False,
+            "interval_seconds": DEFAULT_OFFICIAL_INTERVAL_SECONDS,
+            "params": {
+                "hours": DEFAULT_HOURS,
+            },
+        },
+        {
+            "id": "radiofarda_iran",
+            "name": "Radio Farda Iran News",
+            "kind": "rss",
+            "enabled": True,
+            "interval_seconds": DEFAULT_RSS_INTERVAL_SECONDS,
+            "params": {
+                "url": "https://en.radiofarda.com/api/zp_qmtl-vomx-tpe_bimr",
+                "hours": DEFAULT_HOURS,
+            },
+        },
+        {
+            "id": "unnews_middle_east",
+            "name": "UN News Middle East",
+            "kind": "rss",
+            "enabled": True,
+            "interval_seconds": DEFAULT_RSS_INTERVAL_SECONDS,
+            "params": {
+                "url": "https://news.un.org/feed/subscribe/en/news/region/middle-east/feed/rss.xml",
+                "hours": DEFAULT_HOURS,
+            },
+        },
+        {
+            "id": "unnews_peace_security",
+            "name": "UN News Peace and Security",
+            "kind": "rss",
+            "enabled": True,
+            "interval_seconds": DEFAULT_RSS_INTERVAL_SECONDS,
+            "params": {
+                "url": "https://news.un.org/feed/subscribe/en/news/topic/peace-and-security/feed/rss.xml",
+                "hours": DEFAULT_HOURS,
+            },
+        },
+        {
+            "id": "iaea_news",
+            "name": "IAEA News",
+            "kind": "iaea",
             "enabled": True,
             "interval_seconds": DEFAULT_OFFICIAL_INTERVAL_SECONDS,
             "params": {
+                "max_records": 12,
                 "hours": DEFAULT_HOURS,
             },
         },
@@ -803,6 +856,8 @@ class SandboxService:
                 items = fetch_liveuamap_iran(max_records=int(params.get("max_records", 20)))
             elif source["kind"] == "centcom":
                 items = fetch_centcom_dvids(max_records=int(params.get("max_records", 12)))
+            elif source["kind"] == "iaea":
+                items = fetch_iaea_news(max_records=int(params.get("max_records", 12)))
             elif source["kind"] == "idf":
                 items = fetch_idf_releases()
             elif source["kind"] == "irna":
