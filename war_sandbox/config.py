@@ -1,0 +1,40 @@
+import os
+from pathlib import Path
+
+
+ROOT = Path(__file__).resolve().parent.parent
+DATA_DIR = ROOT / "data"
+DB_PATH = DATA_DIR / "sandbox.db"
+REPORT_DIR = DATA_DIR / "reports"
+SCHEMA_PATH = ROOT / "schemas" / "forecast.schema.json"
+RSS_CONFIG_PATH = ROOT / "examples" / "rss_sources.json"
+
+DEFAULT_QUERY = "(Iran OR IRGC OR Israel OR ceasefire OR Tehran)"
+DEFAULT_HOURS = 72
+RELIEFWEB_APPNAME = os.environ.get("RELIEFWEB_APPNAME")
+NASA_FIRMS_MAP_KEY = os.environ.get("NASA_FIRMS_MAP_KEY")
+ACLED_API_KEY = os.environ.get("ACLED_API_KEY")
+ACLED_EMAIL = os.environ.get("ACLED_EMAIL")
+DEFAULT_PORT = 8080
+DEFAULT_GDELT_INTERVAL_SECONDS = 1800
+DEFAULT_RELIEFWEB_INTERVAL_SECONDS = 3600
+DEFAULT_RSS_INTERVAL_SECONDS = 900
+DEFAULT_FORECAST_INTERVAL_SECONDS = 1800
+DEFAULT_DASHBOARD_REFRESH_SECONDS = 15
+DEFAULT_FORECAST_LIMIT = 30
+DEFAULT_LIVEUAMAP_INTERVAL_SECONDS = 600
+DEFAULT_ADSB_INTERVAL_SECONDS = 300
+DEFAULT_OFFICIAL_INTERVAL_SECONDS = 1800
+DEFAULT_OPTIONAL_INTERVAL_SECONDS = 3600
+MIDDLE_EAST_BOUNDS = {
+    "lat_min": 12.0,
+    "lat_max": 42.0,
+    "lon_min": 30.0,
+    "lon_max": 66.0,
+}
+IRAN_BOUNDS = {
+    "west": 43.5,
+    "south": 24.0,
+    "east": 64.5,
+    "north": 40.5,
+}

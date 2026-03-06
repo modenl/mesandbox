@@ -1,0 +1,46 @@
+{
+  "type": "object",
+  "required": [
+    "forecast_as_of",
+    "war_end_window",
+    "outcome_probabilities",
+    "successor_government_scenarios",
+    "key_indicators_to_watch",
+    "confidence_note",
+    "assumptions",
+    "evidence"
+  ],
+  "properties": {
+    "forecast_as_of": {
+      "type": "string"
+    },
+    "war_end_window": {
+      "type": "object",
+      "required": ["p10", "p50", "p90", "rationale"],
+      "properties": {
+        "p10": {"type": "string"},
+        "p50": {"type": "string"},
+        "p90": {"type": "string"},
+        "rationale": {"type": "string"}
+      }
+    },
+    "outcome_probabilities": {
+      "type": "array"
+    },
+    "successor_government_scenarios": {
+      "type": "array"
+    },
+    "key_indicators_to_watch": {
+      "type": "array"
+    },
+    "confidence_note": {
+      "type": "string"
+    },
+    "assumptions": {
+      "type": "array"
+    },
+    "evidence": {
+      "type": "array"
+    }
+  }
+}
