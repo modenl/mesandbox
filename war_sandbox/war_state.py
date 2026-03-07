@@ -3,7 +3,7 @@ import re
 from typing import Any, Dict, List, Optional
 from urllib.parse import urlparse
 
-from .gemini_runner import assess_event_relevance, translate_brief_texts, translate_news_titles
+from .gemini_runner import assess_event_relevance, stabilize_event_summary, translate_brief_texts, translate_news_titles
 
 
 SOURCE_STACK = [
@@ -707,6 +707,8 @@ def localize_summary(summary: Dict[str, Any], language: str, model: Optional[str
         for item, translated_summary in zip(localized["top_events"], translated_summaries):
             if translated_summary:
                 item["brief_summary"] = translated_summary
+    for item in localized.get("top_events", []):
+        item["brief_summary"] = stabilize_event_summary(item, language=language)
 
     decisive = localized.get("decision_panel", {}).get("top_decisive_signals", [])
     for item, translated_title in zip(decisive, translated):
