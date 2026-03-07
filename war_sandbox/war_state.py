@@ -3,7 +3,7 @@ import re
 from typing import Any, Dict, List, Optional
 from urllib.parse import urlparse
 
-from .gemini_runner import translate_news_titles
+from .gemini_runner import assess_event_relevance, translate_brief_texts, translate_news_titles
 
 
 SOURCE_STACK = [
@@ -163,6 +163,16 @@ def _parse_timestamp(value: Optional[str]) -> Optional[datetime]:
         except ValueError:
             continue
     return None
+
+
+def _looks_localized(text: str, language: str) -> bool:
+    value = str(text or "").strip()
+    if not value:
+        return True
+    has_cjk = bool(re.search(r"[\u4e00-\u9fff]", value))
+    if language == "zh":
+        return has_cjk
+    return not has_cjk
 
 
 def _clamp(value: float, minimum: float = 0.0, maximum: float = 1.0) -> float:
@@ -467,12 +477,26 @@ def build_uncertainties(events: List[Dict[str, Any]], state_variables: Dict[str,
 def build_analysis_package(
     items: List[Dict[str, Any]],
     language: str,
+    model: Optional[str] = None,
 ) -> Dict[str, Any]:
     events = build_signal_events(items)
     displayed_events = [event for event in events if event["display"]]
     ranked_events = displayed_events or events
-    analysis_events = select_diverse_events(ranked_events, limit=20, per_source_cap=2)
-    display_events = select_diverse_events(ranked_events, limit=50, per_source_cap=4)
+    candidate_events = select_diverse_events(ranked_events, limit=80, per_source_cap=8)
+    judged_events = assess_event_relevance(candidate_events, language=language, model=model)
+    related_events = [event for event in judged_events if event.get("decision_related")]
+    ranked_related_events = sorted(
+        related_events,
+        key=lambda event: (
+            event.get("relevance_score", 0.0),
+            event.get("combined", 0.0),
+            event.get("importance", 0.0),
+            _parse_timestamp(event.get("published_at")) or datetime.min.replace(tzinfo=timezone.utc),
+        ),
+        reverse=True,
+    )
+    analysis_events = select_diverse_events(ranked_related_events, limit=20, per_source_cap=3)
+    display_events = select_diverse_events(ranked_related_events, limit=50, per_source_cap=6)
     state_list = compute_state_variables(analysis_events, language)
     state_map = {state["id"]: state for state in state_list}
     windows = termination_windows(state_map)
@@ -570,6 +594,13 @@ def localize_summary(summary: Dict[str, Any], language: str, model: Optional[str
     for item, translated_title in zip(localized["top_events"], translated):
         item.setdefault("title_original", item.get("title", ""))
         item["title"] = translated_title
+
+    reasons = [str(item.get("relevance_reason", "")) for item in localized.get("top_events", [])]
+    if any(reason.strip() and not _looks_localized(reason, language) for reason in reasons):
+        translated_reasons = translate_brief_texts(reasons, language=language, model=model)
+        for item, translated_reason in zip(localized["top_events"], translated_reasons):
+            if translated_reason:
+                item["relevance_reason"] = translated_reason
 
     decisive = localized.get("decision_panel", {}).get("top_decisive_signals", [])
     for item, translated_title in zip(decisive, translated):

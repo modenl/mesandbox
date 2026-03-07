@@ -780,6 +780,11 @@ def bootstrap_state(rss_path: str = str(RSS_CONFIG_PATH)) -> None:
     for key, value in defaults.items():
         if get_runtime_setting(key) is None:
             set_runtime_setting(key, value)
+    if get_runtime_setting("evidence_hours") != DEFAULT_HOURS:
+        set_runtime_setting("evidence_hours", DEFAULT_HOURS)
+    current_limit = int(get_runtime_setting("forecast_limit", DEFAULT_FORECAST_LIMIT) or DEFAULT_FORECAST_LIMIT)
+    if current_limit < DEFAULT_FORECAST_LIMIT:
+        set_runtime_setting("forecast_limit", DEFAULT_FORECAST_LIMIT)
 
 
 class SandboxService:
@@ -836,6 +841,10 @@ class SandboxService:
 
     def update_settings(self, settings: Dict[str, Any]) -> None:
         for key, value in settings.items():
+            if key == "evidence_hours":
+                value = DEFAULT_HOURS
+            if key == "forecast_limit":
+                value = max(DEFAULT_FORECAST_LIMIT, int(value))
             set_runtime_setting(key, value)
 
     def run_source(self, source_id: str) -> Dict[str, Any]:
@@ -952,13 +961,13 @@ class SandboxService:
     def run_forecast(self) -> Dict[str, Any]:
         with self.lock:
             settings = self.list_settings()
-            hours = int(settings.get("evidence_hours", DEFAULT_HOURS))
-            limit = int(settings.get("forecast_limit", DEFAULT_FORECAST_LIMIT))
+            hours = DEFAULT_HOURS
+            limit = max(int(settings.get("forecast_limit", DEFAULT_FORECAST_LIMIT)), DEFAULT_FORECAST_LIMIT)
             language = settings.get("language", "zh")
             items = fetch_recent_items(hours, limit=limit)
             if not items:
                 raise ValueError("No evidence items found for forecasting")
-            summary = build_analysis_package(items, language=language)
+            summary = build_analysis_package(items, language=language, model=self.model)
             forecast = generate_forecast(summary, model=self.model, language=language)
             created_at = utc_now_iso()
             report_markdown = render_markdown(summary, forecast, language=language)

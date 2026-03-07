@@ -21,6 +21,9 @@ TEXT = {
         "confidence_value": "置信度",
         "important_news": "重要新闻筛选",
         "news_empty": "当前没有满足“高可信 + 高战略价值”的事件。",
+        "news_window_note": "仅展示最近7天内、经模型判定与结束时间或结果预判直接相关的信息。",
+        "news_relevance": "为何相关",
+        "news_relevance_score": "相关性分",
         "latest_forecast": "最新推演",
         "latest_forecast_time": "最新推演时间",
         "evidence_items": "证据条目",
@@ -107,12 +110,15 @@ TEXT = {
         "news_show": "显示条数",
         "news_visible": "当前显示",
         "news_all": "全部",
-        "sources_in_use": "信息源说明",
-        "sources_in_use_note": "以下信息源从官方口径、传感器信号和跨媒体覆盖等不同角度支撑当前判断。",
-        "source_used_count": "引用条目",
-        "source_why_trust": "可信原因",
-        "source_status": "运行状态",
-        "source_snapshot_only": "该来源来自历史快照，当前暂无新的运行状态。",
+        "sources_in_use": "信息源状态",
+        "sources_in_use_note": "只展示当前真实接入的数据源。绿点表示当前抓取可用，灰点表示尚未成功或已停用。",
+        "source_why_trust": "为何可信",
+        "source_status": "当前状态",
+        "source_last_run": "最近抓取",
+        "source_last_items": "最近入库",
+        "source_availability_ok": "可用",
+        "source_availability_issue": "异常",
+        "source_availability_idle": "未就绪",
     },
     "en": {
         "lang_code": "en",
@@ -125,6 +131,9 @@ TEXT = {
         "confidence_value": "Confidence",
         "important_news": "Important Filtered News",
         "news_empty": "No event currently passes the high-credibility and high-strategic-value filter.",
+        "news_window_note": "Only items from the last 7 days are shown, and each item must be judged by the model as directly relevant to end timing or likely outcome.",
+        "news_relevance": "Why it matters",
+        "news_relevance_score": "Relevance score",
         "latest_forecast": "Latest Forecast",
         "latest_forecast_time": "Latest forecast time",
         "evidence_items": "Evidence items",
@@ -211,12 +220,15 @@ TEXT = {
         "news_show": "Show",
         "news_visible": "Visible",
         "news_all": "All",
-        "sources_in_use": "Source Notes",
-        "sources_in_use_note": "These sources support the current assessment from different angles, including official statements, sensor signals, and broad media coverage.",
-        "source_used_count": "Quoted items",
+        "sources_in_use": "Source Status",
+        "sources_in_use_note": "This list shows only live configured sources. A green dot means the current fetch path is working; gray means it is not currently usable or not enabled.",
         "source_why_trust": "Why it is trusted",
-        "source_status": "Runtime status",
-        "source_snapshot_only": "This source comes from the saved forecast snapshot and does not currently show a live runtime update.",
+        "source_status": "Current status",
+        "source_last_run": "Last fetch",
+        "source_last_items": "Last inserted",
+        "source_availability_ok": "Available",
+        "source_availability_issue": "Issue",
+        "source_availability_idle": "Idle",
     },
 }
 
@@ -297,56 +309,56 @@ def _listify(value):
     return [str(value)]
 
 
-def _source_brief_id(source_key: str, runtime_sources: list[dict]) -> Optional[str]:
-    if source_key in SOURCE_BRIEFS:
-        return source_key
-    if source_key.startswith("rss:"):
-        source_name = source_key.split(":", 1)[1].strip().lower()
-        for runtime in runtime_sources:
-            if runtime.get("kind") == "rss" and str(runtime.get("name", "")).strip().lower() == source_name:
-                return str(runtime.get("id", ""))
-    return None
+def _availability_meta(source: dict, text: dict) -> tuple[str, str]:
+    if not source.get("enabled", True):
+        return "dot-idle", text["source_availability_idle"]
+    status = source.get("last_status")
+    if status == "ok":
+        return "dot-ok", text["source_availability_ok"]
+    if status in {"error", "blocked"}:
+        return "dot-issue", text["source_availability_issue"]
+    return "dot-idle", text["source_availability_idle"]
 
 
-def _source_brief_section(summary: dict, runtime_sources: list[dict], text: dict, language: str) -> str:
-    source_mix = summary.get("source_mix", {}) or {}
-    if not source_mix:
+def _source_brief_section(runtime_sources: list[dict], text: dict, language: str) -> str:
+    if not runtime_sources:
         return ""
-    runtime_by_id = {str(source.get("id", "")): source for source in runtime_sources}
     stack_by_id = {str(item.get("id", "")): item for item in SOURCE_STACK}
+    status_order = {"ok": 0, "error": 1, "blocked": 2, None: 3}
     cards = []
-    for source_key, used_count in sorted(source_mix.items(), key=lambda item: item[1], reverse=True):
-        brief_id = _source_brief_id(str(source_key), runtime_sources)
-        if not brief_id:
-            continue
-        runtime = runtime_by_id.get(brief_id, {})
-        stack = stack_by_id.get(brief_id, {})
-        brief = SOURCE_BRIEFS.get(brief_id, {}).get(language)
-        if not brief:
-            continue
-        display_name = str(runtime.get("name") or stack.get("name") or source_key)
-        status_text = (
-            f"{runtime.get('last_status') or '-'} / {runtime.get('last_message') or '-'}"
-            if runtime
-            else text["source_snapshot_only"]
-        )
+    for runtime in sorted(
+        runtime_sources,
+        key=lambda source: (
+            1 if not source.get("enabled", True) else 0,
+            status_order.get(source.get("last_status"), 3),
+            str(source.get("name", "")).lower(),
+        ),
+    ):
+        source_id = str(runtime.get("id", ""))
+        stack = stack_by_id.get(source_id, {})
+        brief = SOURCE_BRIEFS.get(source_id, {}).get(language) or ""
+        dot_class, availability = _availability_meta(runtime, text)
+        status_text = _status_text(text, runtime.get("last_status"))
+        message = str(runtime.get("last_message") or "-")
         cards.append(
             f"""
             <article class="source-brief">
               <div class="source-brief-top">
                 <div>
-                  <div class="source-brief-name">{escape(display_name)}</div>
-                  <div class="source-brief-id">{escape(brief_id)}</div>
+                  <div class="source-brief-name">{escape(str(runtime.get('name') or stack.get('name') or source_id))}</div>
+                  <div class="source-brief-id">{escape(source_id)}</div>
                 </div>
-                <div class="source-brief-count">{escape(text['source_used_count'])}: {escape(str(used_count))}</div>
+                <div class="source-availability">
+                  <span class="source-dot {dot_class}"></span>
+                  <span>{escape(availability)}</span>
+                </div>
               </div>
-              <p class="source-brief-copy"><strong>{escape(text['source_why_trust'])}:</strong> {escape(brief)}</p>
-              <p class="source-brief-copy"><strong>{escape(text['source_status'])}:</strong> {escape(status_text)}</p>
+              <p class="source-brief-copy"><strong>{escape(text['source_why_trust'])}:</strong> {escape(brief or '-')}</p>
+              <p class="source-brief-copy"><strong>{escape(text['source_status'])}:</strong> {escape(status_text)} · {escape(message)}</p>
+              <p class="source-brief-copy"><strong>{escape(text['source_last_run'])}:</strong> {escape(str(runtime.get('last_run_at') or '-'))} · <strong>{escape(text['source_last_items'])}:</strong> {escape(str(runtime.get('last_item_count', 0)))}</p>
             </article>
             """
         )
-    if not cards:
-        return ""
     return f"""
       <section class="card">
         <h2 class="section-title">{escape(text['sources_in_use'])}</h2>
@@ -382,9 +394,11 @@ def _news_section(top_events: list[dict], text: dict) -> str:
             <span class="news-time">{escape(str(item.get('published_at') or item.get('fetched_at') or '-'))}</span>
           </div>
           <h3>{escape(str(item.get('title', '-')))}</h3>
+          <p class="news-reason"><strong>{escape(text['news_relevance'])}:</strong> {escape(str(item.get('relevance_reason') or '-'))}</p>
           <div class="news-meta">
             <span>C {escape(str(item.get('credibility', '-')))}</span>
             <span>I {escape(str(item.get('importance', '-')))}</span>
+            <span>{escape(text['news_relevance_score'])} {escape(str(item.get('relevance_score', '-')))}</span>
           </div>
         </a>
         """
@@ -392,7 +406,7 @@ def _news_section(top_events: list[dict], text: dict) -> str:
     )
     return f"""
     <div class="news-toolbar">
-      <p class="compact-note">{escape(text['news_default'])}</p>
+      <p class="compact-note">{escape(text['news_window_note'])}</p>
       <label class="news-control">
         <span>{escape(text['news_show'])}</span>
         <select id="news-count-select">{option_rows}</select>
@@ -730,7 +744,7 @@ def _html_page(state: dict) -> str:
     decision_panel = latest_summary.get("decision_panel") or _fallback_decision_panel(latest_forecast)
     confidence = graph.get("confidence", {})
     window = latest_forecast.get("war_end_window", {})
-    source_brief_section = _source_brief_section(latest_summary, state.get("sources", []), text, language)
+    source_brief_section = _source_brief_section(state.get("sources", []), text, language)
     end_windows = "".join(
         f"<div class='mini-row'><span>{escape(str(item.get('window_days')))}d</span><strong>{escape(str(item.get('probability')))}</strong></div>"
         for item in decision_panel.get("end_windows", [])
@@ -977,6 +991,24 @@ def _html_page(state: dict) -> str:
       font-size: 14px;
       line-height: 1.6;
     }}
+    .source-availability {{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }}
+    .source-dot {{
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      display: inline-block;
+    }}
+    .dot-ok {{ background: #1f9f58; box-shadow: 0 0 0 4px rgba(31, 159, 88, 0.12); }}
+    .dot-issue {{ background: #d66a1f; box-shadow: 0 0 0 4px rgba(214, 106, 31, 0.12); }}
+    .dot-idle {{ background: #9aa39f; box-shadow: 0 0 0 4px rgba(154, 163, 159, 0.14); }}
     .news-toolbar {{
       display: flex;
       justify-content: space-between;
@@ -1013,6 +1045,12 @@ def _html_page(state: dict) -> str:
       margin: 10px 0;
       font-size: 18px;
       line-height: 1.45;
+    }}
+    .news-reason {{
+      margin: 0 0 12px;
+      color: var(--ink);
+      font-size: 14px;
+      line-height: 1.6;
     }}
     .news-head, .news-meta {{
       display: flex;
@@ -1079,12 +1117,8 @@ def _html_page(state: dict) -> str:
                 <input type="number" min="5" step="1" name="dashboard_refresh_seconds" value="{refresh_seconds}">
               </label>
               <label class="field">
-                <span>{escape(text['menu_hours'])}</span>
-                <input type="number" min="1" step="1" name="evidence_hours" value="{int(settings.get('evidence_hours', 72))}">
-              </label>
-              <label class="field">
                 <span>{escape(text['menu_limit'])}</span>
-                <input type="number" min="5" step="1" name="forecast_limit" value="{int(settings.get('forecast_limit', 30))}">
+                <input type="number" min="50" step="10" name="forecast_limit" value="{int(settings.get('forecast_limit', 200))}">
               </label>
               <label class="field">
                 <span>{escape(text['menu_auto'])}</span>
@@ -1167,7 +1201,7 @@ def render_static_snapshot(state: dict) -> str:
     window = latest_forecast.get("war_end_window", {})
     top_events = latest_summary.get("top_events", [])
     updated_at = latest.get("created_at") or latest_summary.get("generated_at") or "-"
-    source_brief_section = _source_brief_section(latest_summary, state.get("sources", []), text, language)
+    source_brief_section = _source_brief_section(state.get("sources", []), text, language)
 
     end_windows = "".join(
         f"<div class='mini-row'><span>{escape(str(item.get('window_days')))}d</span><strong>{escape(str(item.get('probability')))}</strong></div>"
@@ -1245,6 +1279,14 @@ def render_static_snapshot(state: dict) -> str:
       color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em;
     }}
     .source-brief-copy {{ margin: 8px 0 0; color: var(--muted); font-size: 14px; line-height: 1.6; }}
+    .source-availability {{
+      display: inline-flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 0.06em;
+    }}
+    .source-dot {{ width: 10px; height: 10px; border-radius: 999px; display: inline-block; }}
+    .dot-ok {{ background: #1f9f58; box-shadow: 0 0 0 4px rgba(31, 159, 88, 0.12); }}
+    .dot-issue {{ background: #d66a1f; box-shadow: 0 0 0 4px rgba(214, 106, 31, 0.12); }}
+    .dot-idle {{ background: #9aa39f; box-shadow: 0 0 0 4px rgba(154, 163, 159, 0.14); }}
     .news-toolbar {{
       display: flex; justify-content: space-between; align-items: center; gap: 12px;
       flex-wrap: wrap; margin-bottom: 14px;
@@ -1262,6 +1304,7 @@ def render_static_snapshot(state: dict) -> str:
       border: 1px solid rgba(15, 92, 77, 0.1); border-radius: 16px; padding: 16px;
     }}
     .news-item h3 {{ margin: 10px 0; font-size: 18px; line-height: 1.45; }}
+    .news-reason {{ margin: 0 0 12px; color: var(--ink); font-size: 14px; line-height: 1.6; }}
     .news-head, .news-meta {{
       display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
       color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em;
@@ -1379,8 +1422,8 @@ def make_handler(service: SandboxService):
                     "dashboard_refresh_seconds": max(
                         5, int(form.get("dashboard_refresh_seconds", ["15"])[0])
                     ),
-                    "evidence_hours": max(1, int(form.get("evidence_hours", ["72"])[0])),
-                    "forecast_limit": max(5, int(form.get("forecast_limit", ["30"])[0])),
+                    "evidence_hours": 168,
+                    "forecast_limit": max(50, int(form.get("forecast_limit", ["200"])[0])),
                     "auto_forecast": form.get("auto_forecast", ["1"])[0] == "1",
                     "language": form.get("language", ["zh"])[0],
                 }

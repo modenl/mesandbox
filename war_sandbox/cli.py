@@ -4,6 +4,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from .config import (
+    DEFAULT_FORECAST_LIMIT,
     DEFAULT_HOURS,
     DEFAULT_PORT,
     DEFAULT_QUERY,
@@ -74,7 +75,7 @@ def cmd_forecast(args: argparse.Namespace) -> None:
         raise SystemExit("No evidence items found. Run ingest first.")
 
     language = get_runtime_setting("language", "zh")
-    summary = build_analysis_package(items, language=language)
+    summary = build_analysis_package(items, language=language, model=args.model)
     forecast = generate_forecast(summary, model=args.model, language=language)
     created_at = datetime.now(timezone.utc).replace(microsecond=0).isoformat()
     report_markdown = render_markdown(summary, forecast, language=language)
@@ -244,7 +245,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     forecast_parser = subparsers.add_parser("forecast")
     forecast_parser.add_argument("--hours", type=int, default=DEFAULT_HOURS)
-    forecast_parser.add_argument("--limit", type=int, default=80)
+    forecast_parser.add_argument("--limit", type=int, default=DEFAULT_FORECAST_LIMIT)
     forecast_parser.add_argument("--model")
     forecast_parser.set_defaults(func=cmd_forecast)
 

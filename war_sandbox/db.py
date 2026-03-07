@@ -1,5 +1,6 @@
 import json
 import sqlite3
+from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, Iterable, List, Optional
 
 from .config import DB_PATH, REPORT_DIR
@@ -90,19 +91,54 @@ def insert_raw_items(items: Iterable[Dict[str, Any]]) -> int:
     return len(rows)
 
 
+def _parse_recent_timestamp(value: Optional[str]) -> Optional[datetime]:
+    if not value:
+        return None
+    raw = str(value).strip()
+    formats = (
+        "%Y-%m-%d %H:%M:%S",
+        "%Y-%m-%dT%H:%M:%S%z",
+        "%Y-%m-%dT%H:%M:%S.%f%z",
+        "%Y-%m-%dT%H:%M:%S",
+        "%Y-%m-%d",
+        "%B %d, %Y",
+        "%b %d, %Y",
+    )
+    for fmt in formats:
+        try:
+            dt = datetime.strptime(raw, fmt)
+            if dt.tzinfo is None:
+                dt = dt.replace(tzinfo=timezone.utc)
+            return dt.astimezone(timezone.utc)
+        except ValueError:
+            continue
+    try:
+        dt = datetime.fromisoformat(raw.replace("Z", "+00:00"))
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt.astimezone(timezone.utc)
+    except ValueError:
+        return None
+
+
 def fetch_recent_items(hours: int, limit: int = 200) -> List[Dict[str, Any]]:
+    cutoff = datetime.now(timezone.utc) - timedelta(hours=hours)
     with connect() as conn:
         rows = conn.execute(
             """
-            SELECT payload_json
+            SELECT payload_json, published_at, fetched_at
             FROM raw_items
-            WHERE COALESCE(published_at, fetched_at) >= datetime('now', ?)
-            ORDER BY COALESCE(published_at, fetched_at) DESC
-            LIMIT ?
-            """,
-            (f"-{hours} hours", limit),
+            """
         ).fetchall()
-    return [json.loads(row["payload_json"]) for row in rows]
+    filtered: List[tuple[datetime, Dict[str, Any]]] = []
+    for row in rows:
+        payload = json.loads(row["payload_json"])
+        timestamp = _parse_recent_timestamp(row["published_at"]) or _parse_recent_timestamp(row["fetched_at"])
+        if not timestamp or timestamp < cutoff:
+            continue
+        filtered.append((timestamp, payload))
+    filtered.sort(key=lambda item: item[0], reverse=True)
+    return [payload for _, payload in filtered[:limit]]
 
 
 def insert_forecast(
