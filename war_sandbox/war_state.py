@@ -175,6 +175,10 @@ def _looks_localized(text: str, language: str) -> bool:
     return not has_cjk
 
 
+def _event_sort_key(event: Dict[str, Any]) -> datetime:
+    return _parse_timestamp(event.get("published_at")) or _parse_timestamp(event.get("fetched_at")) or datetime.min.replace(tzinfo=timezone.utc)
+
+
 def _clamp(value: float, minimum: float = 0.0, maximum: float = 1.0) -> float:
     return max(minimum, min(maximum, value))
 
@@ -496,7 +500,11 @@ def build_analysis_package(
         reverse=True,
     )
     analysis_events = select_diverse_events(ranked_related_events, limit=20, per_source_cap=3)
-    display_events = select_diverse_events(ranked_related_events, limit=50, per_source_cap=6)
+    display_events = sorted(
+        select_diverse_events(ranked_related_events, limit=50, per_source_cap=6),
+        key=_event_sort_key,
+        reverse=True,
+    )
     state_list = compute_state_variables(analysis_events, language)
     state_map = {state["id"]: state for state in state_list}
     windows = termination_windows(state_map)
@@ -608,4 +616,5 @@ def localize_summary(summary: Dict[str, Any], language: str, model: Optional[str
         item["title"] = translated_title
 
     localized["summary_language"] = language
+    localized["top_events"] = sorted(localized.get("top_events", []), key=_event_sort_key, reverse=True)
     return localized
