@@ -107,6 +107,12 @@ TEXT = {
         "news_show": "显示条数",
         "news_visible": "当前显示",
         "news_all": "全部",
+        "sources_in_use": "当前使用的信息源",
+        "sources_in_use_note": "只展示本轮推演实际使用的来源，并说明它们为何具有较高参考价值。",
+        "source_used_count": "本轮采用",
+        "source_why_trust": "可信原因",
+        "source_status": "运行状态",
+        "source_snapshot_only": "本轮快照中使用，当前未在实时采集列表中显示。",
     },
     "en": {
         "lang_code": "en",
@@ -205,6 +211,68 @@ TEXT = {
         "news_show": "Show",
         "news_visible": "Visible",
         "news_all": "All",
+        "sources_in_use": "Sources Used In This Run",
+        "sources_in_use_note": "Shows only the sources actually used in the current forecast and why they carry decision value.",
+        "source_used_count": "Used",
+        "source_why_trust": "Why it is trusted",
+        "source_status": "Runtime status",
+        "source_snapshot_only": "Used in the current forecast snapshot, but not shown in the current live collection list.",
+    },
+}
+
+
+SOURCE_BRIEFS = {
+    "gdelt_articles": {
+        "zh": "GDELT 聚合跨媒体新近报道，适合发现刚出现的战局变化，但需要和官方源交叉验证。",
+        "en": "GDELT aggregates fresh multi-outlet reporting and is useful for detecting newly emerging shifts, but should be cross-checked with official sources.",
+    },
+    "gdelt_timeline": {
+        "zh": "GDELT 时间序列适合衡量事件热度和舆情强度变化，价值在于趋势，不在于单条事实。",
+        "en": "GDELT timeline data is useful for tracking event intensity and attention shifts; its value is directional trend, not single-claim fact reporting.",
+    },
+    "liveuamap_iran": {
+        "zh": "LiveUAmap 提供接近实时的地理化冲突线索，适合捕捉地点和时间，但需防止单源误报。",
+        "en": "LiveUAmap offers near-real-time geolocated conflict cues, useful for place-and-time awareness, but it should not stand alone.",
+    },
+    "centcom_dvids": {
+        "zh": "CENTCOM 官方发布代表美方正式口径，可信度高，尤其适合判断目标边界和行动声明。",
+        "en": "CENTCOM releases represent official U.S. messaging and are high-value for judging stated objectives, target scope, and declared operations.",
+    },
+    "idf_releases": {
+        "zh": "IDF 官方发布是以方正式口径，适合判断军事行动声明、打击对象和阶段转换。",
+        "en": "IDF releases are official Israeli statements and are useful for tracking declared operations, target sets, and shifts in operational phase.",
+    },
+    "presstv_latest": {
+        "zh": "PressTV 反映伊朗叙事与对外表述，适合观察伊朗侧公开口径和升级/谈判信号。",
+        "en": "PressTV reflects Iranian public-facing narrative and is useful for tracking Tehran-aligned messaging, escalation signals, and negotiation framing.",
+    },
+    "radiofarda_iran": {
+        "zh": "Radio Farda 提供与伊朗内部政治和社会动向相关的补充观察，适合识别国内不稳定信号。",
+        "en": "Radio Farda adds useful coverage of internal Iranian political and social developments, especially for domestic instability signals.",
+    },
+    "unnews_middle_east": {
+        "zh": "联合国新闻在措辞上更克制，适合补充地区安全与人道后果的国际机构视角。",
+        "en": "UN News is more restrained in tone and is useful for adding an international institutional view on regional security and humanitarian impact.",
+    },
+    "unnews_peace_security": {
+        "zh": "联合国和平与安全频道适合识别斡旋、停火和安理会层面的正式动向。",
+        "en": "UN Peace and Security coverage is useful for detecting mediation, ceasefire, and formal Security Council-level developments.",
+    },
+    "iaea_news": {
+        "zh": "IAEA 是核议题的一手机构源，涉及核设施、核监督和相关风险时参考价值高。",
+        "en": "IAEA is a primary institutional source on nuclear issues and is especially valuable for facilities, safeguards, and related escalation risk.",
+    },
+    "adsb_military": {
+        "zh": "ADSB 军机数据属于传感器类硬信号，适合发现空中加油、预警和军机活动异常。",
+        "en": "ADSB military traffic is a sensor-grade hard signal, useful for spotting tanker, AWACS, and abnormal air-activity patterns.",
+    },
+    "google_news_iran_conflict": {
+        "zh": "Google News 作为聚合入口有助于补足多家媒体首发覆盖，但必须依赖后续筛选和去重。",
+        "en": "Google News is a useful aggregator for broad first-wave coverage, but it only becomes reliable after filtering, deduping, and source weighting.",
+    },
+    "google_news_hormuz_shipping": {
+        "zh": "霍尔木兹航运聚合流用于补捉海运与能源外溢信号，重点看是否影响通航与油运节奏。",
+        "en": "The Hormuz shipping news stream is used to track maritime and energy spillover, especially whether transit and tanker flows are being disrupted.",
     },
 }
 
@@ -227,6 +295,67 @@ def _listify(value):
     if value in (None, ""):
         return []
     return [str(value)]
+
+
+def _source_brief_id(source_key: str, runtime_sources: list[dict]) -> Optional[str]:
+    if source_key in SOURCE_BRIEFS:
+        return source_key
+    if source_key.startswith("rss:"):
+        source_name = source_key.split(":", 1)[1].strip().lower()
+        for runtime in runtime_sources:
+            if runtime.get("kind") == "rss" and str(runtime.get("name", "")).strip().lower() == source_name:
+                return str(runtime.get("id", ""))
+    return None
+
+
+def _source_brief_section(summary: dict, runtime_sources: list[dict], text: dict, language: str) -> str:
+    source_mix = summary.get("source_mix", {}) or {}
+    if not source_mix:
+        return ""
+    runtime_by_id = {str(source.get("id", "")): source for source in runtime_sources}
+    stack_by_id = {str(item.get("id", "")): item for item in SOURCE_STACK}
+    cards = []
+    for source_key, used_count in sorted(source_mix.items(), key=lambda item: item[1], reverse=True):
+        brief_id = _source_brief_id(str(source_key), runtime_sources)
+        if not brief_id:
+            continue
+        runtime = runtime_by_id.get(brief_id, {})
+        stack = stack_by_id.get(brief_id, {})
+        brief = SOURCE_BRIEFS.get(brief_id, {}).get(language)
+        if not brief:
+            continue
+        display_name = str(runtime.get("name") or stack.get("name") or source_key)
+        status_text = (
+            f"{runtime.get('last_status') or '-'} / {runtime.get('last_message') or '-'}"
+            if runtime
+            else text["source_snapshot_only"]
+        )
+        cards.append(
+            f"""
+            <article class="source-brief">
+              <div class="source-brief-top">
+                <div>
+                  <div class="source-brief-name">{escape(display_name)}</div>
+                  <div class="source-brief-id">{escape(brief_id)}</div>
+                </div>
+                <div class="source-brief-count">{escape(text['source_used_count'])}: {escape(str(used_count))}</div>
+              </div>
+              <p class="source-brief-copy"><strong>{escape(text['source_why_trust'])}:</strong> {escape(brief)}</p>
+              <p class="source-brief-copy"><strong>{escape(text['source_status'])}:</strong> {escape(status_text)}</p>
+            </article>
+            """
+        )
+    if not cards:
+        return ""
+    return f"""
+      <section class="card">
+        <h2 class="section-title">{escape(text['sources_in_use'])}</h2>
+        <p class="compact-note">{escape(text['sources_in_use_note'])}</p>
+        <div class="source-brief-grid">
+          {''.join(cards)}
+        </div>
+      </section>
+    """
 
 
 def _news_section(top_events: list[dict], text: dict) -> str:
@@ -601,6 +730,7 @@ def _html_page(state: dict) -> str:
     decision_panel = latest_summary.get("decision_panel") or _fallback_decision_panel(latest_forecast)
     confidence = graph.get("confidence", {})
     window = latest_forecast.get("war_end_window", {})
+    source_brief_section = _source_brief_section(latest_summary, state.get("sources", []), text, language)
     end_windows = "".join(
         f"<div class='mini-row'><span>{escape(str(item.get('window_days')))}d</span><strong>{escape(str(item.get('probability')))}</strong></div>"
         for item in decision_panel.get("end_windows", [])
@@ -812,6 +942,41 @@ def _html_page(state: dict) -> str:
       grid-template-columns: 1fr 1fr;
       gap: 12px;
     }}
+    .source-brief-grid {{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }}
+    .source-brief {{
+      border: 1px solid rgba(15, 92, 77, 0.1);
+      border-radius: 16px;
+      padding: 16px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(15, 92, 77, 0.03));
+    }}
+    .source-brief-top {{
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }}
+    .source-brief-name {{
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }}
+    .source-brief-id, .source-brief-count {{
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }}
+    .source-brief-copy {{
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }}
     .news-toolbar {{
       display: flex;
       justify-content: space-between;
@@ -871,7 +1036,7 @@ def _html_page(state: dict) -> str:
       details.menu {{
         width: 100%;
       }}
-      .summary-grid, .window-grid, .menu-grid, .news-grid {{
+      .summary-grid, .window-grid, .menu-grid, .news-grid, .source-brief-grid {{
         grid-template-columns: 1fr;
       }}
     }}
@@ -976,6 +1141,8 @@ def _html_page(state: dict) -> str:
         </div>
       </section>
 
+      {source_brief_section}
+
       <section class="card">
         <h2 class="section-title">{escape(text['important_news'])}</h2>
         {news_section}
@@ -1000,6 +1167,7 @@ def render_static_snapshot(state: dict) -> str:
     window = latest_forecast.get("war_end_window", {})
     top_events = latest_summary.get("top_events", [])
     updated_at = latest.get("created_at") or latest_summary.get("generated_at") or "-"
+    source_brief_section = _source_brief_section(latest_summary, state.get("sources", []), text, language)
 
     end_windows = "".join(
         f"<div class='mini-row'><span>{escape(str(item.get('window_days')))}d</span><strong>{escape(str(item.get('probability')))}</strong></div>"
@@ -1064,6 +1232,19 @@ def render_static_snapshot(state: dict) -> str:
       background: rgba(15, 92, 77, 0.06); border: 1px solid rgba(15, 92, 77, 0.08);
     }}
     .news-grid {{ display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }}
+    .source-brief-grid {{ display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }}
+    .source-brief {{
+      border: 1px solid rgba(15, 92, 77, 0.1); border-radius: 16px; padding: 16px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(15, 92, 77, 0.03));
+    }}
+    .source-brief-top {{
+      display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; margin-bottom: 10px;
+    }}
+    .source-brief-name {{ font-size: 16px; font-weight: 700; letter-spacing: -0.02em; }}
+    .source-brief-id, .source-brief-count {{
+      color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em;
+    }}
+    .source-brief-copy {{ margin: 8px 0 0; color: var(--muted); font-size: 14px; line-height: 1.6; }}
     .news-toolbar {{
       display: flex; justify-content: space-between; align-items: center; gap: 12px;
       flex-wrap: wrap; margin-bottom: 14px;
@@ -1087,7 +1268,7 @@ def render_static_snapshot(state: dict) -> str:
     }}
     .empty {{ color: var(--muted); }}
     @media (max-width: 960px) {{
-      .summary-grid, .window-grid, .news-grid {{ grid-template-columns: 1fr; }}
+      .summary-grid, .window-grid, .news-grid, .source-brief-grid {{ grid-template-columns: 1fr; }}
     }}
   </style>
 </head>
@@ -1124,6 +1305,8 @@ def render_static_snapshot(state: dict) -> str:
           <p class="compact-note">{escape(text['confidence'])}: {escape(str(latest_forecast.get('confidence_note', '-')))}</p>
         </div>
       </section>
+
+      {source_brief_section}
 
       <section class="card">
         <h2 class="section-title">{escape(text['important_news'])}</h2>

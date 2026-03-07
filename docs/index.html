@@ -55,6 +55,30 @@
       background: rgba(15, 92, 77, 0.06); border: 1px solid rgba(15, 92, 77, 0.08);
     }
     .news-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .source-brief-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .source-brief {
+      border: 1px solid rgba(15, 92, 77, 0.1); border-radius: 16px; padding: 16px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(15, 92, 77, 0.03));
+    }
+    .source-brief-top {
+      display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; margin-bottom: 10px;
+    }
+    .source-brief-name { font-size: 16px; font-weight: 700; letter-spacing: -0.02em; }
+    .source-brief-id, .source-brief-count {
+      color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .source-brief-copy { margin: 8px 0 0; color: var(--muted); font-size: 14px; line-height: 1.6; }
+    .news-toolbar {
+      display: flex; justify-content: space-between; align-items: center; gap: 12px;
+      flex-wrap: wrap; margin-bottom: 14px;
+    }
+    .news-control {
+      display: inline-flex; align-items: center; gap: 10px; color: var(--muted); font-size: 14px;
+    }
+    .news-control select {
+      border: 1px solid var(--line); background: white; border-radius: 999px; padding: 8px 12px;
+      font: inherit; color: var(--ink);
+    }
     .news-item {
       text-decoration: none; color: inherit; display: block;
       background: linear-gradient(180deg, rgba(15, 92, 77, 0.06), rgba(15, 92, 77, 0.02));
@@ -67,15 +91,15 @@
     }
     .empty { color: var(--muted); }
     @media (max-width: 960px) {
-      .summary-grid, .window-grid, .news-grid { grid-template-columns: 1fr; }
+      .summary-grid, .window-grid, .news-grid, .source-brief-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
   <div class="shell">
-    <div class="eyebrow">GitHub Pages Snapshot</div>
+    <div class="eyebrow">Decision Dashboard</div>
     <h1>伊朗战局沙盘推演台</h1>
-    <p class="subtitle">本地命令行驱动的实时推演面板。核心信息前置，系统设置收纳进菜单。</p>
+    <p class="subtitle">面向研判与决策的实时战局评估与终局预判。</p>
     <p class="compact-note">最新推演时间: 2026-03-07T20:15:49+00:00</p>
 
     <div class="dashboard">
@@ -105,94 +129,173 @@
         </div>
       </section>
 
+      
+      <section class="card">
+        <h2 class="section-title">当前使用的信息源</h2>
+        <p class="compact-note">只展示本轮推演实际使用的来源，并说明它们为何具有较高参考价值。</p>
+        <div class="source-brief-grid">
+          
+            <article class="source-brief">
+              <div class="source-brief-top">
+                <div>
+                  <div class="source-brief-name">IDF Media Releases</div>
+                  <div class="source-brief-id">idf_releases</div>
+                </div>
+                <div class="source-brief-count">本轮采用: 12</div>
+              </div>
+              <p class="source-brief-copy"><strong>可信原因:</strong> IDF 官方发布是以方正式口径，适合判断军事行动声明、打击对象和阶段转换。</p>
+              <p class="source-brief-copy"><strong>运行状态:</strong> ok / inserted 12 items</p>
+            </article>
+            
+            <article class="source-brief">
+              <div class="source-brief-top">
+                <div>
+                  <div class="source-brief-name">Google News Iran Conflict</div>
+                  <div class="source-brief-id">google_news_iran_conflict</div>
+                </div>
+                <div class="source-brief-count">本轮采用: 7</div>
+              </div>
+              <p class="source-brief-copy"><strong>可信原因:</strong> Google News 作为聚合入口有助于补足多家媒体首发覆盖，但必须依赖后续筛选和去重。</p>
+              <p class="source-brief-copy"><strong>运行状态:</strong> ok / inserted 94 items</p>
+            </article>
+            
+            <article class="source-brief">
+              <div class="source-brief-top">
+                <div>
+                  <div class="source-brief-name">ADSB.lol Military Traffic</div>
+                  <div class="source-brief-id">adsb_military</div>
+                </div>
+                <div class="source-brief-count">本轮采用: 6</div>
+              </div>
+              <p class="source-brief-copy"><strong>可信原因:</strong> ADSB 军机数据属于传感器类硬信号，适合发现空中加油、预警和军机活动异常。</p>
+              <p class="source-brief-copy"><strong>运行状态:</strong> ok / inserted 2 items</p>
+            </article>
+            
+            <article class="source-brief">
+              <div class="source-brief-top">
+                <div>
+                  <div class="source-brief-name">liveuamap_iran</div>
+                  <div class="source-brief-id">liveuamap_iran</div>
+                </div>
+                <div class="source-brief-count">本轮采用: 4</div>
+              </div>
+              <p class="source-brief-copy"><strong>可信原因:</strong> LiveUAmap 提供接近实时的地理化冲突线索，适合捕捉地点和时间，但需防止单源误报。</p>
+              <p class="source-brief-copy"><strong>运行状态:</strong> 本轮快照中使用，当前未在实时采集列表中显示。</p>
+            </article>
+            
+            <article class="source-brief">
+              <div class="source-brief-top">
+                <div>
+                  <div class="source-brief-name">Google News Hormuz Shipping</div>
+                  <div class="source-brief-id">google_news_hormuz_shipping</div>
+                </div>
+                <div class="source-brief-count">本轮采用: 1</div>
+              </div>
+              <p class="source-brief-copy"><strong>可信原因:</strong> 霍尔木兹航运聚合流用于补捉海运与能源外溢信号，重点看是否影响通航与油运节奏。</p>
+              <p class="source-brief-copy"><strong>运行状态:</strong> ok / inserted 51 items</p>
+            </article>
+            
+        </div>
+      </section>
+    
+
       <section class="card">
         <h2 class="section-title">重要新闻筛选</h2>
-        <div class="news-grid">
-        <a class="news-item" href="https://news.google.com/rss/articles/CBMizgFBVV95cUxOVUdWeEVYYWlpNlAxcHQ5VE80RkJRX1pHamFzYkhNOHRhOWdnRHA5UC12Xzg3bUlib016MFVyaUJ3b3E0ZV9SRTYwSjhXQ3AybXF2d1gtZEh1bjhsOWNUc050V3NJdFRQV2I3S0l1Z2ZncW1VOUlkbk9KQXF5S2Y0aGZJa1lpdHRWMDk3TklfcEhsZWFxcm5ESHh1a2k0bzhVQk5NUUh0YWlIcDJlLVpxQXlGcmxCT2lzOXMya19QRkwybFNaUnp4Y21vWFN0UQ?oc=5" target="_blank" rel="noopener">
+        
+    <div class="news-toolbar">
+      <p class="compact-note">默认展示最近 20 条有用信息，可切换查看更多。</p>
+      <label class="news-control">
+        <span>显示条数</span>
+        <select id="news-count-select"><option value='20' selected>20</option><option value='9999' >全部</option></select>
+      </label>
+      <div class="compact-note">当前显示: <strong id="news-visible-count">0 / 15</strong></div>
+    </div>
+    <div class="news-grid">
+        <a class="news-item" data-news-item href="https://news.google.com/rss/articles/CBMizgFBVV95cUxOVUdWeEVYYWlpNlAxcHQ5VE80RkJRX1pHamFzYkhNOHRhOWdnRHA5UC12Xzg3bUlib016MFVyaUJ3b3E0ZV9SRTYwSjhXQ3AybXF2d1gtZEh1bjhsOWNUc050V3NJdFRQV2I3S0l1Z2ZncW1VOUlkbk9KQXF5S2Y0aGZJa1lpdHRWMDk3TklfcEhsZWFxcm5ESHh1a2k0bzhVQk5NUUh0YWlIcDJlLVpxQXlGcmxCT2lzOXMya19QRkwybFNaUnp4Y21vWFN0UQ?oc=5" target="_blank" rel="noopener">
           <div class="news-head">
             <span class="news-source">rss:Google News Hormuz Shipping</span>
             <span class="news-time">2026-03-07 19:51:00</span>
           </div>
-          <h3>无人机袭击霍尔木兹海峡油轮，伊朗封锁导致全球航运中断 - 纽约邮报</h3>
+          <h3>无人机袭击霍尔木兹海峡油轮，伊朗封锁致全球航运停滞 - 纽约邮报</h3>
           <div class="news-meta">
             <span>C 0.52</span>
             <span>I 0.575</span>
           </div>
         </a>
         
-        <a class="news-item" href="https://www.idf.il/en/mini-sites/idf-press-releases-israel-at-war/january-26-pr/dismantling-of-an-approximately-four-kilometer-underground-tunnel-route-and-locating-rocket-launchers/" target="_blank" rel="noopener">
+        <a class="news-item" data-news-item href="https://www.idf.il/en/mini-sites/idf-press-releases-israel-at-war/january-26-pr/dismantling-of-an-approximately-four-kilometer-underground-tunnel-route-and-locating-rocket-launchers/" target="_blank" rel="noopener">
           <div class="news-head">
             <span class="news-source">idf_releases</span>
             <span class="news-time">January 25, 2026</span>
           </div>
-          <h3>拆除约四公里地下隧道并发现火箭发射器</h3>
+          <h3>拆除约四公里长的地下隧道并定位火箭发射器</h3>
           <div class="news-meta">
             <span>C 0.82</span>
             <span>I 0.3467</span>
           </div>
         </a>
         
-        <a class="news-item" href="https://www.idf.il/en/mini-sites/idf-press-releases-israel-at-war/january-26-pr/three-hideouts-and-weapons-found-in-an-underground-tunnel-the-kfir-brigade-and-the-yahalom-dismantle-a-1-kilometer-tunnel-route/" target="_blank" rel="noopener">
+        <a class="news-item" data-news-item href="https://www.idf.il/en/mini-sites/idf-press-releases-israel-at-war/january-26-pr/three-hideouts-and-weapons-found-in-an-underground-tunnel-the-kfir-brigade-and-the-yahalom-dismantle-a-1-kilometer-tunnel-route/" target="_blank" rel="noopener">
           <div class="news-head">
             <span class="news-source">idf_releases</span>
             <span class="news-time">January 22, 2026</span>
           </div>
-          <h3>在地下隧道中发现三个藏身处及武器：Kfir旅和Yahalom部队拆除一公里长隧道</h3>
+          <h3>地下隧道内发现三处藏身点及武器：Kfir旅与Yahalom部队拆除一公里隧道</h3>
           <div class="news-meta">
             <span>C 0.82</span>
             <span>I 0.3467</span>
           </div>
         </a>
         
-        <a class="news-item" href="https://iran.liveuamap.com/en/2026/7-march-19-purported-aftermath-of-a-us-or-israeli-airstrike" target="_blank" rel="noopener">
+        <a class="news-item" data-news-item href="https://iran.liveuamap.com/en/2026/7-march-19-purported-aftermath-of-a-us-or-israeli-airstrike" target="_blank" rel="noopener">
           <div class="news-head">
             <span class="news-source">liveuamap_iran</span>
             <span class="news-time">2026-03-07 19:00:00</span>
           </div>
-          <h3>据称美军或以色列空袭伊朗梅赫兰（靠近伊拉克边境，伊拉姆省）后的现场 - Liveuamap伊朗新闻</h3>
+          <h3>伊朗梅赫兰疑似遭美军或以色列空袭后的现状，毗邻伊拉克边境，伊拉姆省 - 英文版伊朗新闻实时地图 - 伊朗战争 - 海湾冲突 - iran.liveuamap.com</h3>
           <div class="news-meta">
             <span>C 0.62</span>
             <span>I 0.3417</span>
           </div>
         </a>
         
-        <a class="news-item" href="https://www.idf.il/en/mini-sites/idf-press-releases-israel-at-war/february-26-pr/activity-of-unit-869-to-prevent-the-rehabilitation-of-the-hezbollah-terrorist-organization/" target="_blank" rel="noopener">
+        <a class="news-item" data-news-item href="https://www.idf.il/en/mini-sites/idf-press-releases-israel-at-war/february-26-pr/activity-of-unit-869-to-prevent-the-rehabilitation-of-the-hezbollah-terrorist-organization/" target="_blank" rel="noopener">
           <div class="news-head">
             <span class="news-source">idf_releases</span>
             <span class="news-time">February 4, 2026</span>
           </div>
-          <h3>869部队采取行动阻止真主党恐怖组织重建</h3>
+          <h3>869部队阻止真主党恐怖组织重建之行动</h3>
           <div class="news-meta">
             <span>C 0.82</span>
             <span>I 0.2533</span>
           </div>
         </a>
         
-        <a class="news-item" href="https://www.idf.il/en/mini-sites/idf-press-releases-israel-at-war/january-26-pr/the-chief-of-the-general-staff-s-remarks-to-pilots-at-nevatim-air-base/" target="_blank" rel="noopener">
+        <a class="news-item" data-news-item href="https://www.idf.il/en/mini-sites/idf-press-releases-israel-at-war/january-26-pr/the-chief-of-the-general-staff-s-remarks-to-pilots-at-nevatim-air-base/" target="_blank" rel="noopener">
           <div class="news-head">
             <span class="news-source">idf_releases</span>
             <span class="news-time">January 21, 2026</span>
           </div>
-          <h3>总参谋长在内瓦提姆空军基地对飞行员发表讲话</h3>
+          <h3>总参谋长在内瓦蒂姆空军基地对飞行员发表讲话</h3>
           <div class="news-meta">
             <span>C 0.82</span>
             <span>I 0.2</span>
           </div>
         </a>
         
-        <a class="news-item" href="https://news.google.com/rss/articles/CBMiiAFBVV95cUxORmF0VG9lRS0ybGVDQ09rbjFOQkc1OHhydmJ2d1dNLVlsbDhEbURadjRNdWRSTHZUaXFKSE80anpyTTRERUZrcjg4NE5qYlNWeVdDSlgwd3FfVXJUbFRfZU16Yy11Qk5fNEliN3BqdHpEa0VnR0xIY2FwVGt6M2VtTENsTGR0V0Zr?oc=5" target="_blank" rel="noopener">
+        <a class="news-item" data-news-item href="https://news.google.com/rss/articles/CBMiiAFBVV95cUxORmF0VG9lRS0ybGVDQ09rbjFOQkc1OHhydmJ2d1dNLVlsbDhEbURadjRNdWRSTHZUaXFKSE80anpyTTRERUZrcjg4NE5qYlNWeVdDSlgwd3FfVXJUbFRfZU16Yy11Qk5fNEliN3BqdHpEa0VnR0xIY2FwVGt6M2VtTENsTGR0V0Zr?oc=5" target="_blank" rel="noopener">
           <div class="news-head">
             <span class="news-source">rss:Google News Iran Conflict</span>
             <span class="news-time">2026-03-07 19:51:40</span>
           </div>
-          <h3>特朗普将悼念阵亡美军，称对伊朗打击目标将扩大 - 华盛顿邮报</h3>
+          <h3>特朗普将悼念战争中阵亡的美军士兵，称将扩大对伊朗目标的打击 - 华盛顿邮报</h3>
           <div class="news-meta">
             <span>C 0.52</span>
             <span>I 0.1167</span>
           </div>
         </a>
         
-        <a class="news-item" href="https://globe.adsb.lol/?icao=43c972" target="_blank" rel="noopener">
+        <a class="news-item" data-news-item href="https://globe.adsb.lol/?icao=43c972" target="_blank" rel="noopener">
           <div class="news-head">
             <span class="news-source">adsb_military</span>
             <span class="news-time">2026-03-07 20:12:39</span>
@@ -204,7 +307,7 @@
           </div>
         </a>
         
-        <a class="news-item" href="https://globe.adsb.lol/?icao=43c6f6" target="_blank" rel="noopener">
+        <a class="news-item" data-news-item href="https://globe.adsb.lol/?icao=43c6f6" target="_blank" rel="noopener">
           <div class="news-head">
             <span class="news-source">adsb_military</span>
             <span class="news-time">2026-03-07 19:55:03</span>
@@ -216,42 +319,106 @@
           </div>
         </a>
         
-        <a class="news-item" href="https://news.google.com/rss/articles/CBMiV0FVX3lxTE5BOGVZWDdDcm9UVndYb253MDdoNTJ5bjA5aWNfb0YtYUJubDZpT25EQjU0d0RPdFQ5QVFTcHQ1WHpHaHVSVkF1ZWZDSlBUT0RIVXlYSVV2cw?oc=5" target="_blank" rel="noopener">
+        <a class="news-item" data-news-item href="https://news.google.com/rss/articles/CBMiV0FVX3lxTE5BOGVZWDdDcm9UVndYb253MDdoNTJ5bjA5aWNfb0YtYUJubDZpT25EQjU0d0RPdFQ5QVFTcHQ1WHpHaHVSVkF1ZWZDSlBUT0RIVXlYSVV2cw?oc=5" target="_blank" rel="noopener">
           <div class="news-head">
             <span class="news-source">rss:Google News Iran Conflict</span>
             <span class="news-time">2026-03-07 20:00:45</span>
           </div>
-          <h3>实时更新：伊朗继续袭击海湾国家，部长称特朗普“扼杀”了降级局势的机会 - BBC</h3>
+          <h3>实时更新：伊朗持续袭击海湾国家，部长称特朗普“扼杀”了局势降温的机会 - BBC</h3>
           <div class="news-meta">
             <span>C 0.75</span>
             <span>I 0.05</span>
           </div>
         </a>
         
-        <a class="news-item" href="https://news.google.com/rss/articles/CBMikAFBVV95cUxOZDJydV90WC1USUt1QnU5ZHdIZzZkdU1EWXdrZUdYamlGbFhHbERWaWZZTVJIc2E2dEhnQS02TlQwalFqOWZDd2VabFhGb3VINmdvM25JWF9GbVcwQnlCSjQ2dFBuQTAyRVlDSHRLV0lUVmNjMWJocWpBTmkzYjlxdjMyWmFNOXV2OElvT1NCTTk?oc=5" target="_blank" rel="noopener">
+        <a class="news-item" data-news-item href="https://news.google.com/rss/articles/CBMikAFBVV95cUxOZDJydV90WC1USUt1QnU5ZHdIZzZkdU1EWXdrZUdYamlGbFhHbERWaWZZTVJIc2E2dEhnQS02TlQwalFqOWZDd2VabFhGb3VINmdvM25JWF9GbVcwQnlCSjQ2dFBuQTAyRVlDSHRLV0lUVmNjMWJocWpBTmkzYjlxdjMyWmFNOXV2OElvT1NCTTk?oc=5" target="_blank" rel="noopener">
           <div class="news-head">
             <span class="news-source">rss:Google News Iran Conflict</span>
             <span class="news-time">2026-03-07 19:59:00</span>
           </div>
-          <h3>新一轮空袭照亮德黑兰夜空，内塔尼亚胡誓言带来“许多惊喜” - 美联社</h3>
+          <h3>德黑兰新一轮袭击火光冲天，内塔尼亚胡誓言将有“许多惊喜” - 美联社</h3>
           <div class="news-meta">
             <span>C 0.75</span>
             <span>I 0.05</span>
           </div>
         </a>
         
-        <a class="news-item" href="https://iran.liveuamap.com/en/2026/7-march-19-the-spanish-embassy-in-iran-has-been-successfully" target="_blank" rel="noopener">
+        <a class="news-item" data-news-item href="https://iran.liveuamap.com/en/2026/7-march-19-the-spanish-embassy-in-iran-has-been-successfully" target="_blank" rel="noopener">
           <div class="news-head">
             <span class="news-source">liveuamap_iran</span>
             <span class="news-time">2026-03-07 19:00:00</span>
           </div>
-          <h3>据何塞·曼努埃尔·阿尔瓦雷斯称，西班牙驻伊朗大使馆已成功撤离 - Liveuamap德黑兰新闻</h3>
+          <h3>José Manuel Albares称西班牙驻伊朗大使馆已成功撤离。德黑兰，德黑兰省 - 英文版伊朗新闻实时地图 - 伊朗战争 - 海湾冲突 - iran.liveuamap.com</h3>
           <div class="news-meta">
             <span>C 0.62</span>
             <span>I 0.0</span>
           </div>
         </a>
+        
+        <a class="news-item" data-news-item href="https://iran.liveuamap.com/en/2026/7-march-19-spokesperson-for-irans-khatam-alanbiya-military" target="_blank" rel="noopener">
+          <div class="news-head">
+            <span class="news-source">liveuamap_iran</span>
+            <span class="news-time">2026-03-07 19:00:00</span>
+          </div>
+          <h3>伊朗Khatam al-Anbiya军事总部发言人：阿塞拜疆必须驱逐以色列人，以防危及双方人民。德黑兰，德黑兰省 - 英文版伊朗新闻实时地图 - 伊朗战争 - 海湾冲突 - iran.liveuamap.com</h3>
+          <div class="news-meta">
+            <span>C 0.62</span>
+            <span>I 0.0</span>
+          </div>
+        </a>
+        
+        <a class="news-item" data-news-item href="https://iran.liveuamap.com/en/2026/7-march-19-netanyahu-we-are-changing-the-face-of-the-middle" target="_blank" rel="noopener">
+          <div class="news-head">
+            <span class="news-source">liveuamap_iran</span>
+            <span class="news-time">2026-03-07 19:00:00</span>
+          </div>
+          <h3>内塔尼亚胡：我们正在改变中东面貌。耶路撒冷，耶路撒冷区 - 英文版伊朗新闻实时地图 - 伊朗战争 - 海湾冲突 - iran.liveuamap.com</h3>
+          <div class="news-meta">
+            <span>C 0.62</span>
+            <span>I 0.0</span>
+          </div>
+        </a>
+        
+        <a class="news-item" data-news-item href="https://news.google.com/rss/articles/CBMieEFVX3lxTFBPeXRfMU9na3g2QjFYNWtCZFNqZGFmeTVmZW9pUjVfMEo3bGFrOUxiMmk0UG1JVFQ3cmdsYUUzdVJYR3dQX3VSalZRTkhsQnlhV0ctLXJqVFFldldFQnR1dFlNUEpvSHEtVXlFbXAtcExVOFItSlMwUw?oc=5" target="_blank" rel="noopener">
+          <div class="news-head">
+            <span class="news-source">rss:Google News Iran Conflict</span>
+            <span class="news-time">2026-03-07 19:38:00</span>
+          </div>
+          <h3>实时更新：特朗普释放将升级对伊战争信号，德黑兰就袭击向邻国道歉 - CNN</h3>
+          <div class="news-meta">
+            <span>C 0.52</span>
+            <span>I 0.0</span>
+          </div>
+        </a>
         </div>
+    <script>
+      (() => {
+        const select = document.getElementById("news-count-select");
+        const counter = document.getElementById("news-visible-count");
+        const items = Array.from(document.querySelectorAll("[data-news-item]"));
+        if (!select || !counter || !items.length) return;
+        try {
+          const saved = localStorage.getItem("mesim-news-count");
+          if (saved && Array.from(select.options).some((option) => option.value === saved)) {
+            select.value = saved;
+          }
+        } catch (_error) {}
+        const apply = () => {
+          const raw = Number.parseInt(select.value, 10) || 20;
+          const visible = raw >= 9999 ? items.length : Math.min(raw, items.length);
+          items.forEach((item, index) => {
+            item.style.display = index < visible ? "block" : "none";
+          });
+          counter.textContent = `${visible} / 15`;
+          try {
+            localStorage.setItem("mesim-news-count", String(raw));
+          } catch (_error) {}
+        };
+        select.addEventListener("change", apply);
+        apply();
+      })();
+    </script>
+    
       </section>
     </div>
   </div>
