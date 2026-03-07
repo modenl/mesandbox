@@ -99,6 +99,7 @@
       border: 1px solid rgba(15, 92, 77, 0.1); border-radius: 16px; padding: 16px;
     }
     .news-item h3 { margin: 10px 0; font-size: 18px; line-height: 1.45; }
+    .news-summary { margin: 0 0 10px; color: var(--muted); font-size: 14px; line-height: 1.7; }
     .news-reason { margin: 0 0 12px; color: var(--ink); font-size: 14px; line-height: 1.6; }
     .news-head, .news-meta {
       display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
@@ -115,32 +116,32 @@
     <div class="eyebrow">Decision Dashboard</div>
     <h1>伊朗战局沙盘推演台</h1>
     <p class="subtitle">面向研判与决策的实时战局评估与终局预判。</p>
-    <p class="compact-note">最新推演时间: 2026-03-07T23:02:55+00:00</p>
+    <p class="compact-note">最新推演时间: 2026-03-07T23:10:25+00:00</p>
 
     <div class="dashboard">
       <section class="summary-grid">
         <div class="card">
           <div class="stat-label">结束时间窗口</div>
-          <div class="stat-value">2026-05-06</div>
+          <div class="stat-value">2026-07-20</div>
           <div class="window-grid">
-            <div class="window-chip">P10<strong>2026-03-21</strong></div>
-            <div class="window-chip">P50<strong>2026-05-06</strong></div>
-            <div class="window-chip">P90<strong>2026-09-03</strong></div>
+            <div class="window-chip">P10<strong>2026-04-15</strong></div>
+            <div class="window-chip">P50<strong>2026-07-20</strong></div>
+            <div class="window-chip">P90<strong>2027-01-10</strong></div>
           </div>
-          <div class="mini-grid"><div class='mini-row'><span>7d</span><strong>0.2048</strong></div><div class='mini-row'><span>14d</span><strong>0.3196</strong></div><div class='mini-row'><span>30d</span><strong>0.4425</strong></div><div class='mini-row'><span>60d</span><strong>0.5727</strong></div></div>
+          <div class="mini-grid"><div class='mini-row'><span>7d</span><strong>0.2048</strong></div><div class='mini-row'><span>14d</span><strong>0.3107</strong></div><div class='mini-row'><span>30d</span><strong>0.4373</strong></div><div class='mini-row'><span>60d</span><strong>0.5556</strong></div></div>
         </div>
         <div class="card">
           <div class="stat-label">结果预判</div>
           <div class="stat-value">地区扩大战</div>
           <p class="compact-note">当前战争状态: 地区外溢</p>
           <p class="compact-note">证据条目: 201</p>
-          <p class="compact-note">紧张指数: 68.9</p>
+          <p class="compact-note">紧张指数: 73.5</p>
         </div>
         <div class="card">
           <div class="stat-label">置信度</div>
-          <div class="stat-value">79.0</div>
+          <div class="stat-value">76.2</div>
           <p class="compact-note">等级: 高</p>
-          <p class="compact-note">置信说明: 中等。传感器数据（ADSB）和市场指标（油价/预测市场）高度一致，但伊朗地下体系的损毁率及核心决策层的心理阈值仍存在情报黑箱。</p>
+          <p class="compact-note">置信说明: 本预测基于预测市场（高流动性）、ADSB飞行数据及实战伤亡通报。鉴于地下储存体系（50.0）状态不明且谈判信号存在矛盾点，对政权更迭的时间点判断具有较高不确定性。</p>
         </div>
       </section>
 
@@ -153,37 +154,21 @@
         <span>显示条数</span>
         <select id="news-count-select"><option value='20' selected>20</option><option value='9999' >全部</option></select>
       </label>
-      <div class="compact-note">当前显示: <strong id="news-visible-count">0 / 27</strong></div>
+      <div class="compact-note">当前显示: <strong id="news-visible-count">0 / 20</strong></div>
     </div>
     <div class="news-grid">
-        <a class="news-item" data-news-item href="https://globe.adsb.lol/?icao=43c972" target="_blank" rel="noopener">
-          <div class="news-head">
-            <span class="news-source">adsb_military</span>
-            <span class="news-time">2026-03-07 23:01:18</span>
-          </div>
-          <h3>中东上空发现军用航班 RFR7331 (Q9)</h3>
-          <p class="news-reason"><strong>为何相关:</strong> 中东上空探测到军用飞行，通常预示着后勤补给或战术部署的活跃。</p>
-          <div class="news-meta">
-            <span>C 0.95</span>
-            <span>I 0.1</span>
-            <span>相关性分 0.4</span>
-            
-            
-            
-          </div>
-        </a>
-        
         <a class="news-item" data-news-item href="https://polymarket.com/event/iran-strikes-israel-on" target="_blank" rel="noopener">
           <div class="news-head">
             <span class="news-source">polymarket_geopolitics</span>
             <span class="news-time">2026-03-07 22:59:06</span>
           </div>
           <h3>伊朗会在3月3日打击以色列吗？</h3>
-          <p class="news-reason"><strong>为何相关:</strong> 预测市场数据反映了对伊朗袭击以色列的时间预测，虽非官方情报，但体现了当前地缘政治的紧张预期。</p>
+          <p class="news-summary"><strong>摘要:</strong> 预测市场显示伊朗在3月3日对以色列发动袭击的可能性已确认。</p>
+          <p class="news-reason"><strong>为何相关:</strong> 预测市场价格显示伊朗在3月3日攻击了以色列，确认了冲突的爆发。</p>
           <div class="news-meta">
             <span>C 0.78</span>
             <span>I 0.6</span>
-            <span>相关性分 0.4</span>
+            <span>相关性分 0.6</span>
             <span>24h成交 1379705.0</span>
             <span>成交量 4200907.0</span>
             <span>流动性 2146615.0</span>
@@ -196,11 +181,12 @@
             <span class="news-time">2026-03-07 22:59:05</span>
           </div>
           <h3>伊朗会在3月4日打击以色列吗？</h3>
-          <p class="news-reason"><strong>为何相关:</strong> 与前条类似，反映了市场对伊朗近几日内可能发动军事行动的风险评估。</p>
+          <p class="news-summary"><strong>摘要:</strong> 预测市场价格确认伊朗在3月4日对以色列发动了袭击。</p>
+          <p class="news-reason"><strong>为何相关:</strong> 确认了冲突初期的持续军事行动，有助于建立时间线。</p>
           <div class="news-meta">
             <span>C 0.78</span>
             <span>I 0.6</span>
-            <span>相关性分 0.4</span>
+            <span>相关性分 0.6</span>
             <span>24h成交 1822803.0</span>
             <span>成交量 4324956.0</span>
             <span>流动性 3731055.0</span>
@@ -213,11 +199,12 @@
             <span class="news-time">2026-03-07 22:59:04</span>
           </div>
           <h3>伊朗会在2027年前关闭霍尔木兹海峡吗？</h3>
-          <p class="news-reason"><strong>为何相关:</strong> 长期战略风险点，用于评估冲突是否会演变为影响全球供应链的持久战。</p>
+          <p class="news-summary"><strong>摘要:</strong> 预测市场显示伊朗在2027年前关闭霍尔木兹海峡的概率为96.6%。</p>
+          <p class="news-reason"><strong>为何相关:</strong> 反映了对冲突长期封锁风险的评估。</p>
           <div class="news-meta">
             <span>C 0.78</span>
             <span>I 0.5793</span>
-            <span>相关性分 0.55</span>
+            <span>相关性分 0.8</span>
             <span>24h成交 291537.0</span>
             <span>成交量 1644519.0</span>
             <span>流动性 48270.0</span>
@@ -229,12 +216,13 @@
             <span class="news-source">polymarket_geopolitics</span>
             <span class="news-time">2026-03-07 22:59:04</span>
           </div>
-          <h3>摩杰塔巴·哈梅内伊会成为下任伊朗最高领袖吗？</h3>
-          <p class="news-reason"><strong>为何相关:</strong> 关于伊朗下任最高领袖的预测市场数据，涉及伊朗内部政权稳定性和未来领导层走向。</p>
+          <h3>摩杰塔巴·哈梅内伊会成为伊朗下一任最高领袖吗？</h3>
+          <p class="news-summary"><strong>摘要:</strong> 预测市场高度关注莫杰塔巴·哈梅内伊是否会接任最高领袖。</p>
+          <p class="news-reason"><strong>为何相关:</strong> 伊朗最高领导层的潜在变动对长期政策稳定性至关重要。</p>
           <div class="news-meta">
             <span>C 0.78</span>
             <span>I 0.0973</span>
-            <span>相关性分 0.5</span>
+            <span>相关性分 0.65</span>
             <span>24h成交 940614.0</span>
             <span>成交量 7732514.0</span>
             <span>流动性 72957.0</span>
@@ -247,11 +235,12 @@
             <span class="news-time">2026-03-07 22:59:01</span>
           </div>
           <h3>伊朗会在3月31日前关闭霍尔木兹海峡吗？</h3>
-          <p class="news-reason"><strong>为何相关:</strong> 霍尔木兹海峡封锁是全球能源安全的红线，预测市场的高关注度预示了潜在的重大航运干扰风险。</p>
+          <p class="news-summary"><strong>摘要:</strong> 预测市场显示伊朗在3月31日前关闭霍尔木兹海峡的可能性高达97%。</p>
+          <p class="news-reason"><strong>为何相关:</strong> 极高的市场预期显示霍尔木兹海峡极可能关闭，将严重打击全球能源和航运。</p>
           <div class="news-meta">
             <span>C 0.78</span>
             <span>I 0.6</span>
-            <span>相关性分 0.65</span>
+            <span>相关性分 0.95</span>
             <span>24h成交 3391585.0</span>
             <span>成交量 19617101.0</span>
             <span>流动性 338786.0</span>
@@ -264,65 +253,15 @@
             <span class="news-time">2026-03-07 22:58:53</span>
           </div>
           <h3>伊朗会在6月30日前关闭霍尔木兹海峡吗？</h3>
-          <p class="news-reason"><strong>为何相关:</strong> 中期封锁风险评估，影响跨季度能源储备和物流战略规划。</p>
+          <p class="news-summary"><strong>摘要:</strong> 预测市场预计伊朗在6月30日前关闭霍尔木兹海峡的概率为97.3%。</p>
+          <p class="news-reason"><strong>为何相关:</strong> 反映了市场对封锁行动持续性的中期预期。</p>
           <div class="news-meta">
             <span>C 0.78</span>
             <span>I 0.583</span>
-            <span>相关性分 0.6</span>
+            <span>相关性分 0.8</span>
             <span>24h成交 207588.0</span>
             <span>成交量 1424945.0</span>
             <span>流动性 147487.0</span>
-          </div>
-        </a>
-        
-        <a class="news-item" data-news-item href="https://globe.adsb.lol/?icao=06a24c" target="_blank" rel="noopener">
-          <div class="news-head">
-            <span class="news-source">adsb_military</span>
-            <span class="news-time">2026-03-07 22:53:09</span>
-          </div>
-          <h3>中东上空发现军用航班 A7-MAJ (C30J)</h3>
-          <p class="news-reason"><strong>为何相关:</strong> 卡塔尔军机（A7-MAJ）动态，反映了地区国家在冲突中的后勤或外交角色。</p>
-          <div class="news-meta">
-            <span>C 0.95</span>
-            <span>I 0.1</span>
-            <span>相关性分 0.4</span>
-            
-            
-            
-          </div>
-        </a>
-        
-        <a class="news-item" data-news-item href="https://globe.adsb.lol/?icao=06a24c" target="_blank" rel="noopener">
-          <div class="news-head">
-            <span class="news-source">adsb_military</span>
-            <span class="news-time">2026-03-07 22:48:07</span>
-          </div>
-          <h3>中东上空发现军用航班 DEMA148 (C30J)</h3>
-          <p class="news-reason"><strong>为何相关:</strong> C30J等运输机动态反映了战区物质或人员的快速调动。</p>
-          <div class="news-meta">
-            <span>C 0.95</span>
-            <span>I 0.1</span>
-            <span>相关性分 0.4</span>
-            
-            
-            
-          </div>
-        </a>
-        
-        <a class="news-item" data-news-item href="https://news.google.com/rss/articles/CBMikAFBVV95cUxOZDJydV90WC1USUt1QnU5ZHdIZzZkdU1EWXdrZUdYamlGbFhHbERWaWZZTVJIc2E2dEhnQS02TlQwalFqOWZDd2VabFhGb3VINmdvM25JWF9GbVcwQnlCSjQ2dFBuQTAyRVlDSHRLV0lUVmNjMWJocWpBTmkzYjlxdjMyWmFNOXV2OElvT1NCTTk?oc=5" target="_blank" rel="noopener">
-          <div class="news-head">
-            <span class="news-source">rss:Google News Iran Conflict</span>
-            <span class="news-time">2026-03-07 22:41:00</span>
-          </div>
-          <h3>以色列誓言“许多惊喜”，新一轮空袭照亮德黑兰夜空 - 美联社</h3>
-          <p class="news-reason"><strong>为何相关:</strong> 重复确认以色列对德黑兰的夜间空袭，证实军事打击强度没有减弱迹象。</p>
-          <div class="news-meta">
-            <span>C 0.75</span>
-            <span>I 0.05</span>
-            <span>相关性分 0.9</span>
-            
-            
-            
           </div>
         </a>
         
@@ -331,12 +270,13 @@
             <span class="news-source">gdelt</span>
             <span class="news-time">2026-03-07 22:30:00</span>
           </div>
-          <h3>战争进入第二周，特朗普警告伊朗将遭到沉重打击</h3>
-          <p class="news-reason"><strong>为何相关:</strong> 特朗普的严厉警告预示了美国可能加大军事打击力度，是官方军事升级的关键信号。</p>
+          <h3>战争进入第二周，特朗普警告伊朗将遭到“非常沉重”的打击</h3>
+          <p class="news-summary"><strong>摘要:</strong> 特朗普警告伊朗将在战争进入第二周之际面临严厉打击。</p>
+          <p class="news-reason"><strong>为何相关:</strong> 美国最高领导层的直接军事威胁预示着战争可能进一步剧烈升级。</p>
           <div class="news-meta">
             <span>C 0.75</span>
             <span>I 0.3</span>
-            <span>相关性分 0.85</span>
+            <span>相关性分 0.8</span>
             
             
             
@@ -348,63 +288,13 @@
             <span class="news-source">gdelt</span>
             <span class="news-time">2026-03-07 22:30:00</span>
           </div>
-          <h3>随着伊朗冲突蔓延，伊拉克库尔德人称“这场战争不属于我”</h3>
-          <p class="news-reason"><strong>为何相关:</strong> 伊拉克库尔德人的立场声明揭示了冲突的区域外溢效应及当地政治实体的卷入意愿。</p>
+          <h3>随着伊朗冲突蔓延，伊拉克库尔德人称“这场战争与我无关”</h3>
+          <p class="news-summary"><strong>摘要:</strong> 伊拉克库尔德人明确表示不参与伊朗冲突，反映了冲突的地区溢出影响。</p>
+          <p class="news-reason"><strong>为何相关:</strong> 反映了地区力量在冲突中的中立立场，有助于评估溢出范围。</p>
           <div class="news-meta">
             <span>C 0.75</span>
             <span>I 0.4</span>
-            <span>相关性分 0.7</span>
-            
-            
-            
-          </div>
-        </a>
-        
-        <a class="news-item" data-news-item href="https://www.wsiu.org/2026-03-07/how-the-u-s-and-israels-war-with-iran-is-realigning-the-politics-of-the-middle-east" target="_blank" rel="noopener">
-          <div class="news-head">
-            <span class="news-source">gdelt</span>
-            <span class="news-time">2026-03-07 22:30:00</span>
-          </div>
-          <h3>美以对伊朗战争如何重塑中东政治格局</h3>
-          <p class="news-reason"><strong>为何相关:</strong> 分析了美以对伊战争对中东政治格局的重塑，有助于理解区域格局的长期变化。</p>
-          <div class="news-meta">
-            <span>C 0.75</span>
-            <span>I 0.3</span>
-            <span>相关性分 0.5</span>
-            
-            
-            
-          </div>
-        </a>
-        
-        <a class="news-item" data-news-item href="https://globe.adsb.lol/?icao=3b776a" target="_blank" rel="noopener">
-          <div class="news-head">
-            <span class="news-source">adsb_military</span>
-            <span class="news-time">2026-03-07 22:01:52</span>
-          </div>
-          <h3>中东上空发现军用航班 F-RBAI (A400)</h3>
-          <p class="news-reason"><strong>为何相关:</strong> 法国军机（F-RBAI）在区域内活动，暗示了国际力量的介入或疏散行动。</p>
-          <div class="news-meta">
-            <span>C 0.95</span>
-            <span>I 0.1</span>
-            <span>相关性分 0.4</span>
-            
-            
-            
-          </div>
-        </a>
-        
-        <a class="news-item" data-news-item href="https://globe.adsb.lol/?icao=43c5e0" target="_blank" rel="noopener">
-          <div class="news-head">
-            <span class="news-source">adsb_military</span>
-            <span class="news-time">2026-03-07 21:56:49</span>
-          </div>
-          <h3>中东上空发现军用航班 RRR4104 (A400)</h3>
-          <p class="news-reason"><strong>为何相关:</strong> 多架次军机活动（A400运输机）表明大规模后勤行动正在进行。</p>
-          <div class="news-meta">
-            <span>C 0.95</span>
-            <span>I 0.1</span>
-            <span>相关性分 0.4</span>
+            <span>相关性分 0.45</span>
             
             
             
@@ -416,46 +306,13 @@
             <span class="news-source">rss:Google News Iran Conflict</span>
             <span class="news-time">2026-03-07 21:50:38</span>
           </div>
-          <h3>特朗普悼念阵亡美军，称对伊朗目标将扩大 - 华盛顿邮报</h3>
-          <p class="news-reason"><strong>为何相关:</strong> 特朗普表态将扩大针对伊朗的目标范围，是美方作战意图和规模扩大的关键声明。</p>
+          <h3>特朗普悼念战争中阵亡的美军士兵，称对伊朗的目标将扩大——华盛顿邮报</h3>
+          <p class="news-summary"><strong>摘要:</strong> 特朗普向遇难士兵致哀，并表示将扩大对伊朗的打击目标。</p>
+          <p class="news-reason"><strong>为何相关:</strong> 打击目标范围的扩大是冲突全面升级的明确信号。</p>
           <div class="news-meta">
             <span>C 0.52</span>
             <span>I 0.1</span>
-            <span>相关性分 0.85</span>
-            
-            
-            
-          </div>
-        </a>
-        
-        <a class="news-item" data-news-item href="https://globe.adsb.lol/?icao=498422" target="_blank" rel="noopener">
-          <div class="news-head">
-            <span class="news-source">adsb_military</span>
-            <span class="news-time">2026-03-07 21:45:49</span>
-          </div>
-          <h3>中东上空发现军用航班 CEF531 (A319)</h3>
-          <p class="news-reason"><strong>为何相关:</strong> 中东地区军事飞行活动，是冲突期间实时战备评估的一部分。</p>
-          <div class="news-meta">
-            <span>C 0.95</span>
-            <span>I 0.1</span>
-            <span>相关性分 0.4</span>
-            
-            
-            
-          </div>
-        </a>
-        
-        <a class="news-item" data-news-item href="https://www.weau.com/2026/03/07/oil-gas-prices-rapidly-rise-iran-war-shows-no-signs-letting-up/" target="_blank" rel="noopener">
-          <div class="news-head">
-            <span class="news-source">gdelt</span>
-            <span class="news-time">2026-03-07 21:45:00</span>
-          </div>
-          <h3>伊朗战争未见平息迹象，油气价格快速上涨</h3>
-          <p class="news-reason"><strong>为何相关:</strong> 油气价格的快速上涨验证了市场对战争长期化的预期，直接影响经济政策。</p>
-          <div class="news-meta">
-            <span>C 0.75</span>
-            <span>I 0.3</span>
-            <span>相关性分 0.8</span>
+            <span>相关性分 0.9</span>
             
             
             
@@ -467,12 +324,13 @@
             <span class="news-source">gdelt</span>
             <span class="news-time">2026-03-07 21:45:00</span>
           </div>
-          <h3>特朗普将出席在科威特阵亡的6名服役人员遗骸移交仪式</h3>
-          <p class="news-reason"><strong>为何相关:</strong> 美军在科威特遇难证实了美国已直接卷入伤亡，可能导致国内政治压力和进一步的报复行动。</p>
+          <h3>特朗普将出席在科威特伊朗战争中牺牲的6名服役人员的遗骸交接仪式</h3>
+          <p class="news-summary"><strong>摘要:</strong> 特朗普将参加在科威特遇难的6名美军士兵的遗体交接仪式。</p>
+          <p class="news-reason"><strong>为何相关:</strong> 美军士兵伤亡确认为冲突升级提供了极强的政治动因和报复理由。</p>
           <div class="news-meta">
             <span>C 0.75</span>
             <span>I 0.3</span>
-            <span>相关性分 0.75</span>
+            <span>相关性分 0.88</span>
             
             
             
@@ -484,12 +342,49 @@
             <span class="news-source">gdelt</span>
             <span class="news-time">2026-03-07 21:45:00</span>
           </div>
-          <h3>特朗普出席6名在对伊朗战争中阵亡的美军士兵遗骸移交仪式</h3>
-          <p class="news-reason"><strong>为何相关:</strong> 与15条内容重复，但强调了美军伤亡这一关键事实对国家层面的象征意义。</p>
+          <h3>特朗普出席在与伊朗战争中阵亡的6名美国士兵的遗骸交接仪式</h3>
+          <p class="news-summary"><strong>摘要:</strong> 特朗普参加在战争中遇难的6名美军士兵的遗体交接仪式。</p>
+          <p class="news-reason"><strong>为何相关:</strong> 重复确认美军重大伤亡事件，强化了冲突升级的背景。</p>
           <div class="news-meta">
             <span>C 0.75</span>
             <span>I 0.3</span>
-            <span>相关性分 0.75</span>
+            <span>相关性分 0.7</span>
+            
+            
+            
+          </div>
+        </a>
+        
+        <a class="news-item" data-news-item href="https://www.weau.com/2026/03/07/oil-gas-prices-rapidly-rise-iran-war-shows-no-signs-letting-up/" target="_blank" rel="noopener">
+          <div class="news-head">
+            <span class="news-source">gdelt</span>
+            <span class="news-time">2026-03-07 21:45:00</span>
+          </div>
+          <h3>随着伊朗战争毫无平息迹象，石油和天然气价格迅速上涨</h3>
+          <p class="news-summary"><strong>摘要:</strong> 随着伊朗战争持续，石油和天然气价格呈现快速上涨趋势。</p>
+          <p class="news-reason"><strong>为何相关:</strong> 能源价格的持续上涨趋势证实了市场对战争长期化的预期。</p>
+          <div class="news-meta">
+            <span>C 0.75</span>
+            <span>I 0.3</span>
+            <span>相关性分 0.55</span>
+            
+            
+            
+          </div>
+        </a>
+        
+        <a class="news-item" data-news-item href="https://www.wglt.org/2026-03-07/at-the-border-between-iran-and-turkey-some-flee-the-war-while-others-return" target="_blank" rel="noopener">
+          <div class="news-head">
+            <span class="news-source">gdelt</span>
+            <span class="news-time">2026-03-07 21:45:00</span>
+          </div>
+          <h3>在伊朗与土耳其边境，有人逃离战争，有人选择回归</h3>
+          <p class="news-summary"><strong>摘要:</strong> 伊土边境出现因战争导致的平民逃离和人员回流现象。</p>
+          <p class="news-reason"><strong>为何相关:</strong> 边境人口流动是衡量战争影响和地区动荡强度的辅助指标。</p>
+          <div class="news-meta">
+            <span>C 0.75</span>
+            <span>I 0.3</span>
+            <span>相关性分 0.4</span>
             
             
             
@@ -501,12 +396,13 @@
             <span class="news-source">rss:Google News Iran Conflict</span>
             <span class="news-time">2026-03-07 21:13:09</span>
           </div>
-          <h3>伊朗继续攻击海湾国家，阿联酋官员称迪拜居民被坠落弹片击中身亡 - BBC</h3>
-          <p class="news-reason"><strong>为何相关:</strong> 伊朗攻击海湾国家（阿联酋）并造成平民伤亡，是战争全面区域化和外溢的危险信号。</p>
+          <h3>伊朗继续攻击海湾国家，阿联酋官员称迪拜居民被坠落弹片击中身亡——BBC</h3>
+          <p class="news-summary"><strong>摘要:</strong> 伊朗攻击海湾国家，阿联酋确认一名居民因弹片坠落丧生。</p>
+          <p class="news-reason"><strong>为何相关:</strong> 对海湾国家的直接攻击确认了严重的地区溢出和民用目标受损。</p>
           <div class="news-meta">
             <span>C 0.75</span>
             <span>I 0.075</span>
-            <span>相关性分 0.85</span>
+            <span>相关性分 0.87</span>
             
             
             
@@ -518,12 +414,31 @@
             <span class="news-source">rss:Google News Iran Conflict</span>
             <span class="news-time">2026-03-07 20:20:38</span>
           </div>
-          <h3>特朗普将悼念阵亡美军，称对伊朗目标将扩大 - 华盛顿邮报</h3>
-          <p class="news-reason"><strong>为何相关:</strong> 与32条重复，再次确认为针对伊朗目标的行动正在升级。</p>
+          <h3>特朗普将悼念战争中阵亡的美军士兵，称对伊朗的目标将扩大——华盛顿邮报</h3>
+          <p class="news-summary"><strong>摘要:</strong> 特朗普表示将扩大对伊朗的打击目标，并悼念阵亡士兵。</p>
+          <p class="news-reason"><strong>为何相关:</strong> 重复报道扩大打击目标的决策意向。</p>
           <div class="news-meta">
             <span>C 0.52</span>
             <span>I 0.1</span>
-            <span>相关性分 0.85</span>
+            <span>相关性分 0.75</span>
+            
+            
+            
+          </div>
+        </a>
+        
+        <a class="news-item" data-news-item href="https://news.google.com/rss/articles/CBMiV0FVX3lxTE5BOGVZWDdDcm9UVndYb253MDdoNTJ5bjA5aWNfb0YtYUJubDZpT25EQjU0d0RPdFQ5QVFTcHQ1WHpHaHVSVkF1ZWZDSlBUT0RIVXlYSVV2cw?oc=5" target="_blank" rel="noopener">
+          <div class="news-head">
+            <span class="news-source">rss:Google News Iran Conflict</span>
+            <span class="news-time">2026-03-07 20:00:45</span>
+          </div>
+          <h3>实时更新：伊朗继续攻击海湾国家，部长称特朗普“扼杀”了降温机会——BBC</h3>
+          <p class="news-summary"><strong>摘要:</strong> 伊朗持续攻击海湾国家，官员称降级机会已被特朗普“抹杀”。</p>
+          <p class="news-reason"><strong>为何相关:</strong> 降级机会的丧失意味着冲突将进入长期僵持或进一步升级。</p>
+          <div class="news-meta">
+            <span>C 0.75</span>
+            <span>I 0.05</span>
+            <span>相关性分 0.78</span>
             
             
             
@@ -535,12 +450,13 @@
             <span class="news-source">rss:Google News Iran Conflict</span>
             <span class="news-time">2026-03-07 19:59:00</span>
           </div>
-          <h3>内塔尼亚胡誓言“许多惊喜”，新一轮空袭照亮德黑兰夜空 - 美联社</h3>
-          <p class="news-reason"><strong>为何相关:</strong> 确认了对德黑兰的持续打击，这是战争升级和针对领导层重心攻击的明确信号。</p>
+          <h3>新一轮空袭照亮德黑兰夜空，内塔尼亚胡誓言会有“许多惊喜”——美联社</h3>
+          <p class="news-summary"><strong>摘要:</strong> 德黑兰夜间遭到新一轮袭击，以色列誓言将有更多行动。</p>
+          <p class="news-reason"><strong>为何相关:</strong> 确认了德黑兰遭到直接打击的军事事实。</p>
           <div class="news-meta">
             <span>C 0.75</span>
             <span>I 0.1</span>
-            <span>相关性分 0.9</span>
+            <span>相关性分 0.8</span>
             
             
             
@@ -552,12 +468,13 @@
             <span class="news-source">rss:Google News Hormuz Shipping</span>
             <span class="news-time">2026-03-07 19:51:00</span>
           </div>
-          <h3>无人机袭击霍尔木兹海峡油轮，伊朗封锁导致全球航运中断 - 纽约邮报</h3>
-          <p class="news-reason"><strong>为何相关:</strong> 霍尔木兹海峡油轮遭无人机攻击并导致航运停摆，是战争实质升级、能源中断的直接证据，属于最高等级决策事件。</p>
+          <h3>无人机袭击引燃霍尔木兹海峡油轮，伊朗封锁导致全球航运停滞——纽约邮报</h3>
+          <p class="news-summary"><strong>摘要:</strong> 霍尔木兹海峡一艘油轮遭无人机袭击起火，伊朗封锁导致全球航运中断。</p>
+          <p class="news-reason"><strong>为何相关:</strong> 实际发生的油轮袭击证实了封锁行动及对全球航运的直接军事威胁。</p>
           <div class="news-meta">
             <span>C 0.52</span>
             <span>I 0.5</span>
-            <span>相关性分 1.0</span>
+            <span>相关性分 0.98</span>
             
             
             
@@ -569,12 +486,13 @@
             <span class="news-source">rss:Google News Iran Conflict</span>
             <span class="news-time">2026-03-07 19:50:46</span>
           </div>
-          <h3>新一轮空袭打击德黑兰，内塔尼亚胡誓言伊朗战争下一阶段有“许多惊喜” - PBS</h3>
-          <p class="news-reason"><strong>为何相关:</strong> 内塔尼亚胡誓言“惊喜”并对德黑兰发动新一轮空袭，标志着战争进入更高强度的打击阶段。</p>
+          <h3>新一轮打击袭击德黑兰，内塔尼亚胡誓言伊朗战争下一阶段会有“许多惊喜”——PBS</h3>
+          <p class="news-summary"><strong>摘要:</strong> 德黑兰遭新一轮空袭，内塔尼亚胡誓言战争下一阶段将有“惊喜”。</p>
+          <p class="news-reason"><strong>为何相关:</strong> 对德黑兰的直接打击及以方“惊喜”表态标志着战争进入极高强度阶段。</p>
           <div class="news-meta">
             <span>C 0.52</span>
             <span>I 0.3</span>
-            <span>相关性分 0.9</span>
+            <span>相关性分 0.96</span>
             
             
             
@@ -587,28 +505,12 @@
             <span class="news-time">2026-03-06 21:59:59</span>
           </div>
           <h3>WTI原油期货报90.90美元（较前一收盘价上涨12.2%）</h3>
-          <p class="news-reason"><strong>为何相关:</strong> WTI原油价格大幅飙升（+12.2%），直接反映了市场对中东能源供应中断和战争升级的高度恐慌，对全球经济决策至关重要。</p>
+          <p class="news-summary"><strong>摘要:</strong> WTI原油期货收于90.90美元，单日上涨12.2%。</p>
+          <p class="news-reason"><strong>为何相关:</strong> 能源价格大幅上涨直接反映了市场对冲突导致供应中断的高度担忧。</p>
           <div class="news-meta">
             <span>C 0.9</span>
             <span>I 0.765</span>
-            <span>相关性分 0.95</span>
-            
-            
-            
-          </div>
-        </a>
-        
-        <a class="news-item" data-news-item href="https://www.idf.il/en/mini-sites/idf-press-releases-israel-at-war/january-26-pr/the-chief-of-the-general-staff-in-the-central-command-the-operation-currently-underway-in-the-judea-regional-brigade-is-part-of-a-series-of-proactive-counterterrorism-operations-in-judea-and-samaria-aimed-at-strengthening-the-defense-of-the/" target="_blank" rel="noopener">
-          <div class="news-head">
-            <span class="news-source">idf_releases</span>
-            <span class="news-time">-</span>
-          </div>
-          <h3>中央司令部总参谋长</h3>
-          <p class="news-reason"><strong>为何相关:</strong> 以色列总参谋长在中央司令部的动向暗示了军事部署的调整，具有一定情报价值。</p>
-          <div class="news-meta">
-            <span>C 0.82</span>
-            <span>I 0.16</span>
-            <span>相关性分 0.3</span>
+            <span>相关性分 0.85</span>
             
             
             
@@ -633,7 +535,7 @@
           items.forEach((item, index) => {
             item.style.display = index < visible ? "block" : "none";
           });
-          counter.textContent = `${visible} / 27`;
+          counter.textContent = `${visible} / 20`;
           try {
             localStorage.setItem("mesim-news-count", String(raw));
           } catch (_error) {}
@@ -907,7 +809,7 @@
               </div>
               <p class="source-brief-copy"><strong>为何可信:</strong> -</p>
               <p class="source-brief-copy"><strong>当前状态:</strong> 未配置 · ACLED requires account credentials and is calibration-only</p>
-              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-03-07T23:09:42+00:00 · <strong>最近入库:</strong> 0</p>
+              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-03-07T23:10:48+00:00 · <strong>最近入库:</strong> 0</p>
             </article>
             
             <article class="source-brief">
@@ -923,7 +825,7 @@
               </div>
               <p class="source-brief-copy"><strong>为何可信:</strong> -</p>
               <p class="source-brief-copy"><strong>当前状态:</strong> 未配置 · NASA FIRMS requires a free NASA_FIRMS_MAP_KEY</p>
-              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-03-07T23:09:42+00:00 · <strong>最近入库:</strong> 0</p>
+              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-03-07T23:10:48+00:00 · <strong>最近入库:</strong> 0</p>
             </article>
             
             <article class="source-brief">
@@ -939,7 +841,7 @@
               </div>
               <p class="source-brief-copy"><strong>为何可信:</strong> -</p>
               <p class="source-brief-copy"><strong>当前状态:</strong> 未配置 · ReliefWeb requires an approved RELIEFWEB_APPNAME</p>
-              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-03-07T23:09:42+00:00 · <strong>最近入库:</strong> 0</p>
+              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-03-07T23:10:48+00:00 · <strong>最近入库:</strong> 0</p>
             </article>
             
             <article class="source-brief">
@@ -955,7 +857,7 @@
               </div>
               <p class="source-brief-copy"><strong>为何可信:</strong> -</p>
               <p class="source-brief-copy"><strong>当前状态:</strong> 未配置 · VesselFinder realtime API is commercial, not a free public feed</p>
-              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-03-07T23:09:42+00:00 · <strong>最近入库:</strong> 0</p>
+              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-03-07T23:10:48+00:00 · <strong>最近入库:</strong> 0</p>
             </article>
             
         </div>

@@ -347,6 +347,7 @@ def build_signal_events(items: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
             "source": item.get("source", ""),
             "url": item.get("url", ""),
             "published_at": item.get("published_at"),
+            "content_text": str(item.get("content_text", ""))[:1000],
             "credibility": credibility,
             "importance": importance,
             "combined": combined,
@@ -699,6 +700,13 @@ def localize_summary(summary: Dict[str, Any], language: str, model: Optional[str
         for item, translated_reason in zip(localized["top_events"], translated_reasons):
             if translated_reason:
                 item["relevance_reason"] = translated_reason
+
+    summaries = [str(item.get("brief_summary", "")) for item in localized.get("top_events", [])]
+    if any(summary.strip() and not _looks_localized(summary, language) for summary in summaries):
+        translated_summaries = translate_brief_texts(summaries, language=language, model=model)
+        for item, translated_summary in zip(localized["top_events"], translated_summaries):
+            if translated_summary:
+                item["brief_summary"] = translated_summary
 
     decisive = localized.get("decision_panel", {}).get("top_decisive_signals", [])
     for item, translated_title in zip(decisive, translated):

@@ -226,7 +226,8 @@ Format:
       "index": 0,
       "decision_related": true,
       "score": 0.0,
-      "reason": "short explanation in {target_language}"
+      "reason": "short explanation in {target_language}",
+      "summary": "brief summary in {target_language}"
     }}
   ]
 }}
@@ -234,6 +235,7 @@ Format:
 Rules:
 - `score` is between 0 and 1.
 - `reason` must be short, concrete, and explain why the event matters for a decision-maker.
+- `summary` must be factual, concise, and no longer than 200 characters.
 - Do not invent facts beyond the provided event fields.
 
 Events:
@@ -252,6 +254,7 @@ Events:
                 "decision_related": bool(row.get("decision_related")),
                 "score": max(0.0, min(1.0, float(row.get("score", 0.0) or 0.0))),
                 "reason": str(row.get("reason", "")).strip(),
+                "summary": str(row.get("summary", "")).strip(),
             }
         )
     return tuple(results)
@@ -286,6 +289,7 @@ def assess_event_relevance(
             "decision_related": bool(row.get("decision_related")),
             "relevance_score": float(row.get("score", 0.0)),
             "relevance_reason": str(row.get("reason", "")).strip(),
+            "brief_summary": str(row.get("summary", "")).strip(),
         }
         for row in assessments
     }
@@ -294,7 +298,7 @@ def assess_event_relevance(
             **event,
             **mapped.get(
                 index,
-                {"decision_related": False, "relevance_score": 0.0, "relevance_reason": ""},
+                {"decision_related": False, "relevance_score": 0.0, "relevance_reason": "", "brief_summary": ""},
             ),
         }
         for index, event in enumerate(events)
