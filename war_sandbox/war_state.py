@@ -471,14 +471,15 @@ def build_analysis_package(
     events = build_signal_events(items)
     displayed_events = [event for event in events if event["display"]]
     ranked_events = displayed_events or events
-    top_events = select_diverse_events(ranked_events, limit=20, per_source_cap=2)
-    state_list = compute_state_variables(top_events, language)
+    analysis_events = select_diverse_events(ranked_events, limit=20, per_source_cap=2)
+    display_events = select_diverse_events(ranked_events, limit=50, per_source_cap=4)
+    state_list = compute_state_variables(analysis_events, language)
     state_map = {state["id"]: state for state in state_list}
     windows = termination_windows(state_map)
     outcome = derive_outcome(state_map, language)
     phase = derive_current_state(state_map, language)
-    decisive = top_events[:5]
-    uncertainties = build_uncertainties(top_events, state_map, language)
+    decisive = analysis_events[:5]
+    uncertainties = build_uncertainties(analysis_events, state_map, language)
     contradictions = [
         uncertainty for uncertainty in uncertainties
     ][:3]
@@ -510,8 +511,8 @@ def build_analysis_package(
             1,
         ),
         "state_variables": state_list,
-        "top_events": decisive,
-        "all_scored_events": select_diverse_events(events, limit=20, per_source_cap=3),
+        "top_events": display_events,
+        "all_scored_events": select_diverse_events(events, limit=50, per_source_cap=4),
         "contradictions": contradictions,
         "decision_panel": {
             "current_state": phase,
@@ -534,11 +535,11 @@ def build_analysis_package(
                 _safe_ratio(
                     sum(
                         1
-                        for event in top_events
+                        for event in analysis_events
                         if (parsed := _parse_timestamp(event.get("published_at")))
                         and parsed >= datetime.now(timezone.utc) - timedelta(hours=24)
                     ),
-                    len(top_events),
+                    len(analysis_events),
                 ),
                 4,
             ),

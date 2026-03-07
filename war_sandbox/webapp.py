@@ -103,6 +103,10 @@ TEXT = {
         "no_graph": "暂无可展示的推导流程，请先运行一次推演。",
         "node_click": "点击查看",
         "tier": "等级",
+        "news_default": "默认展示最近 20 条有用信息，可切换查看更多。",
+        "news_show": "显示条数",
+        "news_visible": "当前显示",
+        "news_all": "全部",
     },
     "en": {
         "lang_code": "en",
@@ -197,6 +201,10 @@ TEXT = {
         "no_graph": "No reasoning graph available yet. Run a forecast first.",
         "node_click": "Click to inspect",
         "tier": "Tier",
+        "news_default": "Shows the latest 20 useful items by default. Expand the count to see more.",
+        "news_show": "Show",
+        "news_visible": "Visible",
+        "news_all": "All",
     },
 }
 
@@ -219,6 +227,78 @@ def _listify(value):
     if value in (None, ""):
         return []
     return [str(value)]
+
+
+def _news_section(top_events: list[dict], text: dict) -> str:
+    total = len(top_events)
+    if total == 0:
+        return f"<div class='empty'>{escape(text['news_empty'])}</div>"
+
+    options = [
+        (20, "20"),
+        (30, "30"),
+        (50, "50"),
+        (9999, text["news_all"]),
+    ]
+    option_rows = "".join(
+        f"<option value='{value}' {'selected' if value == 20 else ''}>{escape(label)}</option>"
+        for value, label in options
+        if value == 9999 or value <= max(20, total)
+    )
+    news_rows = "".join(
+        f"""
+        <a class="news-item" data-news-item href="{escape(item.get('url', '#'))}" target="_blank" rel="noopener">
+          <div class="news-head">
+            <span class="news-source">{escape(str(item.get('source', '-')))}</span>
+            <span class="news-time">{escape(str(item.get('published_at') or item.get('fetched_at') or '-'))}</span>
+          </div>
+          <h3>{escape(str(item.get('title', '-')))}</h3>
+          <div class="news-meta">
+            <span>C {escape(str(item.get('credibility', '-')))}</span>
+            <span>I {escape(str(item.get('importance', '-')))}</span>
+          </div>
+        </a>
+        """
+        for item in top_events
+    )
+    return f"""
+    <div class="news-toolbar">
+      <p class="compact-note">{escape(text['news_default'])}</p>
+      <label class="news-control">
+        <span>{escape(text['news_show'])}</span>
+        <select id="news-count-select">{option_rows}</select>
+      </label>
+      <div class="compact-note">{escape(text['news_visible'])}: <strong id="news-visible-count">0 / {total}</strong></div>
+    </div>
+    <div class="news-grid">{news_rows}</div>
+    <script>
+      (() => {{
+        const select = document.getElementById("news-count-select");
+        const counter = document.getElementById("news-visible-count");
+        const items = Array.from(document.querySelectorAll("[data-news-item]"));
+        if (!select || !counter || !items.length) return;
+        try {{
+          const saved = localStorage.getItem("mesim-news-count");
+          if (saved && Array.from(select.options).some((option) => option.value === saved)) {{
+            select.value = saved;
+          }}
+        }} catch (_error) {{}}
+        const apply = () => {{
+          const raw = Number.parseInt(select.value, 10) || 20;
+          const visible = raw >= 9999 ? items.length : Math.min(raw, items.length);
+          items.forEach((item, index) => {{
+            item.style.display = index < visible ? "block" : "none";
+          }});
+          counter.textContent = `${{visible}} / {total}`;
+          try {{
+            localStorage.setItem("mesim-news-count", String(raw));
+          }} catch (_error) {{}}
+        }};
+        select.addEventListener("change", apply);
+        apply();
+      }})();
+    </script>
+    """
 
 
 def _status_text(text: dict, value: Optional[str]) -> str:
@@ -526,24 +606,7 @@ def _html_page(state: dict) -> str:
         for item in decision_panel.get("end_windows", [])
     )
     top_events = latest_summary.get("top_events", [])
-    news_rows = "".join(
-        f"""
-        <a class="news-item" href="{escape(item.get('url', '#'))}" target="_blank" rel="noopener">
-          <div class="news-head">
-            <span class="news-source">{escape(str(item.get('source', '-')))}</span>
-            <span class="news-time">{escape(str(item.get('published_at') or item.get('fetched_at') or '-'))}</span>
-          </div>
-          <h3>{escape(str(item.get('title', '-')))}</h3>
-          <div class="news-meta">
-            <span>C {escape(str(item.get('credibility', '-')))}</span>
-            <span>I {escape(str(item.get('importance', '-')))}</span>
-          </div>
-        </a>
-        """
-        for item in top_events[:12]
-    )
-    if not news_rows:
-        news_rows = f"<div class='empty'>{escape(text['news_empty'])}</div>"
+    news_section = _news_section(top_events, text)
 
     return f"""<!doctype html>
 <html lang="{escape(text['lang_code'])}">
@@ -749,6 +812,29 @@ def _html_page(state: dict) -> str:
       grid-template-columns: 1fr 1fr;
       gap: 12px;
     }}
+    .news-toolbar {{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }}
+    .news-control {{
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 14px;
+    }}
+    .news-control select {{
+      border: 1px solid var(--line);
+      background: white;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font: inherit;
+      color: var(--ink);
+    }}
     .news-item {{
       text-decoration: none;
       color: inherit;
@@ -892,7 +978,7 @@ def _html_page(state: dict) -> str:
 
       <section class="card">
         <h2 class="section-title">{escape(text['important_news'])}</h2>
-        <div class="news-grid">{news_rows}</div>
+        {news_section}
       </section>
     </div>
   </div>
@@ -919,22 +1005,7 @@ def render_static_snapshot(state: dict) -> str:
         f"<div class='mini-row'><span>{escape(str(item.get('window_days')))}d</span><strong>{escape(str(item.get('probability')))}</strong></div>"
         for item in decision_panel.get("end_windows", [])
     )
-    news_rows = "".join(
-        f"""
-        <a class="news-item" href="{escape(item.get('url', '#'))}" target="_blank" rel="noopener">
-          <div class="news-head">
-            <span class="news-source">{escape(str(item.get('source', '-')))}</span>
-            <span class="news-time">{escape(str(item.get('published_at') or item.get('fetched_at') or '-'))}</span>
-          </div>
-          <h3>{escape(str(item.get('title', '-')))}</h3>
-          <div class="news-meta">
-            <span>C {escape(str(item.get('credibility', '-')))}</span>
-            <span>I {escape(str(item.get('importance', '-')))}</span>
-          </div>
-        </a>
-        """
-        for item in top_events[:12]
-    ) or f"<div class='empty'>{escape(text['news_empty'])}</div>"
+    news_section = _news_section(top_events, text)
 
     return f"""<!doctype html>
 <html lang="{escape(text['lang_code'])}">
@@ -993,6 +1064,17 @@ def render_static_snapshot(state: dict) -> str:
       background: rgba(15, 92, 77, 0.06); border: 1px solid rgba(15, 92, 77, 0.08);
     }}
     .news-grid {{ display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }}
+    .news-toolbar {{
+      display: flex; justify-content: space-between; align-items: center; gap: 12px;
+      flex-wrap: wrap; margin-bottom: 14px;
+    }}
+    .news-control {{
+      display: inline-flex; align-items: center; gap: 10px; color: var(--muted); font-size: 14px;
+    }}
+    .news-control select {{
+      border: 1px solid var(--line); background: white; border-radius: 999px; padding: 8px 12px;
+      font: inherit; color: var(--ink);
+    }}
     .news-item {{
       text-decoration: none; color: inherit; display: block;
       background: linear-gradient(180deg, rgba(15, 92, 77, 0.06), rgba(15, 92, 77, 0.02));
@@ -1045,7 +1127,7 @@ def render_static_snapshot(state: dict) -> str:
 
       <section class="card">
         <h2 class="section-title">{escape(text['important_news'])}</h2>
-        <div class="news-grid">{news_rows}</div>
+        {news_section}
       </section>
     </div>
   </div>
