@@ -13,7 +13,7 @@ TEXT = {
     "zh": {
         "lang_code": "zh-CN",
         "title": "伊朗战局沙盘推演台",
-        "subtitle": "本地命令行驱动的实时推演面板。核心信息前置，系统设置收纳进菜单。",
+        "subtitle": "面向研判与决策的实时战局评估与终局预判。",
         "menu": "系统菜单",
         "overview": "总览",
         "end_time": "结束时间窗口",
@@ -110,8 +110,8 @@ TEXT = {
     },
     "en": {
         "lang_code": "en",
-        "title": "Iran War Sandbox Console",
-        "subtitle": "Local CLI-driven real-time forecast dashboard. Core intelligence stays visible; system controls live in the menu.",
+        "title": "Iran Conflict Decision Dashboard",
+        "subtitle": "Real-time conflict assessment and endgame forecasting for decision support.",
         "menu": "System Menu",
         "overview": "Overview",
         "end_time": "End Window",
@@ -886,7 +886,7 @@ def _html_page(state: dict) -> str:
   <div class="shell">
     <div class="topbar">
       <div class="brand">
-        <div class="eyebrow">War Sandbox</div>
+        <div class="eyebrow">Decision Dashboard</div>
         <h1>{escape(text['title'])}</h1>
         <p class="subtitle">{escape(text['subtitle'])}</p>
       </div>
@@ -1093,7 +1093,7 @@ def render_static_snapshot(state: dict) -> str:
 </head>
 <body>
   <div class="shell">
-    <div class="eyebrow">GitHub Pages Snapshot</div>
+    <div class="eyebrow">Decision Dashboard</div>
     <h1>{escape(text['title'])}</h1>
     <p class="subtitle">{escape(text['subtitle'])}</p>
     <p class="compact-note">{escape(text['latest_forecast_time'])}: {escape(str(updated_at))}</p>
