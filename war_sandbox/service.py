@@ -57,6 +57,7 @@ from .sources import (
     fetch_iaea_news,
     fetch_irna_english,
     fetch_liveuamap_iran,
+    fetch_presstv_latest,
     fetch_reliefweb,
     fetch_rss,
     fetch_tasnim_english,
@@ -65,6 +66,7 @@ from .sources import (
     load_rss_config,
 )
 from .war_state import build_analysis_package, localize_summary
+from .agent_browser import agent_browser_available
 
 
 def utc_now_iso() -> str:
@@ -100,12 +102,12 @@ def _reliefweb_available(source: Dict[str, Any]) -> bool:
 def _source_block_reason(source: Dict[str, Any]) -> Optional[str]:
     kind = source["kind"]
     params = source["params"]
-    if kind == "idf":
-        return "IDF media releases are currently blocked by Incapsula for non-browser access"
+    if kind == "idf" and not agent_browser_available():
+        return "IDF media releases require Vercel agent-browser"
     if kind == "irna":
-        return "IRNA English is currently behind a JavaScript anti-bot challenge"
+        return "IRNA English currently returns a gateway/challenge page from this runtime"
     if kind == "tasnim":
-        return "Tasnim English is currently not resolvable from this runtime"
+        return "Tasnim English DNS is not resolvable from this runtime"
     if kind == "reliefweb" and not params.get("appname"):
         return "ReliefWeb requires an approved RELIEFWEB_APPNAME"
     if kind == "firms" and not params.get("map_key"):
@@ -125,7 +127,7 @@ def _source_group(source: Dict[str, Any]) -> str:
         return "geo"
     if kind in {"centcom", "idf"}:
         return "official_west"
-    if kind in {"irna", "tasnim"}:
+    if kind in {"irna", "tasnim", "presstv"}:
         return "official_iran"
     if kind == "iaea":
         return "official_international"
@@ -583,13 +585,13 @@ def default_source_configs(rss_path: str = str(RSS_CONFIG_PATH)) -> List[Dict[st
             },
         },
         {
-            "id": "liveuamap_iran",
-            "name": "Iran LiveUAmap",
-            "kind": "liveuamap",
+            "id": "google_news_iran_conflict",
+            "name": "Google News Iran Conflict",
+            "kind": "rss",
             "enabled": True,
-            "interval_seconds": DEFAULT_LIVEUAMAP_INTERVAL_SECONDS,
+            "interval_seconds": DEFAULT_RSS_INTERVAL_SECONDS,
             "params": {
-                "max_records": 20,
+                "url": "https://news.google.com/rss/search?q=Iran+Israel+war&hl=en-US&gl=US&ceid=US:en",
                 "hours": DEFAULT_HOURS,
             },
         },
@@ -608,29 +610,32 @@ def default_source_configs(rss_path: str = str(RSS_CONFIG_PATH)) -> List[Dict[st
             "id": "idf_releases",
             "name": "IDF Media Releases",
             "kind": "idf",
-            "enabled": False,
+            "enabled": True,
             "interval_seconds": DEFAULT_OFFICIAL_INTERVAL_SECONDS,
             "params": {
+                "max_records": 12,
                 "hours": DEFAULT_HOURS,
             },
         },
         {
-            "id": "irna_english",
-            "name": "IRNA English",
-            "kind": "irna",
-            "enabled": False,
+            "id": "presstv_latest",
+            "name": "PressTV Latest",
+            "kind": "presstv",
+            "enabled": True,
             "interval_seconds": DEFAULT_OFFICIAL_INTERVAL_SECONDS,
             "params": {
+                "max_records": 12,
                 "hours": DEFAULT_HOURS,
             },
         },
         {
-            "id": "tasnim_english",
-            "name": "Tasnim English",
-            "kind": "tasnim",
-            "enabled": False,
-            "interval_seconds": DEFAULT_OFFICIAL_INTERVAL_SECONDS,
+            "id": "google_news_hormuz_shipping",
+            "name": "Google News Hormuz Shipping",
+            "kind": "rss",
+            "enabled": True,
+            "interval_seconds": DEFAULT_RSS_INTERVAL_SECONDS,
             "params": {
+                "url": "https://news.google.com/rss/search?q=Hormuz+shipping+Iran&hl=en-US&gl=US&ceid=US:en",
                 "hours": DEFAULT_HOURS,
             },
         },
@@ -799,6 +804,10 @@ class SandboxService:
                     last_message=block_reason,
                     last_item_count=0,
                 )
+                continue
+            # Re-enable previously blocked IDF source now that browser-backed collection exists.
+            if source["kind"] == "idf" and not source["enabled"]:
+                update_source_config(source["id"], True, source["interval_seconds"])
 
     def list_sources(self) -> List[Dict[str, Any]]:
         self.sync_sources()
@@ -859,11 +868,13 @@ class SandboxService:
             elif source["kind"] == "iaea":
                 items = fetch_iaea_news(max_records=int(params.get("max_records", 12)))
             elif source["kind"] == "idf":
-                items = fetch_idf_releases()
+                items = fetch_idf_releases(max_records=int(params.get("max_records", 12)))
             elif source["kind"] == "irna":
                 items = fetch_irna_english()
             elif source["kind"] == "tasnim":
                 items = fetch_tasnim_english()
+            elif source["kind"] == "presstv":
+                items = fetch_presstv_latest(max_records=int(params.get("max_records", 12)))
             elif source["kind"] == "adsb":
                 items = fetch_adsb_military(
                     {

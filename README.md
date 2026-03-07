@@ -14,6 +14,7 @@ explicitly marked as scenarios with evidence, assumptions, and uncertainty.
 ## What it does
 
 - Ingests free/open sources from GDELT, ReliefWeb, and optional RSS feeds
+- Uses Vercel `agent-browser` for sites that no longer work with plain HTTP
 - Stores raw items in SQLite
 - Builds a structured brief for the latest evidence window
 - Calls `gemini --prompt` in headless mode and forces JSON output
@@ -180,6 +181,15 @@ python3 -m war_sandbox.cli score --forecast-id <id> --resolved-outcome negotiate
 python3 -m war_sandbox.cli serve --port 8080
 python3 -m war_sandbox.cli publish-pages --repo-root . --output-dir docs
 python3 -m war_sandbox.cli publish-loop --repo-root . --output-dir docs --sleep-seconds 300
+```
+
+## Browser-backed sources
+
+Install Vercel agent-browser locally for browser-rendered sources such as `IDF Media Releases`:
+
+```bash
+npm install -g agent-browser
+agent-browser install
 ```
 
 ## Background services

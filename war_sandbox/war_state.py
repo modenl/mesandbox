@@ -9,8 +9,10 @@ from .gemini_runner import translate_news_titles
 SOURCE_STACK = [
     {"id": "gdelt_articles", "name": "GDELT Article List RSS", "kind": "gdelt"},
     {"id": "gdelt_timeline", "name": "GDELT Event / GKG Pulse", "kind": "gdelt"},
-    {"id": "liveuamap_iran", "name": "Iran LiveUAmap", "kind": "geo"},
+    {"id": "google_news_iran_conflict", "name": "Google News Iran Conflict", "kind": "aggregator"},
     {"id": "centcom_dvids", "name": "CENTCOM Press Releases", "kind": "official"},
+    {"id": "idf_releases", "name": "IDF Media Releases", "kind": "official"},
+    {"id": "presstv_latest", "name": "PressTV Latest", "kind": "official"},
     {"id": "radiofarda_iran", "name": "Radio Farda Iran News", "kind": "wire"},
     {"id": "unnews_middle_east", "name": "UN News Middle East", "kind": "official"},
     {"id": "unnews_peace_security", "name": "UN News Peace and Security", "kind": "official"},
@@ -201,9 +203,9 @@ def classify_source(item: Dict[str, Any]) -> str:
         return "geo"
     if "iaea" in source or "iaea.org" in domain or "un.org" in domain:
         return "official"
-    if any(token in source for token in ["centcom", "idf", "irna", "tasnim"]):
+    if any(token in source for token in ["centcom", "idf", "irna", "tasnim", "presstv"]):
         return "official"
-    if any(token in domain for token in ["centcom", "dvidshub", "idf", "irna", "tasnim"]):
+    if any(token in domain for token in ["centcom", "dvidshub", "idf", "irna", "tasnim", "presstv"]):
         return "official"
     if "radiofarda" in source or "radiofarda" in domain:
         return "wire"

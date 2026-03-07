@@ -11,6 +11,8 @@ from urllib.parse import quote_plus, urljoin
 from urllib.request import Request, urlopen
 import xml.etree.ElementTree as ET
 
+from .agent_browser import AgentBrowserError, agent_browser_available, browser_eval_json, browser_get_text
+
 
 USER_AGENT = "mesimulation-war-sandbox/1.0"
 
@@ -245,7 +247,14 @@ def fetch_reliefweb(query: str, limit: int = 20, appname: str = "mesimulation") 
 
 def fetch_liveuamap_iran(max_records: int = 20) -> List[Dict[str, Any]]:
     page_url = "https://iran.liveuamap.com/en"
-    body = http_get_text(page_url)
+    try:
+        body = http_get_text(page_url)
+    except Exception:
+        body = ""
+    if "Attention Required!" in body and agent_browser_available():
+        body = browser_get_text(page_url, max_output=4000)
+    if "Attention Required!" in body:
+        raise ValueError("LiveUAmap blocked this IP even in a real browser session")
     links = []
     seen = set()
     for link in re.findall(r"https://iran\.liveuamap\.com/en/\d{4}/[^\"'<> ]+", body):
@@ -441,15 +450,130 @@ def fetch_firms_hotspots(map_key: str, west: float, south: float, east: float, n
 
 
 def fetch_irna_english() -> List[Dict[str, Any]]:
-    raise ValueError("IRNA English is currently behind a JavaScript anti-bot challenge")
+    if not agent_browser_available():
+        raise ValueError("IRNA English requires Vercel agent-browser")
+    script = """
+JSON.stringify({
+  title: document.title || "",
+  text: (document.body && document.body.innerText ? document.body.innerText : "").slice(0, 1200),
+  url: location.href
+})
+""".strip()
+    payload = browser_eval_json("https://en.irna.ir/", script, wait_ms=3500, retries=5, retry_delay_seconds=1.5)
+    text = str((payload or {}).get("text", "")).strip()
+    title = str((payload or {}).get("title", "")).strip()
+    if "Gateway Timeout" in text or "Transferring to the website" in text or "Error 504" in title:
+        raise ValueError("IRNA English returned a gateway/challenge page after browser rendering")
+    raise ValueError("IRNA English browser rendering did not yield a stable article listing")
 
 
 def fetch_tasnim_english() -> List[Dict[str, Any]]:
-    raise ValueError("Tasnim English is currently not resolvable from this runtime")
+    raise ValueError("Tasnim English DNS is not resolvable from this runtime")
 
 
-def fetch_idf_releases() -> List[Dict[str, Any]]:
-    raise ValueError("IDF media releases are currently blocked by Incapsula for non-browser access")
+def fetch_idf_releases(max_records: int = 12) -> List[Dict[str, Any]]:
+    if not agent_browser_available():
+        raise ValueError("IDF media releases require Vercel agent-browser")
+    script = r"""
+JSON.stringify(
+  Array.from(document.querySelectorAll('a[href*="/mini-sites/idf-press-releases-israel-at-war/"]'))
+    .map((anchor) => ({
+      href: anchor.href,
+      text: (anchor.textContent || "").replace(/\s+/g, " ").trim()
+    }))
+    .filter((item) =>
+      item.href &&
+      item.href.includes('/mini-sites/idf-press-releases-israel-at-war/') &&
+      !item.href.endsWith('/mini-sites/idf-press-releases-israel-at-war/') &&
+      item.text.length > 12
+    )
+)
+""".strip()
+    payload = browser_eval_json(
+        "https://www.idf.il/en/mini-sites/press-releases/",
+        script,
+        wait_ms=1200,
+        retries=3,
+        retry_delay_seconds=1.0,
+    )
+    if not isinstance(payload, list):
+        raise ValueError("IDF browser extraction did not return a list")
+    fetched_at = utc_now()
+    items = []
+    seen = set()
+    for row in payload:
+        href = str(row.get("href", "")).strip()
+        text = _strip_html(str(row.get("text", "")))
+        if not href or href in seen:
+            continue
+        seen.add(href)
+        match = re.match(r"([A-Za-z]+ \d{1,2}, \d{4})\s+(.*)", text)
+        published_at = None
+        title = text
+        if match:
+            published_at = normalize_timestamp(match.group(1))
+            title = match.group(2).strip()
+        if len(title) < 12:
+            continue
+        items.append(
+            {
+                "id": stable_id("idf_releases", href, title),
+                "source": "idf_releases",
+                "fetched_at": fetched_at,
+                "published_at": published_at,
+                "title": title,
+                "url": href,
+                "content_text": text[:4000],
+                "payload": row,
+            }
+        )
+        if len(items) >= max_records:
+            break
+    return items
+
+
+def fetch_presstv_latest(max_records: int = 12) -> List[Dict[str, Any]]:
+    url = "https://www.presstv.ir/"
+    body = http_get_text(url)
+    fetched_at = utc_now()
+    items = []
+    seen = set()
+    pattern = re.compile(
+        r'<a[^>]+href=(["\']?)(/Detail/\d{4}/\d{2}/\d{2}/\d+/[^"\'>\s]+)\1[^>]*>(.*?)</a>',
+        re.I | re.S,
+    )
+    for match in pattern.finditer(body):
+        link = urljoin(url, match.group(2))
+        if link in seen:
+            continue
+        seen.add(link)
+        text = _strip_html(match.group(3))
+        if len(text) < 18:
+            continue
+        date_match = re.search(r"/Detail/(\d{4})/(\d{2})/(\d{2})/", link)
+        published_at = None
+        if date_match:
+            published_at = normalize_timestamp(
+                f"{date_match.group(1)}-{date_match.group(2)}-{date_match.group(3)} 00:00:00"
+            )
+        items.append(
+            {
+                "id": stable_id("presstv_latest", link, text),
+                "source": "presstv_latest",
+                "fetched_at": fetched_at,
+                "published_at": published_at,
+                "title": text,
+                "url": link,
+                "content_text": text[:4000],
+                "payload": {
+                    "link": link,
+                    "title": text,
+                },
+            }
+        )
+        if len(items) >= max_records:
+            break
+    return items
 
 
 def fetch_acled() -> List[Dict[str, Any]]:
