@@ -111,7 +111,7 @@ TEXT = {
         "news_visible": "当前显示",
         "news_all": "全部",
         "sources_in_use": "信息源状态",
-        "sources_in_use_note": "只展示当前真实接入的数据源。绿点表示当前抓取可用，灰点表示尚未成功或已停用。",
+        "sources_in_use_note": "只展示当前真实接入的数据源。绿点表示当前抓取可用，其它状态表示暂不可用或已停用。",
         "source_why_trust": "为何可信",
         "source_status": "当前状态",
         "source_last_run": "最近抓取",
@@ -221,7 +221,7 @@ TEXT = {
         "news_visible": "Visible",
         "news_all": "All",
         "sources_in_use": "Source Status",
-        "sources_in_use_note": "This list shows only live configured sources. A green dot means the current fetch path is working; gray means it is not currently usable or not enabled.",
+        "sources_in_use_note": "This list shows only live configured sources. A green dot means the current fetch path is working; other states mean it is unavailable or disabled.",
         "source_why_trust": "Why it is trusted",
         "source_status": "Current status",
         "source_last_run": "Last fetch",
@@ -277,6 +277,14 @@ SOURCE_BRIEFS = {
     "adsb_military": {
         "zh": "ADSB 军机数据属于传感器类硬信号，适合发现空中加油、预警和军机活动异常。",
         "en": "ADSB military traffic is a sensor-grade hard signal, useful for spotting tanker, AWACS, and abnormal air-activity patterns.",
+    },
+    "oil_market": {
+        "zh": "国际原油期货价格是最直接的外溢成本信号之一，能快速反映霍尔木兹、油运和地区升级风险。",
+        "en": "International crude futures are one of the hardest spillover signals, reacting quickly to Hormuz, tanker disruption, and regional escalation risk.",
+    },
+    "polymarket_geopolitics": {
+        "zh": "Polymarket 反映真实资金下注形成的隐含概率，适合观察市场如何定价领导人变动、停火或升级预期。",
+        "en": "Polymarket reflects implied probabilities backed by real-money positioning, which is useful for tracking how markets price leadership changes, ceasefire odds, and escalation risk.",
     },
     "google_news_iran_conflict": {
         "zh": "Google News 作为聚合入口有助于补足多家媒体首发覆盖，但必须依赖后续筛选和去重。",
@@ -360,13 +368,16 @@ def _source_brief_section(runtime_sources: list[dict], text: dict, language: str
             """
         )
     return f"""
-      <section class="card">
-        <h2 class="section-title">{escape(text['sources_in_use'])}</h2>
+      <details class="card fold-card">
+        <summary>
+          <span class="section-title">{escape(text['sources_in_use'])}</span>
+          <span class="compact-note">{escape(text['open_menu'])} / {escape(text['close_menu'])}</span>
+        </summary>
         <p class="compact-note">{escape(text['sources_in_use_note'])}</p>
         <div class="source-brief-grid">
           {''.join(cards)}
         </div>
-      </section>
+      </details>
     """
 
 
@@ -835,6 +846,7 @@ def _html_page(state: dict) -> str:
       font-weight: 700;
     }}
     details.menu summary::-webkit-details-marker {{ display: none; }}
+    details.fold-card summary::-webkit-details-marker {{ display: none; }}
     .menu-body {{
       border-top: 1px solid var(--line);
       padding: 18px;
@@ -881,6 +893,17 @@ def _html_page(state: dict) -> str:
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       padding: 20px;
+    }}
+    .fold-card {{
+      padding: 0 20px 20px;
+    }}
+    .fold-card summary {{
+      list-style: none;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0 16px;
     }}
     .section-title {{
       margin: 0 0 14px;
@@ -1175,12 +1198,12 @@ def _html_page(state: dict) -> str:
         </div>
       </section>
 
-      {source_brief_section}
-
       <section class="card">
         <h2 class="section-title">{escape(text['important_news'])}</h2>
         {news_section}
       </section>
+
+      {source_brief_section}
     </div>
   </div>
 </body>
@@ -1247,6 +1270,12 @@ def render_static_snapshot(state: dict) -> str:
       background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
       box-shadow: var(--shadow); padding: 20px;
     }}
+    .fold-card {{ padding: 0 20px 20px; }}
+    .fold-card summary {{
+      list-style: none; cursor: pointer; display: flex; justify-content: space-between;
+      align-items: center; padding: 20px 0 16px;
+    }}
+    .fold-card summary::-webkit-details-marker {{ display: none; }}
     .section-title {{ margin: 0 0 14px; font-size: 18px; letter-spacing: -0.02em; }}
     .stat-label {{
       font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em;
@@ -1349,12 +1378,12 @@ def render_static_snapshot(state: dict) -> str:
         </div>
       </section>
 
-      {source_brief_section}
-
       <section class="card">
         <h2 class="section-title">{escape(text['important_news'])}</h2>
         {news_section}
       </section>
+
+      {source_brief_section}
     </div>
   </div>
 </body>

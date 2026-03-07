@@ -28,6 +28,8 @@ from .config import (
     RSS_CONFIG_PATH,
 )
 from .db import (
+    delete_raw_items_for_source,
+    fetch_latest_items_by_sources,
     fetch_recent_items,
     get_forecast,
     get_runtime_setting,
@@ -57,6 +59,8 @@ from .sources import (
     fetch_iaea_news,
     fetch_irna_english,
     fetch_liveuamap_iran,
+    fetch_oil_market,
+    fetch_polymarket_geopolitics,
     fetch_presstv_latest,
     fetch_reliefweb,
     fetch_rss,
@@ -69,6 +73,9 @@ from .war_state import build_analysis_package, localize_summary
 from .agent_browser import agent_browser_available
 
 
+CRITICAL_SNAPSHOT_SOURCES = ("oil_market", "polymarket_geopolitics", "gdelt_timeline")
+
+
 def utc_now_iso() -> str:
     return datetime.now(timezone.utc).replace(microsecond=0).isoformat()
 
@@ -76,6 +83,18 @@ def utc_now_iso() -> str:
 def slugify(value: str) -> str:
     slug = re.sub(r"[^a-z0-9]+", "_", value.lower()).strip("_")
     return slug or "source"
+
+
+def _merge_unique_items(primary: List[Dict[str, Any]], extra: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    merged = {str(item.get("id")): item for item in primary if item.get("id")}
+    ordered = [item for item in primary if item.get("id")]
+    for item in extra:
+        item_id = str(item.get("id"))
+        if not item_id or item_id in merged:
+            continue
+        merged[item_id] = item
+        ordered.append(item)
+    return ordered
 
 
 def _row_to_source(row) -> Dict[str, Any]:
@@ -133,6 +152,8 @@ def _source_group(source: Dict[str, Any]) -> str:
         return "official_international"
     if kind in {"adsb", "firms", "vesselfinder"}:
         return "sensor"
+    if kind in {"oil_market", "polymarket"}:
+        return "market"
     if kind == "rss":
         return "aggregator"
     return "other"
@@ -304,7 +325,7 @@ def _confidence_metrics(
 
     enabled_groups = {_source_group(source) for source in enabled_sources}
     healthy_groups = {_source_group(source) for source in healthy_sources}
-    critical_groups = {"wire", "geo", "official_west", "official_iran", "sensor"}
+    critical_groups = {"wire", "geo", "official_west", "official_iran", "sensor", "market"}
     required_groups = critical_groups & enabled_groups
     critical_coverage = _safe_ratio(len(healthy_groups & required_groups), len(required_groups))
     blocked_groups = {
@@ -696,6 +717,27 @@ def default_source_configs(rss_path: str = str(RSS_CONFIG_PATH)) -> List[Dict[st
             },
         },
         {
+            "id": "oil_market",
+            "name": "International Crude Oil",
+            "kind": "oil_market",
+            "enabled": True,
+            "interval_seconds": DEFAULT_ADSB_INTERVAL_SECONDS,
+            "params": {
+                "hours": DEFAULT_HOURS,
+            },
+        },
+        {
+            "id": "polymarket_geopolitics",
+            "name": "Polymarket Geopolitical Markets",
+            "kind": "polymarket",
+            "enabled": True,
+            "interval_seconds": DEFAULT_ADSB_INTERVAL_SECONDS,
+            "params": {
+                "hours": DEFAULT_HOURS,
+                "limit": 8,
+            },
+        },
+        {
             "id": "nasa_firms",
             "name": "NASA FIRMS Hotspots",
             "kind": "firms",
@@ -894,6 +936,10 @@ class SandboxService:
                     },
                     limit=int(params.get("limit", 40)),
                 )
+            elif source["kind"] == "oil_market":
+                items = fetch_oil_market()
+            elif source["kind"] == "polymarket":
+                items = fetch_polymarket_geopolitics(limit=int(params.get("limit", 8)))
             elif source["kind"] == "firms":
                 items = fetch_firms_hotspots(
                     map_key=params["map_key"],
@@ -923,6 +969,8 @@ class SandboxService:
                 raise ValueError(f"Unsupported source kind: {source['kind']}")
 
             filtered = filter_by_hours(items, hours)
+            if source["kind"] in {"oil_market", "polymarket"}:
+                delete_raw_items_for_source(source["id"])
             inserted = insert_raw_items(filtered)
             now = utc_now_iso()
             update_source_runtime(
@@ -965,6 +1013,7 @@ class SandboxService:
             limit = max(int(settings.get("forecast_limit", DEFAULT_FORECAST_LIMIT)), DEFAULT_FORECAST_LIMIT)
             language = settings.get("language", "zh")
             items = fetch_recent_items(hours, limit=limit)
+            items = _merge_unique_items(items, fetch_latest_items_by_sources(CRITICAL_SNAPSHOT_SOURCES))
             if not items:
                 raise ValueError("No evidence items found for forecasting")
             summary = build_analysis_package(items, language=language, model=self.model)

@@ -91,6 +91,12 @@ def insert_raw_items(items: Iterable[Dict[str, Any]]) -> int:
     return len(rows)
 
 
+def delete_raw_items_for_source(source: str) -> None:
+    with connect() as conn:
+        conn.execute("DELETE FROM raw_items WHERE source = ?", (source,))
+        conn.commit()
+
+
 def _parse_recent_timestamp(value: Optional[str]) -> Optional[datetime]:
     if not value:
         return None
@@ -139,6 +145,33 @@ def fetch_recent_items(hours: int, limit: int = 200) -> List[Dict[str, Any]]:
         filtered.append((timestamp, payload))
     filtered.sort(key=lambda item: item[0], reverse=True)
     return [payload for _, payload in filtered[:limit]]
+
+
+def fetch_latest_items_by_sources(sources: Iterable[str]) -> List[Dict[str, Any]]:
+    wanted = {str(source) for source in sources if str(source)}
+    if not wanted:
+        return []
+    with connect() as conn:
+        placeholders = ", ".join("?" for _ in wanted)
+        rows = conn.execute(
+            f"""
+            SELECT payload_json, published_at, fetched_at, source
+            FROM raw_items
+            WHERE source IN ({placeholders})
+            """,
+            tuple(wanted),
+        ).fetchall()
+    best: Dict[str, tuple[datetime, Dict[str, Any]]] = {}
+    for row in rows:
+        payload = json.loads(row["payload_json"])
+        timestamp = _parse_recent_timestamp(row["published_at"]) or _parse_recent_timestamp(row["fetched_at"])
+        if not timestamp:
+            continue
+        source = str(row["source"])
+        current = best.get(source)
+        if not current or timestamp > current[0]:
+            best[source] = (timestamp, payload)
+    return [payload for _, payload in sorted(best.values(), key=lambda item: item[0], reverse=True)]
 
 
 def insert_forecast(

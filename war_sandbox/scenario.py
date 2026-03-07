@@ -137,7 +137,7 @@ Rules:
   lead_figures as an array of strings, institutional_architecture, and
   first_180_day_policies as an array of strings.
 - Date fields must be ISO 8601 or YYYY-MM-DD.
-- Use only the supplied top events, 7 state variables, contradictions, and trend summary.
+- Use only the supplied top events, 7 state variables, market signals, contradictions, and trend summary.
 - Do not invent additional raw-source claims outside the package.
 
 Schema:
@@ -152,6 +152,7 @@ Required output intent:
   and first-180-day policy direction
 - Include assumptions and uncertainty drivers
 - Give extra weight to decisive signals and contradictions
+- When market signals are present, use oil-price moves and prediction-market probabilities as auxiliary evidence, not as standalone truth
 
 Structured analysis package:
 {payload}

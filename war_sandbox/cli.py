@@ -14,6 +14,7 @@ from .config import (
 )
 from .db import (
     fetch_recent_items,
+    fetch_latest_items_by_sources,
     get_forecast,
     get_runtime_setting,
     insert_forecast,
@@ -33,6 +34,21 @@ from .sources import (
     load_rss_config,
 )
 from .war_state import build_analysis_package
+
+
+CRITICAL_SNAPSHOT_SOURCES = ("oil_market", "polymarket_geopolitics", "gdelt_timeline")
+
+
+def _merge_unique_items(primary, extra):
+    merged = {str(item.get("id")): item for item in primary if item.get("id")}
+    ordered = [item for item in primary if item.get("id")]
+    for item in extra:
+        item_id = str(item.get("id"))
+        if not item_id or item_id in merged:
+            continue
+        merged[item_id] = item
+        ordered.append(item)
+    return ordered
 
 
 def cmd_init_db(_: argparse.Namespace) -> None:
@@ -71,6 +87,7 @@ def cmd_ingest(args: argparse.Namespace) -> None:
 
 def cmd_forecast(args: argparse.Namespace) -> None:
     items = fetch_recent_items(args.hours, limit=args.limit)
+    items = _merge_unique_items(items, fetch_latest_items_by_sources(CRITICAL_SNAPSHOT_SOURCES))
     if not items:
         raise SystemExit("No evidence items found. Run ingest first.")
 

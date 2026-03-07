@@ -25,6 +25,14 @@ def normalize_timestamp(value: Optional[str]) -> Optional[str]:
     if not value:
         return None
     value = value.strip()
+    for normalized in (value.replace("Z", "+00:00"), value):
+        try:
+            dt = datetime.fromisoformat(normalized)
+            if dt.tzinfo is None:
+                dt = dt.replace(tzinfo=timezone.utc)
+            return dt.astimezone(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
+        except ValueError:
+            continue
     formats = [
         "%Y%m%dT%H%M%SZ",
         "%Y-%m-%dT%H:%M:%S%z",
@@ -408,6 +416,155 @@ def fetch_adsb_military(bounds: Dict[str, float], limit: int = 40) -> List[Dict[
         )
     items.sort(key=lambda item: item["title"])
     return items[:limit]
+
+
+def _unix_to_utc(timestamp: Any) -> Optional[str]:
+    try:
+        value = int(timestamp)
+    except (TypeError, ValueError):
+        return None
+    return datetime.fromtimestamp(value, tz=timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
+
+
+def fetch_oil_market() -> List[Dict[str, Any]]:
+    fetched_at = utc_now()
+    contracts = [
+        ("BZ=F", "Brent crude oil futures"),
+        ("CL=F", "WTI crude oil futures"),
+    ]
+    items = []
+    for symbol, label in contracts:
+        url = f"https://query1.finance.yahoo.com/v8/finance/chart/{quote_plus(symbol)}?interval=5m&range=1d"
+        payload = http_get_json(url)
+        result = ((payload.get("chart") or {}).get("result") or [None])[0] or {}
+        meta = result.get("meta") or {}
+        price = float(meta.get("regularMarketPrice") or 0.0)
+        previous_close = float(meta.get("previousClose") or meta.get("chartPreviousClose") or 0.0)
+        change = price - previous_close
+        change_pct = (change / previous_close * 100.0) if previous_close else 0.0
+        published_at = _unix_to_utc(meta.get("regularMarketTime")) or fetched_at
+        title = f"{label} at {price:.2f} USD ({change_pct:+.1f}% vs prev close)"
+        content_text = (
+            f"symbol={symbol}; benchmark={label}; regular_market_price={price:.2f}; "
+            f"previous_close={previous_close:.2f}; abs_change={change:.2f}; pct_change={change_pct:.2f}; "
+            f"day_high={meta.get('regularMarketDayHigh')}; day_low={meta.get('regularMarketDayLow')}; "
+            f"volume={meta.get('regularMarketVolume')}; exchange={meta.get('exchangeName')}; "
+            f"currency={meta.get('currency')}"
+        )
+        items.append(
+            {
+                "id": stable_id("oil_market", symbol, title),
+                "source": "oil_market",
+                "fetched_at": fetched_at,
+                "published_at": published_at,
+                "title": title,
+                "url": f"https://finance.yahoo.com/quote/{symbol}",
+                "content_text": content_text,
+                "payload": {
+                    "symbol": symbol,
+                    "label": label,
+                    "meta": meta,
+                },
+            }
+        )
+    return items
+
+
+def _polymarket_market_relevant(row: Dict[str, Any]) -> bool:
+    text = " ".join(
+        filter(
+            None,
+            [
+                str(row.get("question", "")),
+                str(row.get("description", "")),
+                str(row.get("slug", "")),
+                json.dumps(row.get("events", []), ensure_ascii=False),
+            ],
+        )
+    ).lower()
+    exclude_terms = [
+        "fifa",
+        "world cup",
+        "premier league",
+        "stanley cup",
+        "gta",
+        "album",
+        "oilers",
+        "basketball",
+        "soccer",
+        "nhl",
+    ]
+    if any(term in text for term in exclude_terms):
+        return False
+    include_terms = [
+        "netanyahu",
+        "khamenei",
+        "iran strike",
+        "iran-israel",
+        "israel-iran",
+        "israel",
+        "hormuz",
+        "hezbollah",
+        "hamas",
+        "gaza",
+        "middle east",
+        "prime minister of israel",
+    ]
+    return any(term in text for term in include_terms)
+
+
+def fetch_polymarket_geopolitics(limit: int = 8) -> List[Dict[str, Any]]:
+    payload = http_get_json("https://gamma-api.polymarket.com/markets?limit=1000&closed=false&active=true")
+    fetched_at = utc_now()
+    markets = []
+    for row in payload:
+        if not _polymarket_market_relevant(row):
+            continue
+        outcomes = []
+        prices = []
+        try:
+            outcomes = json.loads(row.get("outcomes") or "[]")
+        except json.JSONDecodeError:
+            outcomes = []
+        try:
+            prices = [float(value) for value in json.loads(row.get("outcomePrices") or "[]")]
+        except (json.JSONDecodeError, TypeError, ValueError):
+            prices = []
+        outcome_pairs = ", ".join(
+            f"{name}={price:.3f}" for name, price in zip(outcomes, prices)
+        ) or "-"
+        events = row.get("events") or []
+        event = events[0] if events else {}
+        updated_at = normalize_timestamp(
+            str(event.get("updatedAt") or row.get("updatedAt") or row.get("endDate") or "")
+        ) or fetched_at
+        event_slug = str(event.get("slug") or row.get("slug") or "").strip()
+        title = str(row.get("question") or event.get("title") or row.get("slug") or "Polymarket market").strip()
+        content_text = (
+            f"prediction_market={title}; outcome_prices={outcome_pairs}; volume={row.get('volume')}; "
+            f"liquidity={row.get('liquidity')}; end_date={row.get('endDate')}; "
+            f"description={_strip_html(str(row.get('description') or ''))[:500]}"
+        )
+        markets.append(
+            {
+                "id": stable_id("polymarket_geopolitics", str(row.get("id", "")), title),
+                "source": "polymarket_geopolitics",
+                "fetched_at": fetched_at,
+                "published_at": updated_at,
+                "title": title,
+                "url": f"https://polymarket.com/event/{event_slug}" if event_slug else "https://polymarket.com/",
+                "content_text": content_text,
+                "payload": row,
+            }
+        )
+    markets.sort(
+        key=lambda item: (
+            float((item.get("payload") or {}).get("volume") or 0.0),
+            float((item.get("payload") or {}).get("liquidity") or 0.0),
+        ),
+        reverse=True,
+    )
+    return markets[:limit]
 
 
 def fetch_firms_hotspots(map_key: str, west: float, south: float, east: float, north: float, day_range: int = 1, limit: int = 50) -> List[Dict[str, Any]]:

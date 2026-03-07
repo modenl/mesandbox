@@ -18,6 +18,8 @@ SOURCE_STACK = [
     {"id": "unnews_peace_security", "name": "UN News Peace and Security", "kind": "official"},
     {"id": "iaea_news", "name": "IAEA News", "kind": "official"},
     {"id": "adsb_military", "name": "ADSB.lol", "kind": "sensor"},
+    {"id": "oil_market", "name": "International Crude Oil", "kind": "market"},
+    {"id": "polymarket_geopolitics", "name": "Polymarket Geopolitical Markets", "kind": "market"},
     {"id": "nasa_firms", "name": "NASA FIRMS", "kind": "sensor"},
     {"id": "acled_calibration", "name": "ACLED", "kind": "geo"},
 ]
@@ -25,6 +27,7 @@ SOURCE_STACK = [
 
 SOURCE_CREDIBILITY = {
     "sensor": 0.95,
+    "market": 0.84,
     "official": 0.82,
     "wire": 0.75,
     "geo": 0.62,
@@ -52,7 +55,7 @@ VARIABLES = [
         "id": "hormuz_shipping",
         "label_zh": "霍尔木兹与海运是否恢复",
         "label_en": "Hormuz and commercial shipping recovery",
-        "up_terms": ["tanker", "shipping", "hormuz", "vessel", "oil terminal", "port"],
+        "up_terms": ["tanker", "shipping", "hormuz", "vessel", "oil terminal", "port", "crude oil", "brent", "wti", "oil price"],
         "down_terms": ["reopened", "resumed shipping", "partial transit", "traffic restored"],
     },
     {
@@ -104,6 +107,12 @@ STRATEGIC_TERMS = [
     "military flight",
     "air refueling",
     "awacs",
+    "crude oil",
+    "brent",
+    "wti",
+    "oil price",
+    "prediction market",
+    "netanyahu",
 ]
 
 IRAN_CONTEXT_TERMS = [
@@ -121,6 +130,8 @@ IRAN_CONTEXT_TERMS = [
     "u.s.",
     "united states",
     "centcom",
+    "netanyahu",
+    "israeli",
 ]
 
 CONFLICT_TERMS = [
@@ -139,6 +150,8 @@ CONFLICT_TERMS = [
     "launcher",
     "tanker",
     "air defense",
+    "prime minister",
+    "resign",
 ]
 
 
@@ -227,6 +240,8 @@ def classify_source(item: Dict[str, Any]) -> str:
         return "wire"
     if any(token in source for token in ["adsb", "firms", "vesselfinder"]):
         return "sensor"
+    if any(token in source for token in ["oil_market", "polymarket"]):
+        return "market"
     if source.startswith("acled"):
         return "geo"
     if any(token in domain for token in ["adsb", "vesselfinder", "firms", "nasa"]):
@@ -237,6 +252,11 @@ def classify_source(item: Dict[str, Any]) -> str:
 
 
 def score_credibility(item: Dict[str, Any]) -> float:
+    source = str(item.get("source", "")).lower()
+    if "oil_market" in source:
+        return 0.9
+    if "polymarket" in source:
+        return 0.78
     bucket = classify_source(item)
     return SOURCE_CREDIBILITY.get(bucket, SOURCE_CREDIBILITY["unknown"])
 
@@ -256,8 +276,17 @@ def score_importance(item: Dict[str, Any]) -> float:
         variable_hits += _count_term_hits(text, variable["up_terms"])
         variable_hits += _count_term_hits(text, variable["down_terms"])
     official_bonus = 1 if classify_source(item) in {"sensor", "official", "wire"} else 0
-    raw = 0.45 * min(strategic_hits / 2.0, 1.0) + 0.35 * min(variable_hits / 3.0, 1.0) + 0.20 * official_bonus
-    if not context_hits or not conflict_hits:
+    market_bonus = 1 if classify_source(item) == "market" else 0
+    raw = (
+        0.40 * min(strategic_hits / 2.0, 1.0)
+        + 0.30 * min(variable_hits / 3.0, 1.0)
+        + 0.20 * official_bonus
+        + 0.10 * market_bonus
+    )
+    if market_bonus and strategic_hits:
+        if not context_hits and not conflict_hits:
+            raw *= 0.85
+    elif not context_hits or not conflict_hits:
         raw *= 0.25
     elif context_hits == 1 and conflict_hits == 1:
         raw *= 0.8
@@ -478,15 +507,46 @@ def build_uncertainties(events: List[Dict[str, Any]], state_variables: Dict[str,
     return uncertainties[:2]
 
 
+def build_market_signals(items: List[Dict[str, Any]]) -> Dict[str, List[Dict[str, Any]]]:
+    oil = []
+    prediction_markets = []
+    for item in items:
+        source = str(item.get("source", ""))
+        payload = item.get("payload") or {}
+        if source == "oil_market":
+            oil.append(
+                {
+                    "title": item.get("title", ""),
+                    "published_at": item.get("published_at"),
+                    "url": item.get("url"),
+                    "snapshot": item.get("content_text", ""),
+                }
+            )
+        elif source == "polymarket_geopolitics":
+            prediction_markets.append(
+                {
+                    "title": item.get("title", ""),
+                    "published_at": item.get("published_at"),
+                    "url": item.get("url"),
+                    "outcome_prices": payload.get("outcomePrices"),
+                    "outcomes": payload.get("outcomes"),
+                    "volume": payload.get("volume"),
+                    "liquidity": payload.get("liquidity"),
+                }
+            )
+    return {
+        "oil": oil[:4],
+        "prediction_markets": prediction_markets[:4],
+    }
+
+
 def build_analysis_package(
     items: List[Dict[str, Any]],
     language: str,
     model: Optional[str] = None,
 ) -> Dict[str, Any]:
     events = build_signal_events(items)
-    displayed_events = [event for event in events if event["display"]]
-    ranked_events = displayed_events or events
-    candidate_events = select_diverse_events(ranked_events, limit=80, per_source_cap=8)
+    candidate_events = select_diverse_events(events, limit=100, per_source_cap=10)
     judged_events = assess_event_relevance(candidate_events, language=language, model=model)
     related_events = [event for event in judged_events if event.get("decision_related")]
     ranked_related_events = sorted(
@@ -545,6 +605,7 @@ def build_analysis_package(
         "state_variables": state_list,
         "top_events": display_events,
         "all_scored_events": select_diverse_events(events, limit=50, per_source_cap=4),
+        "market_signals": build_market_signals(items),
         "contradictions": contradictions,
         "decision_panel": {
             "current_state": phase,
