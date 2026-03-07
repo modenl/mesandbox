@@ -24,6 +24,9 @@ TEXT = {
         "news_window_note": "仅展示最近7天内、经模型判定与结束时间或结果预判直接相关的信息。",
         "news_relevance": "为何相关",
         "news_relevance_score": "相关性分",
+        "news_volume": "成交量",
+        "news_volume_24h": "24h成交",
+        "news_liquidity": "流动性",
         "latest_forecast": "最新推演",
         "latest_forecast_time": "最新推演时间",
         "evidence_items": "证据条目",
@@ -134,6 +137,9 @@ TEXT = {
         "news_window_note": "Only items from the last 7 days are shown, and each item must be judged by the model as directly relevant to end timing or likely outcome.",
         "news_relevance": "Why it matters",
         "news_relevance_score": "Relevance score",
+        "news_volume": "Volume",
+        "news_volume_24h": "24h volume",
+        "news_liquidity": "Liquidity",
         "latest_forecast": "Latest Forecast",
         "latest_forecast_time": "Latest forecast time",
         "evidence_items": "Evidence items",
@@ -410,6 +416,9 @@ def _news_section(top_events: list[dict], text: dict) -> str:
             <span>C {escape(str(item.get('credibility', '-')))}</span>
             <span>I {escape(str(item.get('importance', '-')))}</span>
             <span>{escape(text['news_relevance_score'])} {escape(str(item.get('relevance_score', '-')))}</span>
+            {f"<span>{escape(text['news_volume_24h'])} {escape(str(round(float(item.get('market_volume_24h', 0.0)), 0)))}</span>" if float(item.get('market_volume_24h', 0.0) or 0.0) > 0 else ""}
+            {f"<span>{escape(text['news_volume'])} {escape(str(round(float(item.get('market_volume', 0.0)), 0)))}</span>" if float(item.get('market_volume', 0.0) or 0.0) > 0 else ""}
+            {f"<span>{escape(text['news_liquidity'])} {escape(str(round(float(item.get('market_liquidity', 0.0)), 0)))}</span>" if float(item.get('market_liquidity', 0.0) or 0.0) > 0 else ""}
           </div>
         </a>
         """

@@ -514,51 +514,87 @@ def _polymarket_market_relevant(row: Dict[str, Any]) -> bool:
 
 
 def fetch_polymarket_geopolitics(limit: int = 8) -> List[Dict[str, Any]]:
-    payload = http_get_json("https://gamma-api.polymarket.com/markets?limit=1000&closed=false&active=true")
+    queries = [
+        "iran",
+        "iran israel",
+        "iran strike israel",
+        "netanyahu",
+        "hormuz",
+        "middle east",
+        "israel iran ceasefire",
+    ]
     fetched_at = utc_now()
-    markets = []
-    for row in payload:
-        if not _polymarket_market_relevant(row):
-            continue
-        outcomes = []
-        prices = []
-        try:
-            outcomes = json.loads(row.get("outcomes") or "[]")
-        except json.JSONDecodeError:
-            outcomes = []
-        try:
-            prices = [float(value) for value in json.loads(row.get("outcomePrices") or "[]")]
-        except (json.JSONDecodeError, TypeError, ValueError):
-            prices = []
-        outcome_pairs = ", ".join(
-            f"{name}={price:.3f}" for name, price in zip(outcomes, prices)
-        ) or "-"
-        events = row.get("events") or []
-        event = events[0] if events else {}
-        updated_at = normalize_timestamp(
-            str(event.get("updatedAt") or row.get("updatedAt") or row.get("endDate") or "")
-        ) or fetched_at
-        event_slug = str(event.get("slug") or row.get("slug") or "").strip()
-        title = str(row.get("question") or event.get("title") or row.get("slug") or "Polymarket market").strip()
-        content_text = (
-            f"prediction_market={title}; outcome_prices={outcome_pairs}; volume={row.get('volume')}; "
-            f"liquidity={row.get('liquidity')}; end_date={row.get('endDate')}; "
-            f"description={_strip_html(str(row.get('description') or ''))[:500]}"
+    markets_by_id: Dict[str, Dict[str, Any]] = {}
+    for query in queries:
+        payload = http_get_json(
+            "https://gamma-api.polymarket.com/public-search?q=" + quote_plus(query)
         )
-        markets.append(
-            {
-                "id": stable_id("polymarket_geopolitics", str(row.get("id", "")), title),
-                "source": "polymarket_geopolitics",
-                "fetched_at": fetched_at,
-                "published_at": updated_at,
-                "title": title,
-                "url": f"https://polymarket.com/event/{event_slug}" if event_slug else "https://polymarket.com/",
-                "content_text": content_text,
-                "payload": row,
-            }
-        )
+        for event in payload.get("events", []) or []:
+            event_slug = str(event.get("slug") or "").strip()
+            for market in event.get("markets") or []:
+                if not market.get("active") or market.get("closed"):
+                    continue
+                merged = {**market, "event_title": event.get("title"), "event_slug": event_slug, "event_volume": event.get("volume"), "event_liquidity": event.get("liquidity")}
+                if not _polymarket_market_relevant(merged):
+                    continue
+                outcomes = []
+                prices = []
+                try:
+                    outcomes = json.loads(market.get("outcomes") or "[]")
+                except json.JSONDecodeError:
+                    outcomes = []
+                try:
+                    prices = [float(value) for value in json.loads(market.get("outcomePrices") or "[]")]
+                except (json.JSONDecodeError, TypeError, ValueError):
+                    prices = []
+                outcome_pairs = ", ".join(
+                    f"{name}={price:.3f}" for name, price in zip(outcomes, prices)
+                ) or "-"
+                updated_at = normalize_timestamp(
+                    str(market.get("updatedAt") or event.get("updatedAt") or event.get("endDate") or "")
+                ) or fetched_at
+                title = str(market.get("question") or event.get("title") or market.get("slug") or "Polymarket market").strip()
+                volume = float(market.get("volume") or market.get("volumeNum") or 0.0)
+                volume_24h = float(market.get("volume24hr") or 0.0)
+                liquidity = float(market.get("liquidity") or market.get("liquidityNum") or 0.0)
+                content_text = (
+                    f"prediction_market={title}; event={event.get('title')}; outcome_prices={outcome_pairs}; "
+                    f"volume={volume:.2f}; volume24hr={volume_24h:.2f}; liquidity={liquidity:.2f}; "
+                    f"end_date={market.get('endDate')}; description={_strip_html(str(market.get('description') or event.get('description') or ''))[:500]}"
+                )
+                item = {
+                    "id": stable_id("polymarket_geopolitics", str(market.get("id", "")), title),
+                    "source": "polymarket_geopolitics",
+                    "fetched_at": fetched_at,
+                    "published_at": updated_at,
+                    "title": title,
+                    "url": f"https://polymarket.com/event/{event_slug}" if event_slug else "https://polymarket.com/",
+                    "content_text": content_text,
+                    "payload": {
+                        **merged,
+                        "volume": volume,
+                        "volume24hr": volume_24h,
+                        "liquidity": liquidity,
+                        "outcomes": outcomes,
+                        "outcomePrices": prices,
+                    },
+                }
+                existing = markets_by_id.get(item["id"])
+                if not existing:
+                    markets_by_id[item["id"]] = item
+                    continue
+                old_payload = existing.get("payload") or {}
+                if (volume_24h, volume, liquidity) > (
+                    float(old_payload.get("volume24hr") or 0.0),
+                    float(old_payload.get("volume") or 0.0),
+                    float(old_payload.get("liquidity") or 0.0),
+                ):
+                    markets_by_id[item["id"]] = item
+
+    markets = list(markets_by_id.values())
     markets.sort(
         key=lambda item: (
+            float((item.get("payload") or {}).get("volume24hr") or 0.0),
             float((item.get("payload") or {}).get("volume") or 0.0),
             float((item.get("payload") or {}).get("liquidity") or 0.0),
         ),

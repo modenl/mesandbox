@@ -218,6 +218,13 @@ def _normalized_title(value: str) -> str:
     return re.sub(r"[^a-z0-9]+", " ", value.lower()).strip()
 
 
+def _safe_float(value: Any) -> float:
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return 0.0
+
+
 def classify_source(item: Dict[str, Any]) -> str:
     source = str(item.get("source", "")).lower()
     title = str(item.get("title", "")).lower()
@@ -271,17 +278,35 @@ def score_importance(item: Dict[str, Any]) -> float:
     strategic_hits = _count_term_hits(text, STRATEGIC_TERMS)
     context_hits = _count_term_hits(text, IRAN_CONTEXT_TERMS)
     conflict_hits = _count_term_hits(text, CONFLICT_TERMS)
+    payload = item.get("payload") or {}
     variable_hits = 0
     for variable in VARIABLES:
         variable_hits += _count_term_hits(text, variable["up_terms"])
         variable_hits += _count_term_hits(text, variable["down_terms"])
     official_bonus = 1 if classify_source(item) in {"sensor", "official", "wire"} else 0
     market_bonus = 1 if classify_source(item) == "market" else 0
+    market_strength = 0.0
+    source_name = str(item.get("source", "")).lower()
+    if source_name == "polymarket_geopolitics":
+        volume = _safe_float(payload.get("volume"))
+        volume_24h = _safe_float(payload.get("volume24hr"))
+        liquidity = _safe_float(payload.get("liquidity"))
+        market_strength = _clamp(
+            0.50 * min(volume_24h / 250000.0, 1.0)
+            + 0.30 * min(volume / 1000000.0, 1.0)
+            + 0.20 * min(liquidity / 100000.0, 1.0)
+        )
+    elif source_name == "oil_market":
+        price = _safe_float((payload.get("meta") or {}).get("regularMarketPrice"))
+        previous_close = _safe_float((payload.get("meta") or {}).get("previousClose") or (payload.get("meta") or {}).get("chartPreviousClose"))
+        change_pct = abs((price - previous_close) / previous_close * 100.0) if previous_close else 0.0
+        market_strength = min(change_pct / 8.0, 1.0)
     raw = (
         0.40 * min(strategic_hits / 2.0, 1.0)
         + 0.30 * min(variable_hits / 3.0, 1.0)
         + 0.20 * official_bonus
         + 0.10 * market_bonus
+        + 0.20 * market_strength
     )
     if market_bonus and strategic_hits:
         if not context_hits and not conflict_hits:
@@ -328,6 +353,9 @@ def build_signal_events(items: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
             "display": display,
             "variable_impacts": variable_impacts,
             "duplicate_count": 1,
+            "market_volume": _safe_float((item.get("payload") or {}).get("volume")),
+            "market_volume_24h": _safe_float((item.get("payload") or {}).get("volume24hr")),
+            "market_liquidity": _safe_float((item.get("payload") or {}).get("liquidity")),
         }
         key = (
             str(event["source"]).lower(),
@@ -531,6 +559,7 @@ def build_market_signals(items: List[Dict[str, Any]]) -> Dict[str, List[Dict[str
                     "outcome_prices": payload.get("outcomePrices"),
                     "outcomes": payload.get("outcomes"),
                     "volume": payload.get("volume"),
+                    "volume_24h": payload.get("volume24hr"),
                     "liquidity": payload.get("liquidity"),
                 }
             )
