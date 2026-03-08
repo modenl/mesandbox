@@ -148,6 +148,141 @@ VARIABLES = [
 ]
 
 
+INDICATOR_BY_ID = {item["id"]: item for item in VARIABLES}
+
+
+SOURCE_INDICATOR_MAP = {
+    "gdelt": [
+        "strike_capacity",
+        "logistics_capacity",
+        "command_control",
+        "operational_control",
+        "leadership_stability",
+        "domestic_support",
+        "elite_cohesion",
+        "economic_resilience",
+        "energy_trade_disruption",
+        "sanctions_pressure",
+        "external_involvement",
+        "negotiation_signals",
+    ],
+    "gdelt_timeline": [
+        "strike_capacity",
+        "external_involvement",
+        "energy_trade_disruption",
+        "negotiation_signals",
+    ],
+    "centcom_dvids": [
+        "external_involvement",
+        "operational_control",
+        "command_control",
+        "strike_capacity",
+    ],
+    "idf_releases": [
+        "strike_capacity",
+        "operational_control",
+        "command_control",
+        "external_involvement",
+    ],
+    "presstv_latest": [
+        "leadership_stability",
+        "domestic_support",
+        "elite_cohesion",
+        "external_involvement",
+        "negotiation_signals",
+    ],
+    "iaea_news": [
+        "command_control",
+        "external_involvement",
+        "sanctions_pressure",
+    ],
+    "adsb_military": [
+        "logistics_capacity",
+        "operational_control",
+        "external_involvement",
+        "command_control",
+    ],
+    "oil_market": [
+        "energy_trade_disruption",
+        "economic_resilience",
+    ],
+    "polymarket_geopolitics": [
+        "leadership_stability",
+        "elite_cohesion",
+        "energy_trade_disruption",
+        "negotiation_signals",
+        "external_involvement",
+        "strike_capacity",
+    ],
+    "radiofarda_iran": [
+        "leadership_stability",
+        "domestic_support",
+        "elite_cohesion",
+        "economic_resilience",
+        "negotiation_signals",
+    ],
+    "unnews_middle_east": [
+        "external_involvement",
+        "negotiation_signals",
+        "energy_trade_disruption",
+        "domestic_support",
+    ],
+    "unnews_peace_security": [
+        "external_involvement",
+        "negotiation_signals",
+        "sanctions_pressure",
+    ],
+    "rss:Google News Iran Conflict": [
+        "strike_capacity",
+        "command_control",
+        "operational_control",
+        "external_involvement",
+        "leadership_stability",
+    ],
+    "rss:Google News Hormuz Shipping": [
+        "energy_trade_disruption",
+        "operational_control",
+        "external_involvement",
+    ],
+    "rss:Radio Farda Iran News": [
+        "leadership_stability",
+        "domestic_support",
+        "elite_cohesion",
+        "economic_resilience",
+        "negotiation_signals",
+    ],
+    "rss:UN News Middle East": [
+        "external_involvement",
+        "negotiation_signals",
+        "energy_trade_disruption",
+    ],
+    "rss:UN News Peace and Security": [
+        "negotiation_signals",
+        "external_involvement",
+        "sanctions_pressure",
+    ],
+    "rss:Google News Iran Sanctions": [
+        "sanctions_pressure",
+        "economic_resilience",
+        "external_involvement",
+    ],
+    "rss:Google News Iran Domestic Stability": [
+        "domestic_support",
+        "elite_cohesion",
+        "leadership_stability",
+        "economic_resilience",
+    ],
+    "rss:Google News Iran Talks": [
+        "negotiation_signals",
+        "external_involvement",
+    ],
+    "rss:Google News Iran Succession": [
+        "leadership_stability",
+        "elite_cohesion",
+    ],
+}
+
+
 STRATEGIC_TERMS = [
     "missile base",
     "launcher",
@@ -284,6 +419,73 @@ def _safe_float(value: Any) -> float:
         return 0.0
 
 
+def _source_indicator_ids(source: str) -> List[str]:
+    for key, indicator_ids in SOURCE_INDICATOR_MAP.items():
+        if source == key:
+            return list(indicator_ids)
+    for key, indicator_ids in SOURCE_INDICATOR_MAP.items():
+        if key.startswith("rss:") and source.startswith(key):
+            return list(indicator_ids)
+    return []
+
+
+def _source_tags_apply_directly(source: str) -> bool:
+    direct_sources = {
+        "adsb_military",
+        "oil_market",
+        "rss:Google News Iran Sanctions",
+        "rss:Google News Iran Domestic Stability",
+        "rss:Google News Iran Talks",
+        "rss:Google News Iran Succession",
+    }
+    return source in direct_sources
+
+
+def infer_indicator_ids(item: Dict[str, Any]) -> List[str]:
+    source = str(item.get("source", ""))
+    text = " ".join(
+        filter(
+            None,
+            [str(item.get("title", "")), str(item.get("content_text", "")), str(item.get("url", ""))],
+        )
+    ).lower()
+    found = set(_source_indicator_ids(source)) if _source_tags_apply_directly(source) else set()
+    for variable in VARIABLES:
+        if _count_term_hits(text, variable["up_terms"]) or _count_term_hits(text, variable["down_terms"]):
+            found.add(variable["id"])
+
+    if source == "polymarket_geopolitics":
+        if any(term in text for term in ["hormuz", "tanker", "shipping", "oil"]):
+            found.update({"energy_trade_disruption", "operational_control"})
+        if any(term in text for term in ["strike", "missile", "attack", "drone"]):
+            found.update({"strike_capacity", "external_involvement"})
+        if any(term in text for term in ["supreme leader", "khamenei", "succession", "next leader"]):
+            found.update({"leadership_stability", "elite_cohesion"})
+        if any(term in text for term in ["ceasefire", "talks", "truce", "mediation"]):
+            found.add("negotiation_signals")
+        if "sanction" in text:
+            found.add("sanctions_pressure")
+    elif source == "oil_market":
+        found.update({"energy_trade_disruption", "economic_resilience"})
+    elif source == "adsb_military":
+        found.update({"logistics_capacity", "operational_control", "external_involvement"})
+
+    return [indicator_id for indicator_id in INDICATOR_BY_ID if indicator_id in found]
+
+
+def enrich_indicator_metadata(item: Dict[str, Any]) -> Dict[str, Any]:
+    source = str(item.get("source", ""))
+    indicator_ids = infer_indicator_ids(item)
+    payload = dict(item.get("payload") or {})
+    payload["source_indicator_ids"] = _source_indicator_ids(source)
+    payload["indicator_ids"] = indicator_ids
+    item["payload"] = payload
+    item["source_indicator_ids"] = payload["source_indicator_ids"]
+    item["indicator_ids"] = indicator_ids
+    item["indicator_labels"] = [INDICATOR_BY_ID[indicator_id]["label_en"] for indicator_id in indicator_ids if indicator_id in INDICATOR_BY_ID]
+    return item
+
+
 def classify_source(item: Dict[str, Any]) -> str:
     source = str(item.get("source", "")).lower()
     title = str(item.get("title", "")).lower()
@@ -384,18 +586,49 @@ def map_event_to_variables(item: Dict[str, Any]) -> Dict[str, float]:
             [str(item.get("title", "")), str(item.get("content_text", "")), str(item.get("url", ""))],
         )
     ).lower()
+    indicator_ids = set(item.get("indicator_ids") or ((item.get("payload") or {}).get("indicator_ids") or []))
     result = {}
     for variable in VARIABLES:
         up = _count_term_hits(text, variable["up_terms"])
         down = _count_term_hits(text, variable["down_terms"])
+        if variable["id"] in indicator_ids and not up and not down:
+            continue
         if up or down:
             result[variable["id"]] = float(up - down)
+    source = str(item.get("source", ""))
+    payload = item.get("payload") or {}
+    if source == "oil_market":
+        fields = str(item.get("content_text", ""))
+        change_match = re.search(r"pct_change=([-+]?\d+(?:\.\d+)?)", fields)
+        if change_match:
+            pct_change = _safe_float(change_match.group(1))
+            result["energy_trade_disruption"] = max(result.get("energy_trade_disruption", 0.0), max(0.0, min(3.0, abs(pct_change) / 4.0)))
+            if pct_change >= 8:
+                result["economic_resilience"] = min(result.get("economic_resilience", 0.0), -1.0) if "economic_resilience" in result else -1.0
+    elif source == "polymarket_geopolitics":
+        title = str(item.get("title", "")).lower()
+        prices = payload.get("outcomePrices") or []
+        top_price = max([_safe_float(value) for value in prices], default=0.0)
+        if "hormuz" in title:
+            result["energy_trade_disruption"] = max(result.get("energy_trade_disruption", 0.0), max(0.8, top_price))
+        if any(term in title for term in ["strike", "missile", "attack", "drone"]):
+            result["strike_capacity"] = max(result.get("strike_capacity", 0.0), max(0.8, top_price))
+        if any(term in title for term in ["supreme leader", "khamenei", "succession", "next leader"]):
+            result["leadership_stability"] = min(result.get("leadership_stability", 0.0), -max(0.6, top_price)) if "leadership_stability" in result else -max(0.6, top_price)
+            result["elite_cohesion"] = min(result.get("elite_cohesion", 0.0), -0.5) if "elite_cohesion" in result else -0.5
+        if any(term in title for term in ["ceasefire", "talks", "truce"]):
+            result["negotiation_signals"] = max(result.get("negotiation_signals", 0.0), max(0.6, top_price))
+    elif source == "adsb_military":
+        result["logistics_capacity"] = max(result.get("logistics_capacity", 0.0), 1.0)
+        result["operational_control"] = max(result.get("operational_control", 0.0), 0.6)
+        result["external_involvement"] = max(result.get("external_involvement", 0.0), 0.8)
     return result
 
 
 def build_signal_events(items: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     deduped: Dict[tuple[str, str], Dict[str, Any]] = {}
     for item in items:
+        item = enrich_indicator_metadata(dict(item))
         credibility = score_credibility(item)
         importance = score_importance(item)
         variable_impacts = map_event_to_variables(item)
@@ -413,6 +646,8 @@ def build_signal_events(items: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
             "display": display,
             "variable_impacts": variable_impacts,
             "duplicate_count": 1,
+            "indicator_ids": list(item.get("indicator_ids") or []),
+            "source_indicator_ids": list(item.get("source_indicator_ids") or []),
             "market_volume": _safe_float((item.get("payload") or {}).get("volume")),
             "market_volume_24h": _safe_float((item.get("payload") or {}).get("volume24hr")),
             "market_liquidity": _safe_float((item.get("payload") or {}).get("liquidity")),
@@ -464,6 +699,58 @@ def select_diverse_events(events: List[Dict[str, Any]], limit: int = 20, per_sou
         if len(selected) >= limit:
             break
     return selected
+
+
+def select_indicator_events(
+    events: List[Dict[str, Any]],
+    limit: int = 24,
+    per_source_cap: int = 4,
+) -> List[Dict[str, Any]]:
+    selected: List[Dict[str, Any]] = []
+    selected_keys = set()
+    source_counts: Dict[str, int] = {}
+
+    def add_event(event: Dict[str, Any]) -> bool:
+        key = (str(event.get("source", "")), str(event.get("title", "")))
+        source = str(event.get("source", ""))
+        if key in selected_keys or source_counts.get(source, 0) >= per_source_cap:
+            return False
+        selected.append(event)
+        selected_keys.add(key)
+        source_counts[source] = source_counts.get(source, 0) + 1
+        return True
+
+    for indicator in VARIABLES:
+        for event in events:
+            if indicator["id"] in (event.get("indicator_ids") or []):
+                if add_event(event):
+                    break
+        if len(selected) >= limit:
+            return selected[:limit]
+
+    for event in events:
+        add_event(event)
+        if len(selected) >= limit:
+            break
+    return selected[:limit]
+
+
+def build_indicator_evidence(events: List[Dict[str, Any]], language: str) -> List[Dict[str, Any]]:
+    label_key = "label_zh" if language == "zh" else "label_en"
+    group_key = "group_zh" if language == "zh" else "group_en"
+    evidence = []
+    for variable in VARIABLES:
+        matching = [event for event in events if variable["id"] in (event.get("indicator_ids") or [])]
+        evidence.append(
+            {
+                "id": variable["id"],
+                "group": variable[group_key],
+                "label": variable[label_key],
+                "evidence_count": len(matching),
+                "top_titles": [event.get("title", "") for event in matching[:3]],
+            }
+        )
+    return evidence
 
 
 def compute_state_variables(events: List[Dict[str, Any]], language: str) -> List[Dict[str, Any]]:
@@ -758,7 +1045,7 @@ def build_analysis_package(
         ),
         reverse=True,
     )
-    analysis_events = select_diverse_events(ranked_related_events, limit=20, per_source_cap=3)
+    analysis_events = select_indicator_events(ranked_related_events, limit=24, per_source_cap=4)
     display_events = sorted(
         select_diverse_events(ranked_related_events, limit=50, per_source_cap=6),
         key=_event_sort_key,
@@ -766,6 +1053,7 @@ def build_analysis_package(
     )
     state_list = compute_state_variables(analysis_events, language)
     indicator_groups = group_state_variables(state_list, language)
+    indicator_evidence = build_indicator_evidence(ranked_related_events, language)
     state_map = {state["id"]: state for state in state_list}
     windows = termination_windows(state_map)
     outcome = derive_outcome(state_map, language)
@@ -806,6 +1094,7 @@ def build_analysis_package(
         ),
         "state_variables": state_list,
         "indicator_groups": indicator_groups,
+        "indicator_evidence": indicator_evidence,
         "top_events": display_events,
         "all_scored_events": select_diverse_events(events, limit=50, per_source_cap=4),
         "market_signals": build_market_signals(items),
@@ -863,9 +1152,10 @@ def upgrade_summary_framework(summary: Dict[str, Any], language: str) -> Dict[st
         ),
         reverse=True,
     )
-    analysis_events = select_diverse_events(ranked, limit=20, per_source_cap=3)
+    analysis_events = select_indicator_events(ranked, limit=24, per_source_cap=4)
     state_list = compute_state_variables(analysis_events, language)
     indicator_groups = group_state_variables(state_list, language)
+    indicator_evidence = build_indicator_evidence(ranked, language)
     state_map = {state["id"]: state for state in state_list}
     uncertainties = build_uncertainties(analysis_events, state_map, language)
     upgraded = {
@@ -886,6 +1176,7 @@ def upgrade_summary_framework(summary: Dict[str, Any], language: str) -> Dict[st
         ),
         "state_variables": state_list,
         "indicator_groups": indicator_groups,
+        "indicator_evidence": indicator_evidence,
         "decision_panel": {
             **summary.get("decision_panel", {}),
             "current_state": derive_current_state(state_map, language),
@@ -916,6 +1207,7 @@ def localize_summary(summary: Dict[str, Any], language: str, model: Optional[str
         "all_scored_events": [dict(item) for item in summary.get("all_scored_events", [])],
         "state_variables": [dict(item) for item in summary.get("state_variables", [])],
         "indicator_groups": [dict(item) for item in summary.get("indicator_groups", [])],
+        "indicator_evidence": [dict(item) for item in summary.get("indicator_evidence", [])],
         "decision_panel": {
             **summary.get("decision_panel", {}),
             "top_decisive_signals": [dict(item) for item in summary.get("decision_panel", {}).get("top_decisive_signals", [])],
@@ -950,6 +1242,12 @@ def localize_summary(summary: Dict[str, Any], language: str, model: Optional[str
                 }
             )
         localized["indicator_groups"] = normalized_groups
+    for item in localized.get("indicator_evidence", []):
+        meta = variable_lookup.get(str(item.get("id")))
+        if not meta:
+            continue
+        item["label"] = meta[label_key]
+        item["group"] = meta[group_key]
     titles = [str(item.get("title", "")) for item in localized.get("top_events", [])]
     if not titles:
         localized["summary_language"] = language

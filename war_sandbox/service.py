@@ -69,7 +69,7 @@ from .sources import (
     filter_by_hours,
     load_rss_config,
 )
-from .war_state import build_analysis_package, localize_summary
+from .war_state import build_analysis_package, enrich_indicator_metadata, localize_summary
 from .agent_browser import agent_browser_available
 
 
@@ -666,6 +666,50 @@ def default_source_configs(rss_path: str = str(RSS_CONFIG_PATH)) -> List[Dict[st
             },
         },
         {
+            "id": "google_news_iran_sanctions",
+            "name": "Google News Iran Sanctions",
+            "kind": "rss",
+            "enabled": True,
+            "interval_seconds": DEFAULT_RSS_INTERVAL_SECONDS,
+            "params": {
+                "url": "https://news.google.com/rss/search?q=Iran+sanctions+SWIFT+export+controls+when:7d&hl=en-US&gl=US&ceid=US:en",
+                "hours": DEFAULT_HOURS,
+            },
+        },
+        {
+            "id": "google_news_iran_domestic_stability",
+            "name": "Google News Iran Domestic Stability",
+            "kind": "rss",
+            "enabled": True,
+            "interval_seconds": DEFAULT_RSS_INTERVAL_SECONDS,
+            "params": {
+                "url": "https://news.google.com/rss/search?q=Iran+protests+strikes+inflation+unrest+when:7d&hl=en-US&gl=US&ceid=US:en",
+                "hours": DEFAULT_HOURS,
+            },
+        },
+        {
+            "id": "google_news_iran_talks",
+            "name": "Google News Iran Talks",
+            "kind": "rss",
+            "enabled": True,
+            "interval_seconds": DEFAULT_RSS_INTERVAL_SECONDS,
+            "params": {
+                "url": "https://news.google.com/rss/search?q=Iran+Israel+ceasefire+talks+Oman+Qatar+mediation+when:7d&hl=en-US&gl=US&ceid=US:en",
+                "hours": DEFAULT_HOURS,
+            },
+        },
+        {
+            "id": "google_news_iran_succession",
+            "name": "Google News Iran Succession",
+            "kind": "rss",
+            "enabled": True,
+            "interval_seconds": DEFAULT_RSS_INTERVAL_SECONDS,
+            "params": {
+                "url": "https://news.google.com/rss/search?q=Iran+succession+Khamenei+IRGC+leadership+when:7d&hl=en-US&gl=US&ceid=US:en",
+                "hours": DEFAULT_HOURS,
+            },
+        },
+        {
             "id": "radiofarda_iran",
             "name": "Radio Farda Iran News",
             "kind": "rss",
@@ -973,7 +1017,7 @@ class SandboxService:
             else:
                 raise ValueError(f"Unsupported source kind: {source['kind']}")
 
-            filtered = filter_by_hours(items, hours)
+            filtered = [enrich_indicator_metadata(dict(item)) for item in filter_by_hours(items, hours)]
             if source["kind"] in {"oil_market", "polymarket"}:
                 delete_raw_items_for_source(source["id"])
             inserted = insert_raw_items(filtered)

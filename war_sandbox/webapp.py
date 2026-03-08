@@ -117,6 +117,7 @@ TEXT = {
         "indicator_frame": "12个核心指标",
         "indicator_frame_note": "按军事能力、政治稳定、经济与资源、国际环境四组组织。数值越高，表示该指标在当前证据中的强度越高。",
         "indicator_group_avg": "组均值",
+        "indicator_evidence_count": "证据",
         "sources_in_use": "信息源状态",
         "sources_in_use_note": "只展示当前真实接入的数据源。绿点表示当前抓取可用，其它状态表示暂不可用或已停用。",
         "source_why_trust": "为何可信",
@@ -234,6 +235,7 @@ TEXT = {
         "indicator_frame": "12 Core Indicators",
         "indicator_frame_note": "Organized into military capability, political stability, economy/resources, and international environment. Higher values mean the signal is more strongly present in the current evidence.",
         "indicator_group_avg": "Group average",
+        "indicator_evidence_count": "Evidence",
         "sources_in_use": "Source Status",
         "sources_in_use_note": "This list shows only live configured sources. A green dot means the current fetch path is working; other states mean it is unavailable or disabled.",
         "source_why_trust": "Why it is trusted",
@@ -307,6 +309,22 @@ SOURCE_BRIEFS = {
     "google_news_hormuz_shipping": {
         "zh": "霍尔木兹航运聚合流用于补捉海运与能源外溢信号，重点看是否影响通航与油运节奏。",
         "en": "The Hormuz shipping news stream is used to track maritime and energy spillover, especially whether transit and tanker flows are being disrupted.",
+    },
+    "google_news_iran_sanctions": {
+        "zh": "这一订阅专门跟踪制裁、金融限制和出口管制变化，用来补足制裁压力指标的证据面。",
+        "en": "This feed is focused on sanctions, financial restrictions, and export controls, giving direct coverage for the sanctions-pressure indicator.",
+    },
+    "google_news_iran_domestic_stability": {
+        "zh": "这一订阅专门跟踪抗议、罢工、通胀和社会不稳，用来补足国内支持度与精英联盟稳定的证据。",
+        "en": "This feed focuses on protests, strikes, inflation, and unrest, helping cover domestic support and elite-cohesion signals.",
+    },
+    "google_news_iran_talks": {
+        "zh": "这一订阅专门跟踪停火、斡旋和秘密渠道动态，用来强化谈判信号指标。",
+        "en": "This feed tracks ceasefire, mediation, and backchannel developments to strengthen the negotiation-signals indicator.",
+    },
+    "google_news_iran_succession": {
+        "zh": "这一订阅专门跟踪接班、权力斗争和高层调整，用来补足领导层稳定与精英联盟稳定的证据。",
+        "en": "This feed tracks succession, power struggle, and top-level reshuffles to cover leadership stability and elite cohesion.",
     },
 }
 
@@ -481,7 +499,7 @@ def _indicator_section(indicator_groups: list[dict], text: dict) -> str:
         items = "".join(
             f"""
             <div class="indicator-row">
-              <span>{escape(str(item.get('label', '-')))}</span>
+              <span>{escape(str(item.get('label', '-')))} · {escape(text['indicator_evidence_count'])} {escape(str(item.get('evidence_count', 0)))}</span>
               <strong>{escape(str(item.get('value', '-')))}</strong>
             </div>
             """

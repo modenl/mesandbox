@@ -482,6 +482,7 @@ def assess_event_relevance(
             "source": str(event.get("source", "")),
             "published_at": str(event.get("published_at") or event.get("fetched_at") or ""),
             "content": _build_event_context(event),
+            "indicator_hints": list(event.get("indicator_ids") or []),
             "credibility": event.get("credibility"),
             "importance": event.get("importance"),
             "market_volume": event.get("market_volume"),
