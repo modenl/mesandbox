@@ -119,6 +119,9 @@ TEXT = {
         "indicator_frame_note": "系统只跟踪军事能力、战争成本、谈判信号。数值越高，表示该信号在当前证据中的强度越高。",
         "indicator_group_avg": "组均值",
         "indicator_evidence_count": "证据",
+        "indicator_filter_all": "查看全部",
+        "indicator_filter_status_all": "当前过滤: 全部",
+        "indicator_filter_status": "当前过滤",
         "sources_in_use": "信息源状态",
         "sources_in_use_note": "只展示当前真实接入的数据源。绿点表示当前抓取可用，其它状态表示暂不可用或已停用。",
         "source_why_trust": "为何可信",
@@ -238,6 +241,9 @@ TEXT = {
         "indicator_frame_note": "The system tracks only military capability, war cost, and negotiation signals. Higher values mean the signal is more strongly present in the current evidence.",
         "indicator_group_avg": "Group average",
         "indicator_evidence_count": "Evidence",
+        "indicator_filter_all": "Show all",
+        "indicator_filter_status_all": "Filter: All",
+        "indicator_filter_status": "Filter",
         "sources_in_use": "Source Status",
         "sources_in_use_note": "This list shows only live configured sources. A green dot means the current fetch path is working; other states mean it is unavailable or disabled.",
         "source_why_trust": "Why it is trusted",
@@ -433,7 +439,7 @@ def _news_section(top_events: list[dict], text: dict) -> str:
     )
     news_rows = "".join(
         f"""
-        <a class="news-item" data-news-item href="{escape(item.get('url', '#'))}" target="_blank" rel="noopener">
+        <a class="news-item" data-news-item data-core-signals="{escape(','.join(item.get('core_signal_ids', []) or []))}" href="{escape(item.get('url', '#'))}" target="_blank" rel="noopener">
           <div class="news-head">
             <span class="news-source">{escape(str(item.get('source', '-')))}</span>
             <span class="news-time">{escape(str(item.get('published_at') or item.get('fetched_at') or '-'))}</span>
@@ -461,6 +467,7 @@ def _news_section(top_events: list[dict], text: dict) -> str:
         <span>{escape(text['news_show'])}</span>
         <select id="news-count-select">{option_rows}</select>
       </label>
+      <div class="compact-note" id="news-filter-status">{escape(text['indicator_filter_status_all'])}</div>
       <div class="compact-note">{escape(text['news_visible'])}: <strong id="news-visible-count">0 / {total}</strong></div>
     </div>
     <div class="news-grid">{news_rows}</div>
@@ -468,25 +475,74 @@ def _news_section(top_events: list[dict], text: dict) -> str:
       (() => {{
         const select = document.getElementById("news-count-select");
         const counter = document.getElementById("news-visible-count");
+        const status = document.getElementById("news-filter-status");
         const items = Array.from(document.querySelectorAll("[data-news-item]"));
+        const filterButtons = Array.from(document.querySelectorAll("[data-signal-filter]"));
+        const clearButton = document.querySelector("[data-signal-filter-all]");
         if (!select || !counter || !items.length) return;
+        let activeSignal = "";
         try {{
           const saved = localStorage.getItem("mesim-news-count");
           if (saved && Array.from(select.options).some((option) => option.value === saved)) {{
             select.value = saved;
           }}
+          const savedFilter = localStorage.getItem("mesim-news-filter");
+          if (savedFilter && filterButtons.some((button) => button.dataset.signalFilter === savedFilter)) {{
+            activeSignal = savedFilter;
+          }}
         }} catch (_error) {{}}
+        const signalList = (item) => (item.dataset.coreSignals || "").split(",").map((value) => value.trim()).filter(Boolean);
         const apply = () => {{
           const raw = Number.parseInt(select.value, 10) || 20;
-          const visible = raw >= 9999 ? items.length : Math.min(raw, items.length);
-          items.forEach((item, index) => {{
-            item.style.display = index < visible ? "block" : "none";
+          let shown = 0;
+          const filteredTotal = items.reduce((count, item) => {{
+            return count + ((!activeSignal || signalList(item).includes(activeSignal)) ? 1 : 0);
+          }}, 0);
+          items.forEach((item) => {{
+            const matches = !activeSignal || signalList(item).includes(activeSignal);
+            const withinLimit = raw >= 9999 || shown < raw;
+            const shouldShow = matches && withinLimit;
+            item.style.display = shouldShow ? "block" : "none";
+            if (shouldShow) {{
+              shown += 1;
+            }}
           }});
-          counter.textContent = `${{visible}} / {total}`;
+          counter.textContent = `${{shown}} / ${{filteredTotal}}`;
+          if (status) {{
+            const activeButton = filterButtons.find((button) => button.dataset.signalFilter === activeSignal);
+            const label = activeButton ? activeButton.dataset.signalLabel : "";
+            status.textContent = activeSignal ? `{escape(text['indicator_filter_status'])}: ${{label}}` : `{escape(text['indicator_filter_status_all'])}`;
+          }}
+          filterButtons.forEach((button) => {{
+            const isActive = button.dataset.signalFilter === activeSignal;
+            button.classList.toggle("is-active", isActive);
+            button.setAttribute("aria-pressed", isActive ? "true" : "false");
+          }});
+          if (clearButton) {{
+            clearButton.classList.toggle("is-active", !activeSignal);
+            clearButton.setAttribute("aria-pressed", activeSignal ? "false" : "true");
+          }}
           try {{
             localStorage.setItem("mesim-news-count", String(raw));
+            if (activeSignal) {{
+              localStorage.setItem("mesim-news-filter", activeSignal);
+            }} else {{
+              localStorage.removeItem("mesim-news-filter");
+            }}
           }} catch (_error) {{}}
         }};
+        filterButtons.forEach((button) => {{
+          button.addEventListener("click", () => {{
+            activeSignal = button.dataset.signalFilter || "";
+            apply();
+          }});
+        }});
+        if (clearButton) {{
+          clearButton.addEventListener("click", () => {{
+            activeSignal = "";
+            apply();
+          }});
+        }}
         select.addEventListener("change", apply);
         apply();
       }})();
@@ -501,10 +557,10 @@ def _indicator_section(indicator_groups: list[dict], text: dict) -> str:
     for bucket in indicator_groups:
         items = "".join(
             f"""
-            <div class="indicator-row">
+            <button type="button" class="indicator-row indicator-filter" data-signal-filter="{escape(str(item.get('id', '')))}" data-signal-label="{escape(str(item.get('label', '-')))}" aria-pressed="false">
               <span>{escape(str(item.get('label', '-')))} · {escape(text['indicator_evidence_count'])} {escape(str(item.get('evidence_count', 0)))}</span>
               <strong>{escape(str(item.get('value', '-')))}</strong>
-            </div>
+            </button>
             """
             for item in bucket.get("items", [])
         )
@@ -524,7 +580,12 @@ def _indicator_section(indicator_groups: list[dict], text: dict) -> str:
     return f"""
     <section class="card">
       <h2 class="section-title">{escape(text['indicator_frame'])}</h2>
-      <p class="compact-note">{escape(text['indicator_frame_note'])}</p>
+      <div class="indicator-toolbar">
+        <p class="compact-note">{escape(text['indicator_frame_note'])}</p>
+        <div class="indicator-actions">
+          <button type="button" class="indicator-clear is-active" data-signal-filter-all aria-pressed="true">{escape(text['indicator_filter_all'])}</button>
+        </div>
+      </div>
       <div class="indicator-grid">
         {''.join(cards)}
       </div>
@@ -1089,6 +1150,20 @@ def _html_page(state: dict) -> str:
       text-transform: uppercase;
       letter-spacing: 0.06em;
     }}
+    .indicator-toolbar {{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }}
+    .indicator-actions {{
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }}
     .indicator-list {{ display: grid; gap: 8px; }}
     .indicator-row {{
       display: flex;
@@ -1099,6 +1174,39 @@ def _html_page(state: dict) -> str:
       background: rgba(15, 92, 77, 0.05);
       border: 1px solid rgba(15, 92, 77, 0.06);
       font-size: 14px;
+    }}
+    .indicator-filter {{
+      width: 100%;
+      text-align: left;
+      font: inherit;
+      color: inherit;
+      cursor: pointer;
+      appearance: none;
+      transition: background 140ms ease, border-color 140ms ease, transform 140ms ease;
+    }}
+    .indicator-filter:hover {{
+      border-color: rgba(15, 92, 77, 0.18);
+      background: rgba(15, 92, 77, 0.08);
+    }}
+    .indicator-filter.is-active {{
+      background: rgba(15, 92, 77, 0.12);
+      border-color: rgba(15, 92, 77, 0.28);
+      box-shadow: inset 0 0 0 1px rgba(15, 92, 77, 0.08);
+    }}
+    .indicator-clear {{
+      border: 1px solid rgba(15, 92, 77, 0.14);
+      background: white;
+      color: var(--ink);
+      border-radius: 999px;
+      padding: 9px 14px;
+      font: inherit;
+      cursor: pointer;
+      transition: background 140ms ease, border-color 140ms ease;
+    }}
+    .indicator-clear:hover,
+    .indicator-clear.is-active {{
+      background: rgba(15, 92, 77, 0.08);
+      border-color: rgba(15, 92, 77, 0.24);
     }}
     .source-brief-grid {{
       display: grid;
@@ -1445,10 +1553,37 @@ def render_static_snapshot(state: dict) -> str:
     .indicator-head span {{
       color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em;
     }}
+    .indicator-toolbar {{
+      display: flex; justify-content: space-between; align-items: center; gap: 12px;
+      flex-wrap: wrap; margin-bottom: 14px;
+    }}
+    .indicator-actions {{
+      display: inline-flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    }}
     .indicator-list {{ display: grid; gap: 8px; }}
     .indicator-row {{
       display: flex; justify-content: space-between; gap: 12px; padding: 10px 12px; border-radius: 12px;
       background: rgba(15, 92, 77, 0.05); border: 1px solid rgba(15, 92, 77, 0.06); font-size: 14px;
+    }}
+    .indicator-filter {{
+      width: 100%; text-align: left; font: inherit; color: inherit; cursor: pointer; appearance: none;
+      transition: background 140ms ease, border-color 140ms ease, transform 140ms ease;
+    }}
+    .indicator-filter:hover {{
+      border-color: rgba(15, 92, 77, 0.18); background: rgba(15, 92, 77, 0.08);
+    }}
+    .indicator-filter.is-active {{
+      background: rgba(15, 92, 77, 0.12); border-color: rgba(15, 92, 77, 0.28);
+      box-shadow: inset 0 0 0 1px rgba(15, 92, 77, 0.08);
+    }}
+    .indicator-clear {{
+      border: 1px solid rgba(15, 92, 77, 0.14); background: white; color: var(--ink);
+      border-radius: 999px; padding: 9px 14px; font: inherit; cursor: pointer;
+      transition: background 140ms ease, border-color 140ms ease;
+    }}
+    .indicator-clear:hover,
+    .indicator-clear.is-active {{
+      background: rgba(15, 92, 77, 0.08); border-color: rgba(15, 92, 77, 0.24);
     }}
     .source-brief-grid {{ display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }}
     .source-brief {{
