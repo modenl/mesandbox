@@ -833,6 +833,7 @@ def _html_page(state: dict) -> str:
     confidence = graph.get("confidence", {})
     window = latest_forecast.get("war_end_window", {})
     source_brief_section = _source_brief_section(state.get("sources", []), text, language)
+    snapshot_id = str(latest.get("created_at") or latest_summary.get("generated_at") or "live")
     end_windows = "".join(
         f"<div class='mini-row'><span>{escape(str(item.get('window_days')))}d</span><strong>{escape(str(item.get('probability')))}</strong></div>"
         for item in decision_panel.get("end_windows", [])
@@ -847,6 +848,7 @@ def _html_page(state: dict) -> str:
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="refresh" content="{refresh_seconds}">
+  <meta name="mesandbox-snapshot-id" content="{escape(snapshot_id)}">
   <title>{escape(text['title'])}</title>
   <style>
     :root {{
@@ -1357,6 +1359,7 @@ def render_static_snapshot(state: dict) -> str:
     window = latest_forecast.get("war_end_window", {})
     top_events = latest_summary.get("top_events", [])
     updated_at = latest.get("created_at") or latest_summary.get("generated_at") or "-"
+    snapshot_id = str(updated_at)
     source_brief_section = _source_brief_section(state.get("sources", []), text, language)
 
     end_windows = "".join(
@@ -1371,6 +1374,7 @@ def render_static_snapshot(state: dict) -> str:
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mesandbox-snapshot-id" content="{escape(snapshot_id)}">
   <title>{escape(text['title'])}</title>
   <style>
     :root {{
