@@ -1187,6 +1187,13 @@ def localize_summary(summary: Dict[str, Any], language: str, model: Optional[str
             item["indicator_ids"] = enriched.get("indicator_ids", [])
             item["source_indicator_ids"] = enriched.get("source_indicator_ids", [])
             item["core_signal_ids"] = enriched.get("core_signal_ids", [])
+        if not item.get("core_signal_ids"):
+            core_signal_ids = []
+            for indicator_id in item.get("indicator_ids", []) or []:
+                core_signal_id = FINE_TO_CORE_SIGNAL.get(str(indicator_id))
+                if core_signal_id and core_signal_id not in core_signal_ids:
+                    core_signal_ids.append(core_signal_id)
+            item["core_signal_ids"] = core_signal_ids
         labels = []
         for indicator_id in item.get("core_signal_ids", []) or []:
             meta = variable_lookup.get(str(indicator_id))
