@@ -83,14 +83,14 @@ TEXT = {
         "close_menu": "收起",
         "watchlist": "重点观察",
         "decision_panel": "伊朗战争终局面板",
-        "decision_panel_subtitle": "只显示当前阶段、结束窗口、最可能结局、决定性信号和最大不确定性。",
+        "decision_panel_subtitle": "以 12 个核心指标为骨架，只显示当前阶段、结束窗口、最可能结局、决定性信号和最大不确定性。",
         "current_war_state": "当前战争状态",
         "end_window_box": "高强度阶段结束窗口",
         "most_likely_outcome_box": "最可能结局",
         "decisive_signals_box": "前5个决定性信号",
         "uncertainty_box": "最大不确定性",
         "signal_stack": "固定信号栈",
-        "signal_stack_subtitle": "固定为 8 类免费信号源。状态机只吃高可信、高战略价值事件。",
+        "signal_stack_subtitle": "信息源按军事能力、政治稳定、经济与资源、国际环境四类指标服务，状态机只吃高可信、高战略价值事件。",
         "runtime_panel": "采集运行状态",
         "advanced_outputs": "高级输出",
         "advanced_outputs_subtitle": "完整概率表、继任情景、历史记录和原始报告收进折叠区，避免干扰主判断。",
@@ -114,6 +114,9 @@ TEXT = {
         "news_show": "显示条数",
         "news_visible": "当前显示",
         "news_all": "全部",
+        "indicator_frame": "12个核心指标",
+        "indicator_frame_note": "按军事能力、政治稳定、经济与资源、国际环境四组组织。数值越高，表示该指标在当前证据中的强度越高。",
+        "indicator_group_avg": "组均值",
         "sources_in_use": "信息源状态",
         "sources_in_use_note": "只展示当前真实接入的数据源。绿点表示当前抓取可用，其它状态表示暂不可用或已停用。",
         "source_why_trust": "为何可信",
@@ -197,14 +200,14 @@ TEXT = {
         "close_menu": "Close",
         "watchlist": "Watchlist",
         "decision_panel": "Iran War Endgame Panel",
-        "decision_panel_subtitle": "Shows only the current phase, termination windows, top outcome, decisive signals, and biggest uncertainty.",
+        "decision_panel_subtitle": "Built on 12 core indicators and shows only the current phase, end window, top outcome, decisive signals, and biggest uncertainty.",
         "current_war_state": "Current war state",
         "end_window_box": "High-intensity end window",
         "most_likely_outcome_box": "Most likely outcome",
         "decisive_signals_box": "Top 5 decisive signals",
         "uncertainty_box": "Biggest uncertainty",
         "signal_stack": "Fixed Signal Stack",
-        "signal_stack_subtitle": "Fixed to 8 free signal categories. The state machine only consumes high-credibility, high-strategic-value events.",
+        "signal_stack_subtitle": "Sources are organized around military, political, economic, and international indicators, and the state machine only consumes high-credibility, high-strategic-value events.",
         "runtime_panel": "Collection Runtime",
         "advanced_outputs": "Advanced Outputs",
         "advanced_outputs_subtitle": "Full probability tables, successor scenarios, history, and the raw report are folded away so they do not crowd the main judgment.",
@@ -228,6 +231,9 @@ TEXT = {
         "news_show": "Show",
         "news_visible": "Visible",
         "news_all": "All",
+        "indicator_frame": "12 Core Indicators",
+        "indicator_frame_note": "Organized into military capability, political stability, economy/resources, and international environment. Higher values mean the signal is more strongly present in the current evidence.",
+        "indicator_group_avg": "Group average",
         "sources_in_use": "Source Status",
         "sources_in_use_note": "This list shows only live configured sources. A green dot means the current fetch path is working; other states mean it is unavailable or disabled.",
         "source_why_trust": "Why it is trusted",
@@ -464,6 +470,44 @@ def _news_section(top_events: list[dict], text: dict) -> str:
         apply();
       }})();
     </script>
+    """
+
+
+def _indicator_section(indicator_groups: list[dict], text: dict) -> str:
+    if not indicator_groups:
+        return ""
+    cards = []
+    for bucket in indicator_groups:
+        items = "".join(
+            f"""
+            <div class="indicator-row">
+              <span>{escape(str(item.get('label', '-')))}</span>
+              <strong>{escape(str(item.get('value', '-')))}</strong>
+            </div>
+            """
+            for item in bucket.get("items", [])
+        )
+        cards.append(
+            f"""
+            <article class="indicator-card">
+              <div class="indicator-head">
+                <h3>{escape(str(bucket.get('group', '-')))}</h3>
+                <span>{escape(text['indicator_group_avg'])} {escape(str(bucket.get('value', '-')))}</span>
+              </div>
+              <div class="indicator-list">
+                {items}
+              </div>
+            </article>
+            """
+        )
+    return f"""
+    <section class="card">
+      <h2 class="section-title">{escape(text['indicator_frame'])}</h2>
+      <p class="compact-note">{escape(text['indicator_frame_note'])}</p>
+      <div class="indicator-grid">
+        {''.join(cards)}
+      </div>
+    </section>
     """
 
 
@@ -773,6 +817,7 @@ def _html_page(state: dict) -> str:
         for item in decision_panel.get("end_windows", [])
     )
     top_events = latest_summary.get("top_events", [])
+    indicator_section = _indicator_section(latest_summary.get("indicator_groups", []), text)
     news_section = _news_section(top_events, text)
 
     return f"""<!doctype html>
@@ -991,6 +1036,47 @@ def _html_page(state: dict) -> str:
       grid-template-columns: 1fr 1fr;
       gap: 12px;
     }}
+    .indicator-grid {{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 14px;
+    }}
+    .indicator-card {{
+      border: 1px solid rgba(15, 92, 77, 0.1);
+      border-radius: 16px;
+      padding: 16px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(15, 92, 77, 0.03));
+    }}
+    .indicator-head {{
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: baseline;
+      margin-bottom: 10px;
+    }}
+    .indicator-head h3 {{
+      margin: 0;
+      font-size: 16px;
+      letter-spacing: -0.02em;
+    }}
+    .indicator-head span {{
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }}
+    .indicator-list {{ display: grid; gap: 8px; }}
+    .indicator-row {{
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: rgba(15, 92, 77, 0.05);
+      border: 1px solid rgba(15, 92, 77, 0.06);
+      font-size: 14px;
+    }}
     .source-brief-grid {{
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -1115,7 +1201,7 @@ def _html_page(state: dict) -> str:
       details.menu {{
         width: 100%;
       }}
-      .summary-grid, .window-grid, .menu-grid, .news-grid, .source-brief-grid {{
+      .summary-grid, .window-grid, .menu-grid, .news-grid, .source-brief-grid, .indicator-grid {{
         grid-template-columns: 1fr;
       }}
     }}
@@ -1216,6 +1302,8 @@ def _html_page(state: dict) -> str:
         </div>
       </section>
 
+      {indicator_section}
+
       <section class="card">
         <h2 class="section-title">{escape(text['important_news'])}</h2>
         {news_section}
@@ -1249,6 +1337,7 @@ def render_static_snapshot(state: dict) -> str:
         for item in decision_panel.get("end_windows", [])
     )
     news_section = _news_section(top_events, text)
+    indicator_section = _indicator_section(latest_summary.get("indicator_groups", []), text)
 
     return f"""<!doctype html>
 <html lang="{escape(text['lang_code'])}">
@@ -1313,6 +1402,23 @@ def render_static_snapshot(state: dict) -> str:
       background: rgba(15, 92, 77, 0.06); border: 1px solid rgba(15, 92, 77, 0.08);
     }}
     .news-grid {{ display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }}
+    .indicator-grid {{ display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; }}
+    .indicator-card {{
+      border: 1px solid rgba(15, 92, 77, 0.1); border-radius: 16px; padding: 16px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(15, 92, 77, 0.03));
+    }}
+    .indicator-head {{
+      display: flex; justify-content: space-between; gap: 12px; align-items: baseline; margin-bottom: 10px;
+    }}
+    .indicator-head h3 {{ margin: 0; font-size: 16px; letter-spacing: -0.02em; }}
+    .indicator-head span {{
+      color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em;
+    }}
+    .indicator-list {{ display: grid; gap: 8px; }}
+    .indicator-row {{
+      display: flex; justify-content: space-between; gap: 12px; padding: 10px 12px; border-radius: 12px;
+      background: rgba(15, 92, 77, 0.05); border: 1px solid rgba(15, 92, 77, 0.06); font-size: 14px;
+    }}
     .source-brief-grid {{ display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }}
     .source-brief {{
       border: 1px solid rgba(15, 92, 77, 0.1); border-radius: 16px; padding: 16px;
@@ -1359,7 +1465,7 @@ def render_static_snapshot(state: dict) -> str:
     }}
     .empty {{ color: var(--muted); }}
     @media (max-width: 960px) {{
-      .summary-grid, .window-grid, .news-grid, .source-brief-grid {{ grid-template-columns: 1fr; }}
+      .summary-grid, .window-grid, .news-grid, .source-brief-grid, .indicator-grid {{ grid-template-columns: 1fr; }}
     }}
   </style>
 </head>
@@ -1396,6 +1502,8 @@ def render_static_snapshot(state: dict) -> str:
           <p class="compact-note">{escape(text['confidence'])}: {escape(str(latest_forecast.get('confidence_note', '-')))}</p>
         </div>
       </section>
+
+      {indicator_section}
 
       <section class="card">
         <h2 class="section-title">{escape(text['important_news'])}</h2>

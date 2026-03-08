@@ -137,14 +137,14 @@ Rules:
   lead_figures as an array of strings, institutional_architecture, and
   first_180_day_policies as an array of strings.
 - Date fields must be ISO 8601 or YYYY-MM-DD.
-- Use only the supplied top events, 7 state variables, market signals, contradictions, and trend summary.
+- Use only the supplied top events, 12 core indicators, market signals, contradictions, and trend summary.
 - Do not invent additional raw-source claims outside the package.
 
 Schema:
 {schema}
 
 Required output intent:
-- Use the 7 state variables as the main causal frame.
+- Use the 12 core indicators as the main causal frame.
 - Predict war termination windows: p10, p50, p90
 - Rank likely end states
 - Estimate plausible successor government scenarios if regime transition occurs

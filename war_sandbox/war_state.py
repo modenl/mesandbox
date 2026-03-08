@@ -38,53 +38,112 @@ SOURCE_CREDIBILITY = {
 
 VARIABLES = [
     {
-        "id": "missile_drone_capacity",
-        "label_zh": "导弹与无人机持续打击能力",
-        "label_en": "Missile and drone strike persistence",
-        "up_terms": ["missile", "drone", "launch", "salvo", "barrage", "retaliation"],
-        "down_terms": ["destroyed", "intercepted", "air defense", "degraded", "struck launcher"],
+        "id": "strike_capacity",
+        "group_zh": "军事能力",
+        "group_en": "Military Capability",
+        "label_zh": "打击能力",
+        "label_en": "Strike capacity",
+        "up_terms": ["missile", "drone", "launch", "salvo", "barrage", "precision strike", "rocket force", "retaliation"],
+        "down_terms": ["launcher destroyed", "stockpile depleted", "factory hit", "production hit", "degraded", "suppressed"],
     },
     {
-        "id": "underground_systems",
-        "label_zh": "地下发射/储存体系是否还在",
-        "label_en": "Underground launch/storage system survivability",
-        "up_terms": ["tunnel", "underground", "silo", "bunker", "missile base"],
-        "down_terms": ["bunker buster", "collapsed", "penetrated", "destroyed base", "struck tunnel"],
+        "id": "logistics_capacity",
+        "group_zh": "军事能力",
+        "group_en": "Military Capability",
+        "label_zh": "后勤能力",
+        "label_en": "Logistics capacity",
+        "up_terms": ["fuel", "ammunition", "resupply", "transport corridor", "air bridge", "sealift", "logistics", "port operations", "airport operations"],
+        "down_terms": ["fuel shortage", "ammo shortage", "supply disruption", "port closed", "runway damaged", "convoy hit", "resupply halted", "bottleneck"],
     },
     {
-        "id": "hormuz_shipping",
-        "label_zh": "霍尔木兹与海运是否恢复",
-        "label_en": "Hormuz and commercial shipping recovery",
-        "up_terms": ["tanker", "shipping", "hormuz", "vessel", "oil terminal", "port", "crude oil", "brent", "wti", "oil price"],
-        "down_terms": ["reopened", "resumed shipping", "partial transit", "traffic restored"],
+        "id": "command_control",
+        "group_zh": "军事能力",
+        "group_en": "Military Capability",
+        "label_zh": "指挥与控制（C2）",
+        "label_en": "Command and control",
+        "up_terms": ["command center", "communications restored", "radar active", "satellite link", "c2", "integrated air defense", "coordination"],
+        "down_terms": ["communications outage", "command center hit", "radar destroyed", "jammed", "c2 disrupted", "cyberattack", "leadership bunker hit"],
     },
     {
-        "id": "new_state_involvement",
-        "label_zh": "是否有新国家被卷入",
-        "label_en": "Whether new states are being drawn in",
-        "up_terms": ["u.s.", "united states", "gulf state", "saudi", "uae", "qatar", "iraq", "syria", "hezbollah"],
-        "down_terms": ["no wider war", "contained", "limited objectives"],
+        "id": "operational_control",
+        "group_zh": "军事能力",
+        "group_en": "Military Capability",
+        "label_zh": "战场控制",
+        "label_en": "Operational control",
+        "up_terms": ["air superiority", "air dominance", "sea control", "maritime control", "secured corridor", "held territory", "intercepts successful"],
+        "down_terms": ["lost airspace", "air defense overwhelmed", "retreat", "withdrawal", "port shut", "ship hit", "lost control"],
     },
     {
-        "id": "us_objective_expansion",
-        "label_zh": "美方目标是否扩大",
-        "label_en": "Whether U.S. objectives are expanding",
-        "up_terms": ["regime change", "leadership", "expanded target", "command and control", "next phase"],
-        "down_terms": ["limited objectives", "not expanding", "missile only", "no occupation"],
+        "id": "leadership_stability",
+        "group_zh": "政治稳定",
+        "group_en": "Political Stability",
+        "label_zh": "领导层稳定",
+        "label_en": "Leadership stability",
+        "up_terms": ["supreme leader statement", "cabinet unity", "chain of command intact", "leadership stable", "succession settled"],
+        "down_terms": ["succession", "leadership crisis", "power struggle", "rumors of death", "assassinated", "interim leader"],
     },
     {
-        "id": "command_chain_stability",
-        "label_zh": "伊朗最高层与指挥链是否稳定",
-        "label_en": "Iranian leadership and command-chain stability",
-        "up_terms": ["supreme leader", "irgc", "command chain", "stability", "consolidated"],
-        "down_terms": ["coup", "succession", "defection", "fracture", "leadership crisis"],
+        "id": "domestic_support",
+        "group_zh": "政治稳定",
+        "group_en": "Political Stability",
+        "label_zh": "国内支持度",
+        "label_en": "Domestic support",
+        "up_terms": ["rally", "mobilization support", "public support", "national unity", "state media support"],
+        "down_terms": ["protest", "strike", "unrest", "anti-war", "panic buying", "civilian anger", "funeral unrest"],
     },
     {
-        "id": "domestic_instability_talks",
-        "label_zh": "国内失稳、倒戈、接班与谈判迹象",
-        "label_en": "Domestic instability, defections, succession, and talks",
-        "up_terms": ["protest", "strike", "ceasefire", "talks", "mediation", "defection", "transition"],
-        "down_terms": ["crackdown restored order", "no talks", "unity"],
+        "id": "elite_cohesion",
+        "group_zh": "政治稳定",
+        "group_en": "Political Stability",
+        "label_zh": "精英联盟稳定",
+        "label_en": "Elite cohesion",
+        "up_terms": ["irgc loyalty", "army loyalty", "security services united", "clerical backing", "elite unity"],
+        "down_terms": ["defection", "purge", "elite split", "commander removed", "resignation", "mutiny", "factional"],
+    },
+    {
+        "id": "economic_resilience",
+        "group_zh": "经济与资源",
+        "group_en": "Economy and Resources",
+        "label_zh": "经济承受能力",
+        "label_en": "Economic resilience",
+        "up_terms": ["fx reserves", "stabilized currency", "budget cushion", "subsidy support", "economic resilience"],
+        "down_terms": ["inflation", "currency collapse", "recession", "bank stress", "budget deficit", "shortage", "capital flight"],
+    },
+    {
+        "id": "energy_trade_disruption",
+        "group_zh": "经济与资源",
+        "group_en": "Economy and Resources",
+        "label_zh": "能源与贸易受扰",
+        "label_en": "Energy and trade disruption",
+        "up_terms": ["hormuz", "tanker", "shipping", "oil price", "brent", "wti", "port closed", "export halted", "insurance spike", "terminal hit"],
+        "down_terms": ["shipping resumed", "transit restored", "exports resumed", "port reopened", "insurance normalized"],
+    },
+    {
+        "id": "sanctions_pressure",
+        "group_zh": "经济与资源",
+        "group_en": "Economy and Resources",
+        "label_zh": "制裁压力",
+        "label_en": "Sanctions pressure",
+        "up_terms": ["sanctions", "asset freeze", "secondary sanctions", "technology ban", "financial restrictions", "export controls"],
+        "down_terms": ["sanctions eased", "waiver", "relief", "trade channel reopened", "unfroze"],
+    },
+    {
+        "id": "external_involvement",
+        "group_zh": "国际环境",
+        "group_en": "International Environment",
+        "label_zh": "外部国家介入",
+        "label_en": "External state involvement",
+        "up_terms": ["u.s.", "united states", "centcom", "uk", "france", "saudi", "uae", "qatar", "iraq", "syria", "hezbollah", "russia", "china", "coalition", "carrier group"],
+        "down_terms": ["no wider war", "staying out", "neutral", "won't join", "non-intervention"],
+    },
+    {
+        "id": "negotiation_signals",
+        "group_zh": "国际环境",
+        "group_en": "International Environment",
+        "label_zh": "谈判信号",
+        "label_en": "Negotiation signals",
+        "up_terms": ["ceasefire", "talks", "mediation", "backchannel", "envoy", "qatar mediation", "oman mediation", "truce", "proposal", "delegation"],
+        "down_terms": ["talks rejected", "no ceasefire", "negotiations failed", "walked away", "maximalist"],
     },
 ]
 
@@ -409,10 +468,10 @@ def select_diverse_events(events: List[Dict[str, Any]], limit: int = 20, per_sou
 
 def compute_state_variables(events: List[Dict[str, Any]], language: str) -> List[Dict[str, Any]]:
     labels_key = "label_zh" if language == "zh" else "label_en"
+    group_key = "group_zh" if language == "zh" else "group_en"
     states = []
     for variable in VARIABLES:
         total = 0.0
-        support = 0.0
         decisive = []
         for event in events:
             impact = event["variable_impacts"].get(variable["id"], 0.0)
@@ -420,7 +479,6 @@ def compute_state_variables(events: List[Dict[str, Any]], language: str) -> List
                 continue
             weight = event["combined"]
             total += impact * weight
-            support += abs(weight)
             decisive.append(event)
         normalized = 50.0 + 22.0 * total
         value = round(max(0.0, min(100.0, normalized)), 1)
@@ -428,6 +486,7 @@ def compute_state_variables(events: List[Dict[str, Any]], language: str) -> List
         states.append(
             {
                 "id": variable["id"],
+                "group": variable[group_key],
                 "label": variable[labels_key],
                 "value": value,
                 "direction": direction,
@@ -438,71 +497,181 @@ def compute_state_variables(events: List[Dict[str, Any]], language: str) -> List
     return states
 
 
+def group_state_variables(state_variables: List[Dict[str, Any]], language: str) -> List[Dict[str, Any]]:
+    groups: Dict[str, Dict[str, Any]] = {}
+    for item in state_variables:
+        group = str(item.get("group") or ("Other" if language == "en" else "其他"))
+        bucket = groups.setdefault(group, {"group": group, "items": [], "value_sum": 0.0})
+        bucket["items"].append(item)
+        bucket["value_sum"] += float(item.get("value", 0.0) or 0.0)
+    ordered_labels = [
+        "军事能力" if language == "zh" else "Military Capability",
+        "政治稳定" if language == "zh" else "Political Stability",
+        "经济与资源" if language == "zh" else "Economy and Resources",
+        "国际环境" if language == "zh" else "International Environment",
+    ]
+    ordered = []
+    for label in ordered_labels:
+        bucket = groups.get(label)
+        if not bucket:
+            continue
+        ordered.append(
+            {
+                "group": label,
+                "value": round(bucket["value_sum"] / max(len(bucket["items"]), 1), 1),
+                "items": bucket["items"],
+            }
+        )
+    for label, bucket in groups.items():
+        if label in ordered_labels:
+            continue
+        ordered.append(
+            {
+                "group": label,
+                "value": round(bucket["value_sum"] / max(len(bucket["items"]), 1), 1),
+                "items": bucket["items"],
+            }
+        )
+    return ordered
+
+
+def _state_value(state_variables: Dict[str, Dict[str, Any]], state_id: str, default: float = 50.0) -> float:
+    return float(state_variables.get(state_id, {}).get("value", default) or default)
+
+
 def derive_current_state(state_variables: Dict[str, Dict[str, Any]], language: str) -> str:
-    shipping = state_variables["hormuz_shipping"]["value"]
-    involvement = state_variables["new_state_involvement"]["value"]
-    talks = state_variables["domestic_instability_talks"]["value"]
-    expansion = state_variables["us_objective_expansion"]["value"]
-    missile = state_variables["missile_drone_capacity"]["value"]
-    if involvement >= 65 or shipping >= 72:
+    external = _state_value(state_variables, "external_involvement")
+    energy = _state_value(state_variables, "energy_trade_disruption")
+    talks = _state_value(state_variables, "negotiation_signals")
+    strike = _state_value(state_variables, "strike_capacity")
+    logistics = _state_value(state_variables, "logistics_capacity")
+    operational = _state_value(state_variables, "operational_control")
+    if external >= 65 or energy >= 72:
         return "地区外溢" if language == "zh" else "Regional Spillover"
-    if talks >= 62 and expansion <= 48 and missile <= 52:
+    if talks >= 62 and strike <= 52 and logistics <= 55 and operational <= 55:
         return "谈判前夜" if language == "zh" else "Pre-Negotiation"
-    if expansion >= 58 or missile >= 60:
+    if strike >= 60 or operational >= 60 or external >= 60:
         return "扩大战" if language == "zh" else "Expansion Phase"
     return "压制战" if language == "zh" else "Containment / Suppression"
 
 
 def termination_windows(state_variables: Dict[str, Dict[str, Any]]) -> List[Dict[str, Any]]:
-    missile = state_variables["missile_drone_capacity"]["value"] / 100.0
-    underground = state_variables["underground_systems"]["value"] / 100.0
-    shipping = state_variables["hormuz_shipping"]["value"] / 100.0
-    involvement = state_variables["new_state_involvement"]["value"] / 100.0
-    expansion = state_variables["us_objective_expansion"]["value"] / 100.0
-    leadership = state_variables["command_chain_stability"]["value"] / 100.0
-    talks = state_variables["domestic_instability_talks"]["value"] / 100.0
+    strike = _state_value(state_variables, "strike_capacity") / 100.0
+    logistics = _state_value(state_variables, "logistics_capacity") / 100.0
+    c2 = _state_value(state_variables, "command_control") / 100.0
+    operational = _state_value(state_variables, "operational_control") / 100.0
+    leadership = _state_value(state_variables, "leadership_stability") / 100.0
+    domestic = _state_value(state_variables, "domestic_support") / 100.0
+    elite = _state_value(state_variables, "elite_cohesion") / 100.0
+    economic = _state_value(state_variables, "economic_resilience") / 100.0
+    energy = _state_value(state_variables, "energy_trade_disruption") / 100.0
+    sanctions = _state_value(state_variables, "sanctions_pressure") / 100.0
+    external = _state_value(state_variables, "external_involvement") / 100.0
+    talks = _state_value(state_variables, "negotiation_signals") / 100.0
 
-    fast = _clamp(0.35 * (1 - missile) + 0.20 * (1 - underground) + 0.20 * talks + 0.15 * (1 - expansion) + 0.10 * (1 - shipping))
-    mid = _clamp(0.30 * (1 - underground) + 0.20 * talks + 0.20 * (1 - involvement) + 0.15 * (1 - expansion) + 0.15 * (1 - leadership))
-    slow = _clamp(0.35 * involvement + 0.25 * shipping + 0.20 * expansion + 0.20 * missile)
+    fast = _clamp(
+        0.18 * (1 - strike)
+        + 0.14 * (1 - logistics)
+        + 0.10 * (1 - c2)
+        + 0.08 * (1 - operational)
+        + 0.10 * (1 - leadership)
+        + 0.08 * (1 - domestic)
+        + 0.08 * (1 - elite)
+        + 0.06 * (1 - economic)
+        + 0.08 * energy
+        + 0.08 * sanctions
+        + 0.10 * talks
+        + 0.10 * (1 - external)
+    )
+    mid = _clamp(
+        0.12 * (1 - strike)
+        + 0.12 * (1 - logistics)
+        + 0.08 * (1 - c2)
+        + 0.08 * (1 - operational)
+        + 0.08 * (1 - leadership)
+        + 0.08 * (1 - domestic)
+        + 0.08 * (1 - elite)
+        + 0.06 * (1 - economic)
+        + 0.08 * energy
+        + 0.10 * sanctions
+        + 0.12 * talks
+        + 0.08 * (1 - external)
+    )
+    slow = _clamp(
+        0.16 * strike
+        + 0.14 * logistics
+        + 0.10 * c2
+        + 0.08 * operational
+        + 0.10 * leadership
+        + 0.08 * domestic
+        + 0.08 * elite
+        + 0.06 * economic
+        + 0.06 * (1 - energy)
+        + 0.04 * (1 - sanctions)
+        + 0.10 * external
+        + 0.10 * (1 - talks)
+    )
 
     return [
-        {"window_days": 7, "probability": round(0.10 + 0.25 * fast, 4)},
-        {"window_days": 14, "probability": round(0.18 + 0.32 * mid, 4)},
-        {"window_days": 30, "probability": round(0.28 + 0.38 * (0.5 * fast + 0.5 * mid), 4)},
-        {"window_days": 60, "probability": round(0.50 + 0.35 * (1 - slow), 4)},
+        {"window_days": 7, "probability": round(0.08 + 0.26 * fast, 4)},
+        {"window_days": 14, "probability": round(0.15 + 0.32 * mid, 4)},
+        {"window_days": 30, "probability": round(0.24 + 0.42 * (0.55 * mid + 0.45 * fast), 4)},
+        {"window_days": 60, "probability": round(0.42 + 0.36 * (1 - slow), 4)},
     ]
 
 
 def derive_outcome(state_variables: Dict[str, Dict[str, Any]], language: str) -> Dict[str, Any]:
-    talks = state_variables["domestic_instability_talks"]["value"]
-    involvement = state_variables["new_state_involvement"]["value"]
-    expansion = state_variables["us_objective_expansion"]["value"]
-    leadership = state_variables["command_chain_stability"]["value"]
+    talks = _state_value(state_variables, "negotiation_signals")
+    external = _state_value(state_variables, "external_involvement")
+    leadership = _state_value(state_variables, "leadership_stability")
+    elite = _state_value(state_variables, "elite_cohesion")
+    domestic = _state_value(state_variables, "domestic_support")
+    strike = _state_value(state_variables, "strike_capacity")
+    sanctions = _state_value(state_variables, "sanctions_pressure")
+    energy = _state_value(state_variables, "energy_trade_disruption")
+    logistics = _state_value(state_variables, "logistics_capacity")
+    operational = _state_value(state_variables, "operational_control")
 
     candidates = []
     candidates.append(
         (
             "停火" if language == "zh" else "Ceasefire",
-            0.45 * (talks / 100.0) + 0.25 * (1 - involvement / 100.0) + 0.30 * (1 - expansion / 100.0),
+            0.35 * (talks / 100.0)
+            + 0.20 * (sanctions / 100.0)
+            + 0.15 * (energy / 100.0)
+            + 0.15 * (1 - strike / 100.0)
+            + 0.15 * (1 - external / 100.0),
         )
     )
     candidates.append(
         (
             "冻结冲突" if language == "zh" else "Frozen Conflict",
-            0.45 * (involvement / 100.0) + 0.25 * (leadership / 100.0) + 0.30 * (1 - talks / 100.0),
+            0.25 * (leadership / 100.0)
+            + 0.20 * (elite / 100.0)
+            + 0.20 * (logistics / 100.0)
+            + 0.20 * (domestic / 100.0)
+            + 0.15 * (1 - talks / 100.0),
         )
     )
     candidates.append(
         (
             "政权裂变" if language == "zh" else "Regime Fracture",
-            0.55 * (1 - leadership / 100.0) + 0.25 * (talks / 100.0) + 0.20 * (expansion / 100.0),
+            0.30 * (1 - leadership / 100.0)
+            + 0.25 * (1 - elite / 100.0)
+            + 0.15 * (1 - domestic / 100.0)
+            + 0.15 * (sanctions / 100.0)
+            + 0.15 * (talks / 100.0),
         )
     )
     candidates.append(
         (
             "地区扩大战" if language == "zh" else "Regional Expansion",
-            0.55 * (involvement / 100.0) + 0.25 * (expansion / 100.0) + 0.20 * (1 - talks / 100.0),
+            0.30 * (external / 100.0)
+            + 0.20 * (strike / 100.0)
+            + 0.15 * (operational / 100.0)
+            + 0.15 * (energy / 100.0)
+            + 0.10 * (leadership / 100.0)
+            + 0.10 * (1 - talks / 100.0),
         )
     )
     outcome, score = max(candidates, key=lambda pair: pair[1])
@@ -511,17 +680,17 @@ def derive_outcome(state_variables: Dict[str, Dict[str, Any]], language: str) ->
 
 def build_uncertainties(events: List[Dict[str, Any]], state_variables: Dict[str, Dict[str, Any]], language: str) -> List[str]:
     uncertainties = []
-    if state_variables["domestic_instability_talks"]["value"] >= 58 and state_variables["missile_drone_capacity"]["value"] >= 55:
+    if _state_value(state_variables, "negotiation_signals") >= 58 and _state_value(state_variables, "strike_capacity") >= 55:
         uncertainties.append(
-            "谈判信号与持续发射能力并存，说明伊朗可能一边试探斡旋，一边保留升级筹码。"
+            "谈判信号上升，但打击能力尚未明显下滑，说明相关方可能一边释放斡旋口风，一边保留继续升级的能力。"
             if language == "zh"
-            else "Negotiation signals coexist with sustained strike capacity, suggesting Iran may preserve escalation leverage while probing for talks."
+            else "Negotiation signals are rising while strike capacity remains intact, suggesting actors may be probing for talks without giving up escalation leverage."
         )
-    if state_variables["us_objective_expansion"]["value"] <= 45 and state_variables["new_state_involvement"]["value"] >= 60:
+    if _state_value(state_variables, "leadership_stability") <= 45 and _state_value(state_variables, "elite_cohesion") >= 55:
         uncertainties.append(
-            "美方口径仍称目标有限，但地区卷入度在上升，存在行动意图与外溢后果不一致的风险。"
+            "领导层稳定性走弱，但精英联盟尚未明显分裂，这意味着政权可能出现权威受损而非立刻坍塌的过渡状态。"
             if language == "zh"
-            else "U.S. rhetoric remains limited while regional involvement rises, creating a mismatch risk between stated goals and spillover effects."
+            else "Leadership stability is weakening while elite cohesion still holds, implying a damaged but not yet collapsing regime core."
         )
     top_hidden = [event for event in events if not event["display"]][:2]
     for event in top_hidden:
@@ -596,6 +765,7 @@ def build_analysis_package(
         reverse=True,
     )
     state_list = compute_state_variables(analysis_events, language)
+    indicator_groups = group_state_variables(state_list, language)
     state_map = {state["id"]: state for state in state_list}
     windows = termination_windows(state_map)
     outcome = derive_outcome(state_map, language)
@@ -618,21 +788,24 @@ def build_analysis_package(
 
     return {
         "generated_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
+        "framework_version": 2,
         "item_count": len(items),
         "source_mix": source_mix,
         "tension_index": round(
             _clamp(
                 (
-                    state_map["missile_drone_capacity"]["value"]
-                    + state_map["new_state_involvement"]["value"]
-                    + state_map["us_objective_expansion"]["value"]
+                    _state_value(state_map, "strike_capacity")
+                    + _state_value(state_map, "operational_control")
+                    + _state_value(state_map, "external_involvement")
+                    + _state_value(state_map, "energy_trade_disruption")
                 )
-                / 300.0
+                / 400.0
             )
             * 100.0,
             1,
         ),
         "state_variables": state_list,
+        "indicator_groups": indicator_groups,
         "top_events": display_events,
         "all_scored_events": select_diverse_events(events, limit=50, per_source_cap=4),
         "market_signals": build_market_signals(items),
@@ -672,18 +845,111 @@ def build_analysis_package(
     }
 
 
+def upgrade_summary_framework(summary: Dict[str, Any], language: str) -> Dict[str, Any]:
+    if not summary or int(summary.get("framework_version", 0) or 0) >= 2:
+        return summary
+    items = [dict(item) for item in summary.get("all_scored_events") or summary.get("top_events") or []]
+    if not items:
+        return summary
+    events = build_signal_events(items)
+    ranked = sorted(
+        events,
+        key=lambda event: (
+            event.get("decision_related", True),
+            event.get("relevance_score", 0.0),
+            event.get("combined", 0.0),
+            event.get("importance", 0.0),
+            _parse_timestamp(event.get("published_at")) or datetime.min.replace(tzinfo=timezone.utc),
+        ),
+        reverse=True,
+    )
+    analysis_events = select_diverse_events(ranked, limit=20, per_source_cap=3)
+    state_list = compute_state_variables(analysis_events, language)
+    indicator_groups = group_state_variables(state_list, language)
+    state_map = {state["id"]: state for state in state_list}
+    uncertainties = build_uncertainties(analysis_events, state_map, language)
+    upgraded = {
+        **summary,
+        "framework_version": 2,
+        "tension_index": round(
+            _clamp(
+                (
+                    _state_value(state_map, "strike_capacity")
+                    + _state_value(state_map, "operational_control")
+                    + _state_value(state_map, "external_involvement")
+                    + _state_value(state_map, "energy_trade_disruption")
+                )
+                / 400.0
+            )
+            * 100.0,
+            1,
+        ),
+        "state_variables": state_list,
+        "indicator_groups": indicator_groups,
+        "decision_panel": {
+            **summary.get("decision_panel", {}),
+            "current_state": derive_current_state(state_map, language),
+            "end_windows": termination_windows(state_map),
+            "most_likely_outcome": derive_outcome(state_map, language)["label"],
+            "top_decisive_signals": [
+                {
+                    "title": event["title"],
+                    "source": event["source"],
+                    "credibility": event["credibility"],
+                    "importance": event["importance"],
+                }
+                for event in analysis_events[:5]
+            ],
+            "max_uncertainty": uncertainties[:2],
+        },
+    }
+    return upgraded
+
+
 def localize_summary(summary: Dict[str, Any], language: str, model: Optional[str] = None) -> Dict[str, Any]:
     if not summary:
         return summary
+    summary = upgrade_summary_framework(summary, language)
     localized = {
         **summary,
         "top_events": [dict(item) for item in summary.get("top_events", [])],
         "all_scored_events": [dict(item) for item in summary.get("all_scored_events", [])],
+        "state_variables": [dict(item) for item in summary.get("state_variables", [])],
+        "indicator_groups": [dict(item) for item in summary.get("indicator_groups", [])],
         "decision_panel": {
             **summary.get("decision_panel", {}),
             "top_decisive_signals": [dict(item) for item in summary.get("decision_panel", {}).get("top_decisive_signals", [])],
         },
     }
+    variable_lookup = {item["id"]: item for item in VARIABLES}
+    label_key = "label_zh" if language == "zh" else "label_en"
+    group_key = "group_zh" if language == "zh" else "group_en"
+    for item in localized.get("state_variables", []):
+        meta = variable_lookup.get(str(item.get("id")))
+        if not meta:
+            continue
+        item["label"] = meta[label_key]
+        item["group"] = meta[group_key]
+    if not localized.get("indicator_groups") and localized.get("state_variables"):
+        localized["indicator_groups"] = group_state_variables(localized["state_variables"], language)
+    else:
+        normalized_groups = []
+        for bucket in localized.get("indicator_groups", []):
+            items = [dict(item) for item in bucket.get("items", [])]
+            for item in items:
+                meta = variable_lookup.get(str(item.get("id")))
+                if not meta:
+                    continue
+                item["label"] = meta[label_key]
+                item["group"] = meta[group_key]
+            normalized_groups.append(
+                {
+                    **bucket,
+                    "group": items[0].get("group") if items else bucket.get("group"),
+                    "items": items,
+                }
+            )
+        localized["indicator_groups"] = normalized_groups
     titles = [str(item.get("title", "")) for item in localized.get("top_events", [])]
     if not titles:
         localized["summary_language"] = language

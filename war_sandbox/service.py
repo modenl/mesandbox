@@ -380,6 +380,10 @@ def _confidence_tier(score: float, language: str) -> str:
     return text["tier_low"]
 
 
+def _state_value(summary_states: Dict[str, Any], state_id: str, default: float = 50.0) -> float:
+    return float(summary_states.get(state_id, {}).get("value", default) or default)
+
+
 def _build_reasoning_graph(
     summary: Dict[str, Any],
     forecast: Dict[str, Any],
@@ -455,32 +459,33 @@ def _build_reasoning_graph(
                 min(
                     100.0,
                     (
-                        state_variables.get("missile_drone_capacity", {}).get("value", 0.0)
-                        + state_variables.get("new_state_involvement", {}).get("value", 0.0)
-                        + state_variables.get("us_objective_expansion", {}).get("value", 0.0)
+                        _state_value(state_variables, "strike_capacity")
+                        + _state_value(state_variables, "leadership_stability")
+                        + _state_value(state_variables, "sanctions_pressure")
+                        + _state_value(state_variables, "external_involvement")
                     )
-                    / 3.0,
+                    / 4.0,
                 ),
                 1,
             ),
             "summary": text["causal_summary"].format(
-                escalation=round(state_variables.get("missile_drone_capacity", {}).get("value", 0.0), 1),
-                deescalation=round(state_variables.get("domestic_instability_talks", {}).get("value", 0.0), 1),
-                succession=round(state_variables.get("command_chain_stability", {}).get("value", 0.0), 1),
+                escalation=round(_state_value(state_variables, "strike_capacity"), 1),
+                deescalation=round(_state_value(state_variables, "negotiation_signals"), 1),
+                succession=round(_state_value(state_variables, "leadership_stability"), 1),
             ),
             "assessment": text["causal_assessment"],
             "metrics": [
                 {
                     "label": text["metric_escalation"],
-                    "value": str(state_variables.get("missile_drone_capacity", {}).get("value", 0.0)),
+                    "value": str(_state_value(state_variables, "strike_capacity")),
                 },
                 {
                     "label": text["metric_deescalation"],
-                    "value": str(state_variables.get("domestic_instability_talks", {}).get("value", 0.0)),
+                    "value": str(_state_value(state_variables, "negotiation_signals")),
                 },
                 {
                     "label": text["metric_succession"],
-                    "value": str(state_variables.get("command_chain_stability", {}).get("value", 0.0)),
+                    "value": str(_state_value(state_variables, "leadership_stability")),
                 },
             ],
             "details": [f"{item['label']}: {item['value']} ({item['direction']})" for item in summary.get("state_variables", [])],
