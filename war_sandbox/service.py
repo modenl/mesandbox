@@ -213,7 +213,7 @@ GRAPH_TEXT = {
         "source_summary": "{healthy}/{enabled} 个启用源当前健康",
         "evidence_summary": "{items} 条证据，覆盖 {source_count} 类来源",
         "signal_summary": "紧张指数 {tension}，主导参与方 {actors}",
-        "causal_summary": "升级 {escalation} / 降级 {deescalation} / 继任 {succession}",
+        "causal_summary": "军事能力 {military} / 战争成本 {cost} / 谈判信号 {negotiation}",
         "scenario_summary": "首要结果场景：{top_outcome}",
         "termination_summary": "P50 结束时间：{p50}",
         "succession_summary": "首位继任场景：{top_successor}",
@@ -221,7 +221,7 @@ GRAPH_TEXT = {
         "source_assessment": "系统先看哪些源可用、哪些源失效，再决定当前证据面是否足够支撑后续推理。",
         "evidence_assessment": "原始条目先被标准化和裁剪到当前时间窗，再进入后续因果评估。",
         "signal_assessment": "模型前先做确定性信号抽取，避免直接让语言模型在原始新闻流上编故事。",
-        "causal_assessment": "这里不是复述新闻，而是把战争升级、降级、继任和人道压力作为驱动变量进入推演。",
+        "causal_assessment": "这里不复述新闻，而是把所有证据压成三项主指标：还能不能打、继续打的成本有多高、是否出现了真实谈判窗口。",
         "scenario_assessment": "场景引擎基于上述驱动变量和证据摘要，生成结果概率与政策推演。",
         "termination_assessment": "战争结束时间由场景引擎给出 P10/P50/P90 时间窗，而不是单点预测。",
         "succession_assessment": "继任场景来自条件触发，不把候选人当既成事实。",
@@ -232,9 +232,9 @@ GRAPH_TEXT = {
         "metric_source_types": "来源类型",
         "metric_tension": "紧张指数",
         "metric_top_actor": "最高频参与方",
-        "metric_escalation": "升级信号",
-        "metric_deescalation": "降级信号",
-        "metric_succession": "继任信号",
+        "metric_escalation": "军事能力",
+        "metric_deescalation": "战争成本",
+        "metric_succession": "谈判信号",
         "metric_top_outcome": "最高结果概率",
         "metric_p10p50p90": "时间窗",
         "metric_top_successor": "首位继任场景",
@@ -266,7 +266,7 @@ GRAPH_TEXT = {
         "source_summary": "{healthy}/{enabled} enabled sources are currently healthy",
         "evidence_summary": "{items} items across {source_count} source types",
         "signal_summary": "Tension {tension}; dominant actors {actors}",
-        "causal_summary": "Escalation {escalation} / de-escalation {deescalation} / succession {succession}",
+        "causal_summary": "Military capability {military} / war cost {cost} / negotiation signals {negotiation}",
         "scenario_summary": "Top outcome scenario: {top_outcome}",
         "termination_summary": "P50 end date: {p50}",
         "succession_summary": "Top successor scenario: {top_successor}",
@@ -274,7 +274,7 @@ GRAPH_TEXT = {
         "source_assessment": "The system first measures which feeds are usable and which are failing before it trusts the evidence base.",
         "evidence_assessment": "Raw items are normalized and clipped to the active time window before any inference step.",
         "signal_assessment": "Deterministic feature extraction happens before the model call so the pipeline is not just free-form narrative generation.",
-        "causal_assessment": "This stage converts news into war drivers: escalation, de-escalation, succession risk, and humanitarian stress.",
+        "causal_assessment": "This stage compresses evidence into three drivers only: ability to keep fighting, cost of continuing the war, and whether real negotiation windows are opening.",
         "scenario_assessment": "The scenario engine turns those drivers into end-state probabilities and policy projections.",
         "termination_assessment": "War termination is expressed as a P10/P50/P90 window, not as a fake single-point prediction.",
         "succession_assessment": "Successor outcomes are trigger-based scenarios, not asserted facts about named leaders.",
@@ -285,9 +285,9 @@ GRAPH_TEXT = {
         "metric_source_types": "Source types",
         "metric_tension": "Tension index",
         "metric_top_actor": "Top actor",
-        "metric_escalation": "Escalation signals",
-        "metric_deescalation": "De-escalation signals",
-        "metric_succession": "Succession signals",
+        "metric_escalation": "Military capability",
+        "metric_deescalation": "War cost",
+        "metric_succession": "Negotiation signals",
         "metric_top_outcome": "Top outcome",
         "metric_p10p50p90": "Window",
         "metric_top_successor": "Top successor",
@@ -459,33 +459,32 @@ def _build_reasoning_graph(
                 min(
                     100.0,
                     (
-                        _state_value(state_variables, "strike_capacity")
-                        + _state_value(state_variables, "leadership_stability")
-                        + _state_value(state_variables, "sanctions_pressure")
-                        + _state_value(state_variables, "external_involvement")
+                        _state_value(state_variables, "military_capability")
+                        + _state_value(state_variables, "war_cost")
+                        + _state_value(state_variables, "negotiation_signal")
                     )
-                    / 4.0,
+                    / 3.0,
                 ),
                 1,
             ),
             "summary": text["causal_summary"].format(
-                escalation=round(_state_value(state_variables, "strike_capacity"), 1),
-                deescalation=round(_state_value(state_variables, "negotiation_signals"), 1),
-                succession=round(_state_value(state_variables, "leadership_stability"), 1),
+                military=round(_state_value(state_variables, "military_capability"), 1),
+                cost=round(_state_value(state_variables, "war_cost"), 1),
+                negotiation=round(_state_value(state_variables, "negotiation_signal"), 1),
             ),
             "assessment": text["causal_assessment"],
             "metrics": [
                 {
                     "label": text["metric_escalation"],
-                    "value": str(_state_value(state_variables, "strike_capacity")),
+                    "value": str(_state_value(state_variables, "military_capability")),
                 },
                 {
                     "label": text["metric_deescalation"],
-                    "value": str(_state_value(state_variables, "negotiation_signals")),
+                    "value": str(_state_value(state_variables, "war_cost")),
                 },
                 {
                     "label": text["metric_succession"],
-                    "value": str(_state_value(state_variables, "leadership_stability")),
+                    "value": str(_state_value(state_variables, "negotiation_signal")),
                 },
             ],
             "details": [f"{item['label']}: {item['value']} ({item['direction']})" for item in summary.get("state_variables", [])],

@@ -137,14 +137,14 @@ Rules:
   lead_figures as an array of strings, institutional_architecture, and
   first_180_day_policies as an array of strings.
 - Date fields must be ISO 8601 or YYYY-MM-DD.
-- Use only the supplied top events, 12 core indicators, indicator evidence, market signals, contradictions, and trend summary.
+- Use only the supplied top events, 3 core signals, signal evidence, market signals, contradictions, and trend summary.
 - Do not invent additional raw-source claims outside the package.
 
 Schema:
 {schema}
 
 Required output intent:
-- Use the 12 core indicators as the main causal frame.
+- Use the 3 core signals as the main causal frame: military capability, war cost, and negotiation signals.
 - Predict war termination windows: p10, p50, p90
 - Rank likely end states
 - Estimate plausible successor government scenarios if regime transition occurs
@@ -152,7 +152,7 @@ Required output intent:
   and first-180-day policy direction
 - Include assumptions and uncertainty drivers
 - Give extra weight to decisive signals and contradictions
-- Use indicator_evidence to see which of the 12 indicators are actually supported by current evidence, and which remain thin
+- Use indicator_evidence to see which of the 3 core signals are actually supported by current evidence, and which remain thin
 - When market signals are present, use oil-price moves and prediction-market probabilities as auxiliary evidence, not as standalone truth
 
 Structured analysis package:

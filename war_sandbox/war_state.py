@@ -151,6 +151,42 @@ VARIABLES = [
 INDICATOR_BY_ID = {item["id"]: item for item in VARIABLES}
 
 
+CORE_SIGNALS = [
+    {
+        "id": "military_capability",
+        "label_zh": "军事能力",
+        "label_en": "Military capability",
+        "member_ids": ["strike_capacity", "logistics_capacity", "command_control", "operational_control", "external_involvement"],
+    },
+    {
+        "id": "war_cost",
+        "label_zh": "战争成本",
+        "label_en": "War cost",
+        "member_ids": [
+            "economic_resilience",
+            "energy_trade_disruption",
+            "sanctions_pressure",
+            "leadership_stability",
+            "domestic_support",
+            "elite_cohesion",
+        ],
+    },
+    {
+        "id": "negotiation_signal",
+        "label_zh": "谈判信号",
+        "label_en": "Negotiation signal",
+        "member_ids": ["negotiation_signals"],
+    },
+]
+
+
+CORE_SIGNAL_BY_ID = {item["id"]: item for item in CORE_SIGNALS}
+FINE_TO_CORE_SIGNAL = {}
+for core_signal in CORE_SIGNALS:
+    for member_id in core_signal["member_ids"]:
+        FINE_TO_CORE_SIGNAL[member_id] = core_signal["id"]
+
+
 SOURCE_INDICATOR_MAP = {
     "gdelt": [
         "strike_capacity",
@@ -476,13 +512,20 @@ def infer_indicator_ids(item: Dict[str, Any]) -> List[str]:
 def enrich_indicator_metadata(item: Dict[str, Any]) -> Dict[str, Any]:
     source = str(item.get("source", ""))
     indicator_ids = infer_indicator_ids(item)
+    core_signal_ids = []
+    for indicator_id in indicator_ids:
+        core_signal_id = FINE_TO_CORE_SIGNAL.get(indicator_id)
+        if core_signal_id and core_signal_id not in core_signal_ids:
+            core_signal_ids.append(core_signal_id)
     payload = dict(item.get("payload") or {})
     payload["source_indicator_ids"] = _source_indicator_ids(source)
     payload["indicator_ids"] = indicator_ids
+    payload["core_signal_ids"] = core_signal_ids
     item["payload"] = payload
     item["source_indicator_ids"] = payload["source_indicator_ids"]
     item["indicator_ids"] = indicator_ids
-    item["indicator_labels"] = [INDICATOR_BY_ID[indicator_id]["label_en"] for indicator_id in indicator_ids if indicator_id in INDICATOR_BY_ID]
+    item["core_signal_ids"] = core_signal_ids
+    item["indicator_labels"] = [CORE_SIGNAL_BY_ID[signal_id]["label_en"] for signal_id in core_signal_ids if signal_id in CORE_SIGNAL_BY_ID]
     return item
 
 
@@ -647,6 +690,7 @@ def build_signal_events(items: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
             "variable_impacts": variable_impacts,
             "duplicate_count": 1,
             "indicator_ids": list(item.get("indicator_ids") or []),
+            "core_signal_ids": list(item.get("core_signal_ids") or []),
             "source_indicator_ids": list(item.get("source_indicator_ids") or []),
             "market_volume": _safe_float((item.get("payload") or {}).get("volume")),
             "market_volume_24h": _safe_float((item.get("payload") or {}).get("volume24hr")),
@@ -720,9 +764,9 @@ def select_indicator_events(
         source_counts[source] = source_counts.get(source, 0) + 1
         return True
 
-    for indicator in VARIABLES:
+    for indicator in CORE_SIGNALS:
         for event in events:
-            if indicator["id"] in (event.get("indicator_ids") or []):
+            if indicator["id"] in (event.get("core_signal_ids") or []):
                 if add_event(event):
                     break
         if len(selected) >= limit:
@@ -737,14 +781,12 @@ def select_indicator_events(
 
 def build_indicator_evidence(events: List[Dict[str, Any]], language: str) -> List[Dict[str, Any]]:
     label_key = "label_zh" if language == "zh" else "label_en"
-    group_key = "group_zh" if language == "zh" else "group_en"
     evidence = []
-    for variable in VARIABLES:
-        matching = [event for event in events if variable["id"] in (event.get("indicator_ids") or [])]
+    for variable in CORE_SIGNALS:
+        matching = [event for event in events if variable["id"] in (event.get("core_signal_ids") or [])]
         evidence.append(
             {
                 "id": variable["id"],
-                "group": variable[group_key],
                 "label": variable[label_key],
                 "evidence_count": len(matching),
                 "top_titles": [event.get("title", "") for event in matching[:3]],
@@ -754,9 +796,9 @@ def build_indicator_evidence(events: List[Dict[str, Any]], language: str) -> Lis
 
 
 def compute_state_variables(events: List[Dict[str, Any]], language: str) -> List[Dict[str, Any]]:
-    labels_key = "label_zh" if language == "zh" else "label_en"
-    group_key = "group_zh" if language == "zh" else "group_en"
+    label_key = "label_zh" if language == "zh" else "label_en"
     states = []
+    fine_scores: Dict[str, tuple[float, List[Dict[str, Any]]]] = {}
     for variable in VARIABLES:
         total = 0.0
         decisive = []
@@ -767,59 +809,53 @@ def compute_state_variables(events: List[Dict[str, Any]], language: str) -> List
             weight = event["combined"]
             total += impact * weight
             decisive.append(event)
-        normalized = 50.0 + 22.0 * total
+        fine_scores[variable["id"]] = (total, decisive)
+
+    for signal in CORE_SIGNALS:
+        member_totals = [fine_scores.get(member_id, (0.0, []))[0] for member_id in signal["member_ids"]]
+        total = sum(member_totals) / max(len(member_totals), 1)
+        decisive_map: Dict[str, Dict[str, Any]] = {}
+        for member_id in signal["member_ids"]:
+            for event in fine_scores.get(member_id, (0.0, []))[1]:
+                decisive_map.setdefault(f"{event.get('source')}|{event.get('title')}", event)
+        if signal["id"] == "war_cost":
+            # Lower resilience or higher disruption should increase cost.
+            total = (
+                -fine_scores.get("economic_resilience", (0.0, []))[0]
+                + fine_scores.get("energy_trade_disruption", (0.0, []))[0]
+                + fine_scores.get("sanctions_pressure", (0.0, []))[0]
+                - fine_scores.get("leadership_stability", (0.0, []))[0] * 0.4
+                - fine_scores.get("domestic_support", (0.0, []))[0] * 0.3
+                - fine_scores.get("elite_cohesion", (0.0, []))[0] * 0.3
+            ) / 3.0
+        elif signal["id"] == "negotiation_signal":
+            total = fine_scores.get("negotiation_signals", (0.0, []))[0]
+        normalized = 50.0 + 24.0 * total
         value = round(max(0.0, min(100.0, normalized)), 1)
         direction = "up" if total > 0.18 else "down" if total < -0.18 else "flat"
         states.append(
             {
-                "id": variable["id"],
-                "group": variable[group_key],
-                "label": variable[labels_key],
+                "id": signal["id"],
+                "group": "核心指标" if language == "zh" else "Core Signals",
+                "label": signal[label_key],
                 "value": value,
                 "direction": direction,
-                "evidence_count": len(decisive),
-                "decisive_events": [event["title"] for event in decisive[:3]],
+                "evidence_count": len(decisive_map),
+                "decisive_events": [event["title"] for event in list(decisive_map.values())[:3]],
             }
         )
     return states
 
 
 def group_state_variables(state_variables: List[Dict[str, Any]], language: str) -> List[Dict[str, Any]]:
-    groups: Dict[str, Dict[str, Any]] = {}
-    for item in state_variables:
-        group = str(item.get("group") or ("Other" if language == "en" else "其他"))
-        bucket = groups.setdefault(group, {"group": group, "items": [], "value_sum": 0.0})
-        bucket["items"].append(item)
-        bucket["value_sum"] += float(item.get("value", 0.0) or 0.0)
-    ordered_labels = [
-        "军事能力" if language == "zh" else "Military Capability",
-        "政治稳定" if language == "zh" else "Political Stability",
-        "经济与资源" if language == "zh" else "Economy and Resources",
-        "国际环境" if language == "zh" else "International Environment",
-    ]
-    ordered = []
-    for label in ordered_labels:
-        bucket = groups.get(label)
-        if not bucket:
-            continue
-        ordered.append(
-            {
-                "group": label,
-                "value": round(bucket["value_sum"] / max(len(bucket["items"]), 1), 1),
-                "items": bucket["items"],
-            }
-        )
-    for label, bucket in groups.items():
-        if label in ordered_labels:
-            continue
-        ordered.append(
-            {
-                "group": label,
-                "value": round(bucket["value_sum"] / max(len(bucket["items"]), 1), 1),
-                "items": bucket["items"],
-            }
-        )
-    return ordered
+    if not state_variables:
+        return []
+    label = "核心指标" if language == "zh" else "Core Signals"
+    value = round(
+        sum(float(item.get("value", 0.0) or 0.0) for item in state_variables) / max(len(state_variables), 1),
+        1,
+    )
+    return [{"group": label, "value": value, "items": state_variables}]
 
 
 def _state_value(state_variables: Dict[str, Dict[str, Any]], state_id: str, default: float = 50.0) -> float:
@@ -827,77 +863,26 @@ def _state_value(state_variables: Dict[str, Dict[str, Any]], state_id: str, defa
 
 
 def derive_current_state(state_variables: Dict[str, Dict[str, Any]], language: str) -> str:
-    external = _state_value(state_variables, "external_involvement")
-    energy = _state_value(state_variables, "energy_trade_disruption")
-    talks = _state_value(state_variables, "negotiation_signals")
-    strike = _state_value(state_variables, "strike_capacity")
-    logistics = _state_value(state_variables, "logistics_capacity")
-    operational = _state_value(state_variables, "operational_control")
-    if external >= 65 or energy >= 72:
+    military = _state_value(state_variables, "military_capability")
+    cost = _state_value(state_variables, "war_cost")
+    talks = _state_value(state_variables, "negotiation_signal")
+    if military >= 65 and cost >= 62:
         return "地区外溢" if language == "zh" else "Regional Spillover"
-    if talks >= 62 and strike <= 52 and logistics <= 55 and operational <= 55:
+    if talks >= 60 and military <= 54:
         return "谈判前夜" if language == "zh" else "Pre-Negotiation"
-    if strike >= 60 or operational >= 60 or external >= 60:
+    if military >= 58 and talks < 48:
         return "扩大战" if language == "zh" else "Expansion Phase"
     return "压制战" if language == "zh" else "Containment / Suppression"
 
 
 def termination_windows(state_variables: Dict[str, Dict[str, Any]]) -> List[Dict[str, Any]]:
-    strike = _state_value(state_variables, "strike_capacity") / 100.0
-    logistics = _state_value(state_variables, "logistics_capacity") / 100.0
-    c2 = _state_value(state_variables, "command_control") / 100.0
-    operational = _state_value(state_variables, "operational_control") / 100.0
-    leadership = _state_value(state_variables, "leadership_stability") / 100.0
-    domestic = _state_value(state_variables, "domestic_support") / 100.0
-    elite = _state_value(state_variables, "elite_cohesion") / 100.0
-    economic = _state_value(state_variables, "economic_resilience") / 100.0
-    energy = _state_value(state_variables, "energy_trade_disruption") / 100.0
-    sanctions = _state_value(state_variables, "sanctions_pressure") / 100.0
-    external = _state_value(state_variables, "external_involvement") / 100.0
-    talks = _state_value(state_variables, "negotiation_signals") / 100.0
+    military = _state_value(state_variables, "military_capability") / 100.0
+    cost = _state_value(state_variables, "war_cost") / 100.0
+    talks = _state_value(state_variables, "negotiation_signal") / 100.0
 
-    fast = _clamp(
-        0.18 * (1 - strike)
-        + 0.14 * (1 - logistics)
-        + 0.10 * (1 - c2)
-        + 0.08 * (1 - operational)
-        + 0.10 * (1 - leadership)
-        + 0.08 * (1 - domestic)
-        + 0.08 * (1 - elite)
-        + 0.06 * (1 - economic)
-        + 0.08 * energy
-        + 0.08 * sanctions
-        + 0.10 * talks
-        + 0.10 * (1 - external)
-    )
-    mid = _clamp(
-        0.12 * (1 - strike)
-        + 0.12 * (1 - logistics)
-        + 0.08 * (1 - c2)
-        + 0.08 * (1 - operational)
-        + 0.08 * (1 - leadership)
-        + 0.08 * (1 - domestic)
-        + 0.08 * (1 - elite)
-        + 0.06 * (1 - economic)
-        + 0.08 * energy
-        + 0.10 * sanctions
-        + 0.12 * talks
-        + 0.08 * (1 - external)
-    )
-    slow = _clamp(
-        0.16 * strike
-        + 0.14 * logistics
-        + 0.10 * c2
-        + 0.08 * operational
-        + 0.10 * leadership
-        + 0.08 * domestic
-        + 0.08 * elite
-        + 0.06 * economic
-        + 0.06 * (1 - energy)
-        + 0.04 * (1 - sanctions)
-        + 0.10 * external
-        + 0.10 * (1 - talks)
-    )
+    fast = _clamp(0.45 * (1 - military) + 0.30 * cost + 0.25 * talks)
+    mid = _clamp(0.35 * (1 - military) + 0.35 * cost + 0.30 * talks)
+    slow = _clamp(0.50 * military + 0.30 * (1 - cost) + 0.20 * (1 - talks))
 
     return [
         {"window_days": 7, "probability": round(0.08 + 0.26 * fast, 4)},
@@ -908,57 +893,33 @@ def termination_windows(state_variables: Dict[str, Dict[str, Any]]) -> List[Dict
 
 
 def derive_outcome(state_variables: Dict[str, Dict[str, Any]], language: str) -> Dict[str, Any]:
-    talks = _state_value(state_variables, "negotiation_signals")
-    external = _state_value(state_variables, "external_involvement")
-    leadership = _state_value(state_variables, "leadership_stability")
-    elite = _state_value(state_variables, "elite_cohesion")
-    domestic = _state_value(state_variables, "domestic_support")
-    strike = _state_value(state_variables, "strike_capacity")
-    sanctions = _state_value(state_variables, "sanctions_pressure")
-    energy = _state_value(state_variables, "energy_trade_disruption")
-    logistics = _state_value(state_variables, "logistics_capacity")
-    operational = _state_value(state_variables, "operational_control")
+    talks = _state_value(state_variables, "negotiation_signal")
+    military = _state_value(state_variables, "military_capability")
+    cost = _state_value(state_variables, "war_cost")
 
     candidates = []
     candidates.append(
         (
             "停火" if language == "zh" else "Ceasefire",
-            0.35 * (talks / 100.0)
-            + 0.20 * (sanctions / 100.0)
-            + 0.15 * (energy / 100.0)
-            + 0.15 * (1 - strike / 100.0)
-            + 0.15 * (1 - external / 100.0),
+            0.45 * (talks / 100.0) + 0.30 * (cost / 100.0) + 0.25 * (1 - military / 100.0),
         )
     )
     candidates.append(
         (
             "冻结冲突" if language == "zh" else "Frozen Conflict",
-            0.25 * (leadership / 100.0)
-            + 0.20 * (elite / 100.0)
-            + 0.20 * (logistics / 100.0)
-            + 0.20 * (domestic / 100.0)
-            + 0.15 * (1 - talks / 100.0),
+            0.40 * (military / 100.0) + 0.20 * (cost / 100.0) + 0.40 * (1 - talks / 100.0),
         )
     )
     candidates.append(
         (
             "政权裂变" if language == "zh" else "Regime Fracture",
-            0.30 * (1 - leadership / 100.0)
-            + 0.25 * (1 - elite / 100.0)
-            + 0.15 * (1 - domestic / 100.0)
-            + 0.15 * (sanctions / 100.0)
-            + 0.15 * (talks / 100.0),
+            0.50 * (cost / 100.0) + 0.25 * (talks / 100.0) + 0.25 * (1 - military / 100.0),
         )
     )
     candidates.append(
         (
             "地区扩大战" if language == "zh" else "Regional Expansion",
-            0.30 * (external / 100.0)
-            + 0.20 * (strike / 100.0)
-            + 0.15 * (operational / 100.0)
-            + 0.15 * (energy / 100.0)
-            + 0.10 * (leadership / 100.0)
-            + 0.10 * (1 - talks / 100.0),
+            0.55 * (military / 100.0) + 0.25 * (cost / 100.0) + 0.20 * (1 - talks / 100.0),
         )
     )
     outcome, score = max(candidates, key=lambda pair: pair[1])
@@ -967,17 +928,17 @@ def derive_outcome(state_variables: Dict[str, Dict[str, Any]], language: str) ->
 
 def build_uncertainties(events: List[Dict[str, Any]], state_variables: Dict[str, Dict[str, Any]], language: str) -> List[str]:
     uncertainties = []
-    if _state_value(state_variables, "negotiation_signals") >= 58 and _state_value(state_variables, "strike_capacity") >= 55:
+    if _state_value(state_variables, "negotiation_signal") >= 58 and _state_value(state_variables, "military_capability") >= 55:
         uncertainties.append(
-            "谈判信号上升，但打击能力尚未明显下滑，说明相关方可能一边释放斡旋口风，一边保留继续升级的能力。"
+            "谈判信号上升，但军事能力仍处高位，说明各方可能在保留继续作战能力的同时试探停火窗口。"
             if language == "zh"
-            else "Negotiation signals are rising while strike capacity remains intact, suggesting actors may be probing for talks without giving up escalation leverage."
+            else "Negotiation signals are rising while military capability remains high, suggesting actors may probe for talks without giving up the ability to keep fighting."
         )
-    if _state_value(state_variables, "leadership_stability") <= 45 and _state_value(state_variables, "elite_cohesion") >= 55:
+    if _state_value(state_variables, "war_cost") >= 65 and _state_value(state_variables, "negotiation_signal") <= 45:
         uncertainties.append(
-            "领导层稳定性走弱，但精英联盟尚未明显分裂，这意味着政权可能出现权威受损而非立刻坍塌的过渡状态。"
+            "战争成本正在快速累积，但尚未转化成明确谈判信号，说明承压未必会立刻变成停火。"
             if language == "zh"
-            else "Leadership stability is weakening while elite cohesion still holds, implying a damaged but not yet collapsing regime core."
+            else "War costs are rising quickly without yet translating into clear negotiation signals, so pressure may not immediately produce a ceasefire."
         )
     top_hidden = [event for event in events if not event["display"]][:2]
     for event in top_hidden:
@@ -1076,18 +1037,17 @@ def build_analysis_package(
 
     return {
         "generated_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
-        "framework_version": 2,
+        "framework_version": 3,
         "item_count": len(items),
         "source_mix": source_mix,
         "tension_index": round(
             _clamp(
                 (
-                    _state_value(state_map, "strike_capacity")
-                    + _state_value(state_map, "operational_control")
-                    + _state_value(state_map, "external_involvement")
-                    + _state_value(state_map, "energy_trade_disruption")
+                    _state_value(state_map, "military_capability")
+                    + _state_value(state_map, "war_cost")
+                    + (100.0 - _state_value(state_map, "negotiation_signal"))
                 )
-                / 400.0
+                / 300.0
             )
             * 100.0,
             1,
@@ -1135,7 +1095,7 @@ def build_analysis_package(
 
 
 def upgrade_summary_framework(summary: Dict[str, Any], language: str) -> Dict[str, Any]:
-    if not summary or int(summary.get("framework_version", 0) or 0) >= 2:
+    if not summary or int(summary.get("framework_version", 0) or 0) >= 3:
         return summary
     items = [dict(item) for item in summary.get("all_scored_events") or summary.get("top_events") or []]
     if not items:
@@ -1160,7 +1120,7 @@ def upgrade_summary_framework(summary: Dict[str, Any], language: str) -> Dict[st
     uncertainties = build_uncertainties(analysis_events, state_map, language)
     upgraded = {
         **summary,
-        "framework_version": 2,
+        "framework_version": 3,
         "tension_index": round(
             _clamp(
                 (
@@ -1213,22 +1173,22 @@ def localize_summary(summary: Dict[str, Any], language: str, model: Optional[str
             "top_decisive_signals": [dict(item) for item in summary.get("decision_panel", {}).get("top_decisive_signals", [])],
         },
     }
-    variable_lookup = {item["id"]: item for item in VARIABLES}
+    variable_lookup = {item["id"]: item for item in CORE_SIGNALS}
     label_key = "label_zh" if language == "zh" else "label_en"
-    group_key = "group_zh" if language == "zh" else "group_en"
     for item in localized.get("state_variables", []):
         meta = variable_lookup.get(str(item.get("id")))
         if not meta:
             continue
         item["label"] = meta[label_key]
-        item["group"] = meta[group_key]
+        item["group"] = "核心指标" if language == "zh" else "Core Signals"
     for item in localized.get("top_events", []):
         if not item.get("indicator_ids"):
             enriched = enrich_indicator_metadata(item)
             item["indicator_ids"] = enriched.get("indicator_ids", [])
             item["source_indicator_ids"] = enriched.get("source_indicator_ids", [])
+            item["core_signal_ids"] = enriched.get("core_signal_ids", [])
         labels = []
-        for indicator_id in item.get("indicator_ids", []) or []:
+        for indicator_id in item.get("core_signal_ids", []) or []:
             meta = variable_lookup.get(str(indicator_id))
             if meta:
                 labels.append(meta[label_key])
@@ -1244,7 +1204,7 @@ def localize_summary(summary: Dict[str, Any], language: str, model: Optional[str
                 if not meta:
                     continue
                 item["label"] = meta[label_key]
-                item["group"] = meta[group_key]
+                item["group"] = "核心指标" if language == "zh" else "Core Signals"
             normalized_groups.append(
                 {
                     **bucket,
@@ -1258,7 +1218,7 @@ def localize_summary(summary: Dict[str, Any], language: str, model: Optional[str
         if not meta:
             continue
         item["label"] = meta[label_key]
-        item["group"] = meta[group_key]
+        item["group"] = "核心指标" if language == "zh" else "Core Signals"
     titles = [str(item.get("title", "")) for item in localized.get("top_events", [])]
     if not titles:
         localized["summary_language"] = language
