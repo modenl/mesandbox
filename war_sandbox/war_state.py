@@ -1222,6 +1222,17 @@ def localize_summary(summary: Dict[str, Any], language: str, model: Optional[str
             continue
         item["label"] = meta[label_key]
         item["group"] = meta[group_key]
+    for item in localized.get("top_events", []):
+        if not item.get("indicator_ids"):
+            enriched = enrich_indicator_metadata(item)
+            item["indicator_ids"] = enriched.get("indicator_ids", [])
+            item["source_indicator_ids"] = enriched.get("source_indicator_ids", [])
+        labels = []
+        for indicator_id in item.get("indicator_ids", []) or []:
+            meta = variable_lookup.get(str(indicator_id))
+            if meta:
+                labels.append(meta[label_key])
+        item["indicator_labels"] = labels
     if not localized.get("indicator_groups") and localized.get("state_variables"):
         localized["indicator_groups"] = group_state_variables(localized["state_variables"], language)
     else:

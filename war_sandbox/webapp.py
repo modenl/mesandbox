@@ -25,6 +25,7 @@ TEXT = {
         "news_relevance": "为何相关",
         "news_relevance_score": "相关性分",
         "news_summary": "摘要",
+        "news_indicators": "对应指标",
         "news_volume": "成交量",
         "news_volume_24h": "24h成交",
         "news_liquidity": "流动性",
@@ -143,6 +144,7 @@ TEXT = {
         "news_relevance": "Why it matters",
         "news_relevance_score": "Relevance score",
         "news_summary": "Summary",
+        "news_indicators": "Mapped indicators",
         "news_volume": "Volume",
         "news_volume_24h": "24h volume",
         "news_liquidity": "Liquidity",
@@ -438,6 +440,7 @@ def _news_section(top_events: list[dict], text: dict) -> str:
           </div>
           <h3>{escape(str(item.get('title', '-')))}</h3>
           <p class="news-summary"><strong>{escape(text['news_summary'])}:</strong> {escape(str(item.get('brief_summary') or '-'))}</p>
+          <p class="news-indicators"><strong>{escape(text['news_indicators'])}:</strong> {escape(', '.join(item.get('indicator_labels', []) or ['-']))}</p>
           <p class="news-reason"><strong>{escape(text['news_relevance'])}:</strong> {escape(str(item.get('relevance_reason') or '-'))}</p>
           <div class="news-meta">
             <span>C {escape(str(item.get('credibility', '-')))}</span>
@@ -1197,6 +1200,12 @@ def _html_page(state: dict) -> str:
       font-size: 14px;
       line-height: 1.7;
     }}
+    .news-indicators {{
+      margin: 0 0 10px;
+      color: var(--ink);
+      font-size: 13px;
+      line-height: 1.6;
+    }}
     .news-head, .news-meta {{
       display: flex;
       justify-content: space-between;
@@ -1476,6 +1485,7 @@ def render_static_snapshot(state: dict) -> str:
     }}
     .news-item h3 {{ margin: 10px 0; font-size: 18px; line-height: 1.45; }}
     .news-summary {{ margin: 0 0 10px; color: var(--muted); font-size: 14px; line-height: 1.7; }}
+    .news-indicators {{ margin: 0 0 10px; color: var(--ink); font-size: 13px; line-height: 1.6; }}
     .news-reason {{ margin: 0 0 12px; color: var(--ink); font-size: 14px; line-height: 1.6; }}
     .news-head, .news-meta {{
       display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
