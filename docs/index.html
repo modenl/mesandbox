@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="mesandbox-snapshot-id" content="2026-03-26T10:23:39+00:00">
+  <meta name="mesandbox-snapshot-id" content="2026-03-26T10:57:10+00:00">
   <title>伊朗战局沙盘推演台</title>
   <style>
     :root {
@@ -162,7 +162,7 @@
     <div class="eyebrow">Decision Dashboard</div>
     <h1>伊朗战局沙盘推演台</h1>
     <p class="subtitle">面向研判与决策的实时战局评估与终局预判。</p>
-    <p class="compact-note">最新推演时间: 2026-03-26T10:23:39+00:00</p>
+    <p class="compact-note">最新推演时间: 2026-03-26T10:57:10+00:00</p>
 
     <div class="dashboard">
       <section class="summary-grid">
@@ -170,24 +170,24 @@
           <div class="stat-label">结束时间窗口</div>
           <div class="stat-value">2026-04-25</div>
           <div class="window-grid">
-            <div class="window-chip">P10<strong>2026-04-05</strong></div>
+            <div class="window-chip">P10<strong>2026-04-09</strong></div>
             <div class="window-chip">P50<strong>2026-04-25</strong></div>
-            <div class="window-chip">P90<strong>2026-06-25</strong></div>
+            <div class="window-chip">P90<strong>2026-05-25</strong></div>
           </div>
-          <div class="mini-grid"><div class='mini-row'><span>7d</span><strong>0.2477</strong></div><div class='mini-row'><span>14d</span><strong>0.3753</strong></div><div class='mini-row'><span>30d</span><strong>0.5245</strong></div><div class='mini-row'><span>60d</span><strong>0.6413</strong></div></div>
+          <div class="mini-grid"><div class='mini-row'><span>7d</span><strong>0.2496</strong></div><div class='mini-row'><span>14d</span><strong>0.3834</strong></div><div class='mini-row'><span>30d</span><strong>0.5318</strong></div><div class='mini-row'><span>60d</span><strong>0.6409</strong></div></div>
         </div>
         <div class="card">
           <div class="stat-label">结果预判</div>
           <div class="stat-value">停火</div>
           <p class="compact-note">当前战争状态: 地区外溢</p>
-          <p class="compact-note">证据条目: 200</p>
-          <p class="compact-note">紧张指数: 55.1</p>
+          <p class="compact-note">证据条目: 201</p>
+          <p class="compact-note">紧张指数: 59.1</p>
         </div>
         <div class="card">
           <div class="stat-label">置信度</div>
-          <div class="stat-value">86.8</div>
+          <div class="stat-value">86.9</div>
           <p class="compact-note">等级: 高</p>
-          <p class="compact-note">置信说明: 中等。核心信号中谈判与军事行动呈现明显的‘双高’矛盾，反映了各方正处于‘以打促谈’的极端博弈阶段。市场信号（油价与预测市场）提供了强有力的辅助验证。</p>
+          <p class="compact-note">置信说明: 中等。虽然市场信号（如油价和预测市场概率）非常明确，但伊朗内部决策的黑箱性质及“谈判信号上升”与“军事打击常态化”之间的矛盾增加了预测的不确定性。</p>
         </div>
       </section>
 
@@ -205,23 +205,23 @@
             <article class="indicator-card">
               <div class="indicator-head">
                 <h3>核心指标</h3>
-                <span>组均值 83.5</span>
+                <span>组均值 92.4</span>
               </div>
               <div class="indicator-list">
                 
             <button type="button" class="indicator-row indicator-filter" data-signal-filter="military_capability" data-signal-label="军事能力" aria-pressed="false">
-              <span>军事能力 · 证据 4</span>
-              <strong>68.0</strong>
+              <span>军事能力 · 证据 7</span>
+              <strong>77.3</strong>
             </button>
             
             <button type="button" class="indicator-row indicator-filter" data-signal-filter="war_cost" data-signal-label="战争成本" aria-pressed="false">
-              <span>战争成本 · 证据 9</span>
-              <strong>89.8</strong>
+              <span>战争成本 · 证据 11</span>
+              <strong>100.0</strong>
             </button>
             
             <button type="button" class="indicator-row indicator-filter" data-signal-filter="negotiation_signal" data-signal-label="谈判信号" aria-pressed="false">
-              <span>谈判信号 · 证据 2</span>
-              <strong>92.6</strong>
+              <span>谈判信号 · 证据 8</span>
+              <strong>100.0</strong>
             </button>
             
               </div>
@@ -241,97 +241,154 @@
         <select id="news-count-select"><option value='20' selected>20</option><option value='9999' >全部</option></select>
       </label>
       <div class="compact-note" id="news-filter-status">当前过滤: 全部</div>
-      <div class="compact-note">当前显示: <strong id="news-visible-count">0 / 12</strong></div>
+      <div class="compact-note">当前显示: <strong id="news-visible-count">0 / 21</strong></div>
     </div>
     <div class="news-grid">
-        <a class="news-item" data-news-item data-core-signals="war_cost" href="https://polymarket.com/event/iran-leader-end-of-2026" target="_blank" rel="noopener">
+        <a class="news-item" data-news-item data-core-signals="military_capability,war_cost" href="https://polymarket.com/event/will-ships-transit-the-strait-of-hormuz-on-any-day-in-march" target="_blank" rel="noopener">
           <div class="news-head">
             <span class="news-source">polymarket_geopolitics</span>
-            <span class="news-time">2026-03-26 10:18:15</span>
+            <span class="news-time">2026-03-26 10:53:36</span>
           </div>
-          <h3>莫吉塔巴·哈梅内伊是否会在2026年底成为伊朗元首？</h3>
-          <p class="news-summary"><strong>摘要:</strong> 预测市场评估莫杰塔巴·哈梅内伊在2026年底前成为伊朗最高领袖的概率为53.6%。该市场流动性近9万美元，反映了外界对战时伊朗权力平稳交接的疑虑。</p>
-          <p class="news-indicators"><strong>对应指标:</strong> 战争成本</p>
-          <p class="news-reason"><strong>为何相关:</strong> 领导层接班人问题事关伊朗政权的长期稳定和政策延续性。</p>
-          <div class="news-meta">
-            <span>C 0.78</span>
-            <span>I 0.0525</span>
-            <span>相关性分 0.6</span>
-            <span>24h成交 61831.0</span>
-            <span>成交量 828641.0</span>
-            <span>流动性 88748.0</span>
-          </div>
-        </a>
-        
-        <a class="news-item" data-news-item data-core-signals="military_capability,war_cost" href="https://polymarket.com/event/iran-military-action-against-israel-on" target="_blank" rel="noopener">
-          <div class="news-head">
-            <span class="news-source">polymarket_geopolitics</span>
-            <span class="news-time">2026-03-26 10:18:01</span>
-          </div>
-          <h3>伊朗是否会在2026年3月26日对以色列采取军事行动？</h3>
-          <p class="news-summary"><strong>摘要:</strong> 预测市场显示伊朗在3月26日对以色列发动军事行动的概率高达97.5%。市场流动性约1.1万美元，显示出投资者对军事冲突在未来24小时内持续发生的高度一致预期。</p>
+          <h3>3月是否会有60艘船只在任一天内通过霍尔木兹海峡？</h3>
+          <p class="news-summary"><strong>摘要:</strong> Polymarket认为3月通航量达60艘的概率仅为5.5%，市场流动性约为2.4万美元。这一极低概率印证了伊朗封锁政策的严密性，是评估海峡实际受阻程度的重要参考。</p>
           <p class="news-indicators"><strong>对应指标:</strong> 军事能力, 战争成本</p>
-          <p class="news-reason"><strong>为何相关:</strong> 极高的预测概率预示着冲突在当前日期仍将持续或进一步升级。</p>
+          <p class="news-reason"><strong>为何相关:</strong> 60艘是海峡通航的关键基准线，预测概率的变化可预警封锁强度。</p>
           <div class="news-meta">
             <span>C 0.78</span>
-            <span>I 0.4143</span>
-            <span>相关性分 0.9</span>
-            <span>24h成交 20697.0</span>
-            <span>成交量 26299.0</span>
-            <span>流动性 11221.0</span>
+            <span>I 0.5164</span>
+            <span>相关性分 0.7</span>
+            <span>24h成交 4909.0</span>
+            <span>成交量 76862.0</span>
+            <span>流动性 24568.0</span>
           </div>
         </a>
         
         <a class="news-item" data-news-item data-core-signals="military_capability,war_cost" href="https://polymarket.com/event/strait-of-hormuz-traffic-returns-to-normal-by-april-30" target="_blank" rel="noopener">
           <div class="news-head">
             <span class="news-source">polymarket_geopolitics</span>
-            <span class="news-time">2026-03-26 10:17:59</span>
+            <span class="news-time">2026-03-26 10:53:31</span>
           </div>
           <h3>霍尔木兹海峡交通能否在4月底前恢复正常？</h3>
-          <p class="news-summary"><strong>摘要:</strong> Polymarket预测市场显示，霍尔木兹海峡航运在4月底前恢复正常（日均到港船只≥60艘）的概率仅为32.5%。该市场当前总成交量已超126万美元，24小时成交额近13万美元。</p>
+          <p class="news-summary"><strong>摘要:</strong> Polymarket数据显示，4月底前霍尔木兹海峡航运恢复正常的概率仅为32.5%。该市场总交易量达126.2万美元，24小时成交额约12.7万美元，反映出投资者对海峡长期受阻的高度担忧。</p>
           <p class="news-indicators"><strong>对应指标:</strong> 军事能力, 战争成本</p>
-          <p class="news-reason"><strong>为何相关:</strong> 预测市场反映了对航运恢复的高度悲观预期，且交易量巨大，具有显著的市场指标意义。</p>
+          <p class="news-reason"><strong>为何相关:</strong> 预测市场价格量化了霍尔木兹海峡恢复通航的低概率，是关键的风险指标。</p>
           <div class="news-meta">
             <span>C 0.78</span>
-            <span>I 0.6519</span>
-            <span>相关性分 0.85</span>
-            <span>24h成交 129758.0</span>
-            <span>成交量 1262220.0</span>
-            <span>流动性 142033.0</span>
+            <span>I 0.6511</span>
+            <span>相关性分 0.82</span>
+            <span>24h成交 127640.0</span>
+            <span>成交量 1262676.0</span>
+            <span>流动性 140912.0</span>
+          </div>
+        </a>
+        
+        <a class="news-item" data-news-item data-core-signals="war_cost" href="https://polymarket.com/event/iran-leader-end-of-2026" target="_blank" rel="noopener">
+          <div class="news-head">
+            <span class="news-source">polymarket_geopolitics</span>
+            <span class="news-time">2026-03-26 10:48:13</span>
+          </div>
+          <h3>莫杰塔巴·哈梅内伊会在2026年底成为伊朗国家元首吗？</h3>
+          <p class="news-summary"><strong>摘要:</strong> 预测市场认为莫吉塔巴·哈梅内伊在2026年底前接班的概率为53.6%。该市场总交易量突破82万美元，反映了国际社会对伊朗未来最高权力交接及战后体制稳定的高度关注。</p>
+          <p class="news-indicators"><strong>对应指标:</strong> 战争成本</p>
+          <p class="news-reason"><strong>为何相关:</strong> 预测市场价格反映了对伊朗政权接班及长期政策稳定性的担忧。</p>
+          <div class="news-meta">
+            <span>C 0.78</span>
+            <span>I 0.0524</span>
+            <span>相关性分 0.7</span>
+            <span>24h成交 61187.0</span>
+            <span>成交量 828641.0</span>
+            <span>流动性 88186.0</span>
           </div>
         </a>
         
         <a class="news-item" data-news-item data-core-signals="military_capability,war_cost" href="https://polymarket.com/event/iran-military-action-against-israel-on" target="_blank" rel="noopener">
           <div class="news-head">
             <span class="news-source">polymarket_geopolitics</span>
-            <span class="news-time">2026-03-26 10:17:55</span>
+            <span class="news-time">2026-03-26 10:47:59</span>
           </div>
-          <h3>伊朗是否会在2026年3月25日对以色列采取军事行动？</h3>
-          <p class="news-summary"><strong>摘要:</strong> 关于“伊朗是否在3月25日对以色列采取军事行动”的预测市场价格飙升至0.968（即96.8%概率），24小时成交量超6万美元，反映出当日已发生实质性军事对抗。</p>
+          <h3>伊朗会在2026年3月26日对以色列采取军事行动吗？</h3>
+          <p class="news-summary"><strong>摘要:</strong> 3月26日发生军事行动的预测概率升至97.2%，24小时成交额突破2万美元。这表明伊朗对以色列的打击并非孤立事件，而是有计划的持续性军事升级行动。</p>
           <p class="news-indicators"><strong>对应指标:</strong> 军事能力, 战争成本</p>
-          <p class="news-reason"><strong>为何相关:</strong> 预测市场价格接近1，暗示该军事行动极大概率已经发生或正在进行，是确认冲突升级的关键证据。</p>
+          <p class="news-reason"><strong>为何相关:</strong> 连续高概率的袭击预测显示军事对抗的常态化和不可避免性。</p>
           <div class="news-meta">
             <span>C 0.78</span>
-            <span>I 0.4361</span>
-            <span>相关性分 0.9</span>
-            <span>24h成交 61784.0</span>
-            <span>成交量 89765.0</span>
-            <span>流动性 14888.0</span>
+            <span>I 0.4149</span>
+            <span>相关性分 0.85</span>
+            <span>24h成交 21249.0</span>
+            <span>成交量 26952.0</span>
+            <span>流动性 12054.0</span>
+          </div>
+        </a>
+        
+        <a class="news-item" data-news-item data-core-signals="military_capability,war_cost" href="https://polymarket.com/event/iran-military-action-against-israel-on" target="_blank" rel="noopener">
+          <div class="news-head">
+            <span class="news-source">polymarket_geopolitics</span>
+            <span class="news-time">2026-03-26 10:47:53</span>
+          </div>
+          <h3>伊朗会在2026年3月25日对以色列采取军事行动吗？</h3>
+          <p class="news-summary"><strong>摘要:</strong> 预测市场认为伊朗在3月25日对以色列发动军事打击的概率高达96.5%。高额交易量（近9万美元）和明确的市场定价显示军事冲突已进入极高频发阶段，风险处于顶点。</p>
+          <p class="news-indicators"><strong>对应指标:</strong> 军事能力, 战争成本</p>
+          <p class="news-reason"><strong>为何相关:</strong> 市场极高概率预示军事行动几乎确定发生，冲突面临剧烈升级。</p>
+          <div class="news-meta">
+            <span>C 0.78</span>
+            <span>I 0.4354</span>
+            <span>相关性分 0.85</span>
+            <span>24h成交 60067.0</span>
+            <span>成交量 89799.0</span>
+            <span>流动性 15024.0</span>
           </div>
         </a>
         
         <a class="news-item" data-news-item data-core-signals="war_cost" href="https://finance.yahoo.com/quote/CL=F" target="_blank" rel="noopener">
           <div class="news-head">
             <span class="news-source">oil_market</span>
-            <span class="news-time">2026-03-26 10:12:41</span>
+            <span class="news-time">2026-03-26 10:45:33</span>
           </div>
-          <h3>WTI原油期货报93.30美元（较前一收盘价+3.3%）</h3>
-          <p class="news-summary"><strong>摘要:</strong> WTI原油期货价格攀升至93.30美元，较前一交易日上涨3.3%，日内高点触及94.13美元。价格上涨主要受伊朗局势恶化及霍尔木兹海峡航运受阻预期驱动。</p>
+          <h3>WTI原油期货报93.03美元（较前一收盘价上涨3.0%）</h3>
+          <p class="news-summary"><strong>摘要:</strong> WTI原油期货价格涨至93.03美元，单日涨幅达3.0%，盘中高点触及94.13美元。油价持续攀升反映了市场对海峡封锁导致供应中断的即时恐慌，直接拉高了全球通胀预期。</p>
           <p class="news-indicators"><strong>对应指标:</strong> 战争成本</p>
-          <p class="news-reason"><strong>为何相关:</strong> 油价大幅波动反映了市场对供应中断的即时恐慌，是衡量冲突经济影响的核心指标。</p>
+          <p class="news-reason"><strong>为何相关:</strong> 原油价格波动是冲突对全球经济影响的直接体现。</p>
           <div class="news-meta">
             <span>C 0.9</span>
-            <span>I 0.5801</span>
+            <span>I 0.5738</span>
+            <span>相关性分 0.75</span>
+            
+            
+            
+          </div>
+        </a>
+        
+        <a class="news-item" data-news-item data-core-signals="war_cost" href="https://news.google.com/rss/articles/CBMiV0FVX3lxTE9Vc3FGUmlaVG5UaW9ZbzBBbHZLbENnWVU0eVNaUzg5ZjJwRmU4aUk4WVlyYk9VQVBydjcyMUdsT1BwWE05QVlmRnp2UnF5U05nNVJfUF9EYw?oc=5" target="_blank" rel="noopener">
+          <div class="news-head">
+            <span class="news-source">rss:Google News Iran Conflict</span>
+            <span class="news-time">2026-03-26 10:39:57</span>
+          </div>
+          <h3>以色列称已击毙负责霍尔木兹海峡封锁的伊朗海军司令 - BBC</h3>
+          <p class="news-summary"><strong>摘要:</strong> 以色列正式确认击毙负责执行霍尔木兹海峡封锁的伊朗海军司令。该将领的死亡可能导致伊朗海上封锁计划陷入混乱，或迫使伊朗发起空前规模的军事报复。</p>
+          <p class="news-indicators"><strong>对应指标:</strong> 战争成本</p>
+          <p class="news-reason"><strong>为何相关:</strong> 确认击毙负责封锁海峡的最高指挥官，是改变战场态势的关键事件。</p>
+          <div class="news-meta">
+            <span>C 0.75</span>
+            <span>I 0.125</span>
+            <span>相关性分 0.95</span>
+            
+            
+            
+          </div>
+        </a>
+        
+        <a class="news-item" data-news-item data-core-signals="negotiation_signal" href="https://news.google.com/rss/articles/CBMiwAFBVV95cUxOTkFNM3BvNWRBNUdFR1hKMHFTSnpZdmJCNUtiRzE2dzI0RXBiX0x6VnM3Ri13NkpiZkhfeERLRlNMMzByOXJIcklxY01fMkFNUTNnN2hpNmdrZFpuRDJpZ2tXU3R6S2dHVmoxbUJmMUUwTXViYl9wTE5BRTRTVE8yRFJ0Tm5iVW1xckswVEd5X0FXZUw3QmdNejJZODVCSjM0S081bkxVM3hvdmRqbURzMHJrRmhUVmNKWFQ4aW03YUU?oc=5" target="_blank" rel="noopener">
+          <div class="news-head">
+            <span class="news-source">rss:Google News Iran Conflict</span>
+            <span class="news-time">2026-03-26 10:22:58</span>
+          </div>
+          <h3>伊美战争直播：阿布扎比两人丧生，特朗普称伊朗对谈判感到“恐惧” - 独立报</h3>
+          <p class="news-summary"><strong>摘要:</strong> 阿布扎比遭遇袭击导致2人死亡。冲突的区域化蔓延极大地增加了周边国家的安全风险，显示伊朗及其代理人有能力将战火烧向第三国，提升了干预紧迫性。</p>
+          <p class="news-indicators"><strong>对应指标:</strong> 谈判信号</p>
+          <p class="news-reason"><strong>为何相关:</strong> 冲突外溢至阿联酋并造成伤亡，显示战争已演变为区域性博弈。</p>
+          <div class="news-meta">
+            <span>C 0.52</span>
+            <span>I 0.08</span>
             <span>相关性分 0.8</span>
             
             
@@ -339,19 +396,38 @@
           </div>
         </a>
         
-        <a class="news-item" data-news-item data-core-signals="war_cost" href="https://finance.yahoo.com/quote/BZ=F" target="_blank" rel="noopener">
+        <a class="news-item" data-news-item data-core-signals="war_cost,military_capability" href="https://news.google.com/rss/articles/CBMiWkFVX3lxTE0wX0Y5ZFN3MGo0emVqZ0FOWEo2NllKcVZPQUdQZVVJOEFtaFlLSnU3ZVFfTm9ZSUF6Yy1wYWtoM0xPVU45OUNvSThBaVBnRnZodU5nOTJwbHVfdw?oc=5" target="_blank" rel="noopener">
           <div class="news-head">
-            <span class="news-source">oil_market</span>
-            <span class="news-time">2026-03-26 10:10:00</span>
+            <span class="news-source">rss:Google News Iran Conflict</span>
+            <span class="news-time">2026-03-26 10:12:09</span>
           </div>
-          <h3>布伦特原油期货报100.35美元（较前一收盘价+3.2%）</h3>
-          <p class="news-summary"><strong>摘要:</strong> 布伦特原油期货上涨3.18%至100.35美元，日内振幅接近3.2美元。油价破百反映了全球能源市场对伊朗冲突升级导致的长期供应风险感到担忧。</p>
-          <p class="news-indicators"><strong>对应指标:</strong> 战争成本</p>
-          <p class="news-reason"><strong>为何相关:</strong> 布伦特原油突破100美元大关，具有重要的心理和经济支撑位象征意义。</p>
+          <h3>英国预测受伊朗战争影响将面临增长疲软和通胀上升 - BBC</h3>
+          <p class="news-summary"><strong>摘要:</strong> BBC报道称，受伊朗战争影响，英国面临经济增长放缓和通胀上升。这类预测有助于评估冲突对北约成员国国内政治和对伊政策的潜在压力。</p>
+          <p class="news-indicators"><strong>对应指标:</strong> 战争成本, 军事能力</p>
+          <p class="news-reason"><strong>为何相关:</strong> 权威机构对外部受波及国家的经济预测，有助于评估战争的全球溢出效应。</p>
           <div class="news-meta">
-            <span>C 0.9</span>
-            <span>I 0.5775</span>
-            <span>相关性分 0.8</span>
+            <span>C 0.75</span>
+            <span>I 0.32</span>
+            <span>相关性分 0.4</span>
+            
+            
+            
+          </div>
+        </a>
+        
+        <a class="news-item" data-news-item data-core-signals="military_capability,negotiation_signal" href="https://news.google.com/rss/articles/CBMixwFBVV95cUxNbFVQRWVyYmFzQ1BIUWZjdkkyYzFDaWJ4ZElaa1lrcmVOVHpRQnVZNjh3cEtHaUxKQ2JDX0x3WnlWbEctMjM0WERXMzVzZ3hPYnItdUwwazBacDFUQjVKdVNmbWRuR1hvX290QmwyY21xNmZ2TUctV3hpaGdXeG9GN3N4OVdMVExwajRvajJUMEZwNlMwQTNLam1VdkgtVzRpWGszeTJJemtFbjExR3hJeFFWT1dybmpxTFE1SlRNQ1hMUThQYWlj?oc=5" target="_blank" rel="noopener">
+          <div class="news-head">
+            <span class="news-source">rss:Google News Iran</span>
+            <span class="news-time">2026-03-26 10:06:00</span>
+          </div>
+          <h3>中东危机直播：特朗普坚称尽管最初遭到拒绝，伊朗仍希望达成协议；中国看到谈判的“一线希望” - 卫报</h3>
+          <p class="news-summary"><strong>摘要:</strong> 《卫报》报道特朗普坚持认为伊朗渴望达成交易，中国则看到谈判曙光。大国间这种不一致的评估表明外交博弈仍处于高度动态调整中，各方都在试图左右谈判走势。</p>
+          <p class="news-indicators"><strong>对应指标:</strong> 军事能力, 谈判信号</p>
+          <p class="news-reason"><strong>为何相关:</strong> 显示主要大国在谈判中的不同评估和努力方向。</p>
+          <div class="news-meta">
+            <span>C 0.52</span>
+            <span>I 0.05</span>
+            <span>相关性分 0.6</span>
             
             
             
@@ -363,33 +439,166 @@
             <span class="news-source">rss:Google News Iran Conflict</span>
             <span class="news-time">2026-03-26 10:05:09</span>
           </div>
-          <h3>伊朗战争实时更新：以色列官员称空袭目标为伊朗海军指挥官 - 纽约时报</h3>
-          <p class="news-summary"><strong>摘要:</strong> 以色列官员称空袭目标直指伊朗海军司令。针对军队高级将领的斩首行动通常预示着战场局势的重大转折或报复性升级风险的急剧增加。</p>
+          <h3>伊朗战争实时更新：以色列官员称，以色列在空袭中瞄准了伊朗海军指挥官 - 纽约时报</h3>
+          <p class="news-summary"><strong>摘要:</strong> 《纽约时报》报道以色列空袭目标为伊朗海军司令。针对高层将领的精准打击不仅削弱了伊朗的海上指挥能力，也可能引发伊朗采取更加极端的报复手段。</p>
           <p class="news-indicators"><strong>对应指标:</strong> -</p>
-          <p class="news-reason"><strong>为何相关:</strong> 针对指挥层的高价值目标打击可能导致指挥系统受损或引发更大规模报复。</p>
+          <p class="news-reason"><strong>为何相关:</strong> 针对高级指挥官的斩首行动是军事博弈的重大升级。</p>
           <div class="news-meta">
             <span>C 0.52</span>
             <span>I 0.2</span>
-            <span>相关性分 0.75</span>
+            <span>相关性分 0.9</span>
             
             
             
           </div>
         </a>
         
-        <a class="news-item" data-news-item data-core-signals="negotiation_signal" href="https://news.google.com/rss/articles/CBMiwAFBVV95cUxOTkFNM3BvNWRBNUdFR1hKMHFTSnpZdmJCNUtiRzE2dzI0RXBiX0x6VnM3Ri13NkpiZkhfeERLRlNMMzByOXJIcklxY01fMkFNUTNnN2hpNmdrZFpuRDJpZ2tXU3R6S2dHVmoxbUJmMUUwTXViYl9wTE5BRTRTVE8yRFJ0Tm5iVW1xckswVEd5X0FXZUw3QmdNejJZODVCSjM0S081bkxVM3hvdmRqbURzMHJrRmhUVmNKWFQ4aW03YUU?oc=5" target="_blank" rel="noopener">
+        <a class="news-item" data-news-item data-core-signals="war_cost" href="https://ejpress.org/six-wounded-as-iranian-missiles-strike-central-israel-an-11-year-old-girl-was-critically-injured/" target="_blank" rel="noopener">
           <div class="news-head">
-            <span class="news-source">rss:Google News Iran Conflict</span>
-            <span class="news-time">2026-03-26 09:15:33</span>
+            <span class="news-source">gdelt</span>
+            <span class="news-time">2026-03-26 10:00:00</span>
           </div>
-          <h3>伊美战争直播：阿布扎比两人遇难，特朗普称伊朗对谈判感到“畏惧” - 独立报</h3>
-          <p class="news-summary"><strong>摘要:</strong> 阿布扎比在冲突中遭遇袭击导致两人死亡，证实战争已向伊朗及以色列以外的第三国扩散。特朗普称伊朗因面临谈判压力而感到“恐惧”，反映了美方的舆论攻势。</p>
+          <h3>伊朗导弹袭击以色列中部造成六人受伤，一名11岁女孩重伤。</h3>
+          <p class="news-summary"><strong>摘要:</strong> 伊朗导弹袭击以色列中部，造成6人受伤，其中一名11岁女孩伤势严重。伤亡细节的明确增加了国际舆论压力，并显著提升了以色列采取更大规模报复行动的可能性。</p>
+          <p class="news-indicators"><strong>对应指标:</strong> 战争成本</p>
+          <p class="news-reason"><strong>为何相关:</strong> 平民伤亡事件是军事冲突直接升级的证据，可能引发以色列剧烈报复。</p>
+          <div class="news-meta">
+            <span>C 0.75</span>
+            <span>I 0.24</span>
+            <span>相关性分 0.85</span>
+            
+            
+            
+          </div>
+        </a>
+        
+        <a class="news-item" data-news-item data-core-signals="military_capability,war_cost,negotiation_signal" href="https://www.upi.com/Top_News/World-News/2026/03/26/korea-iran-envoy-south-korean-ships-hormuz-strait-coordination/6161774515105/" target="_blank" rel="noopener">
+          <div class="news-head">
+            <span class="news-source">gdelt</span>
+            <span class="news-time">2026-03-26 10:00:00</span>
+          </div>
+          <h3>伊朗高级特使表示，韩国船只只有在与德黑兰协调后才能通过霍尔木兹海峡</h3>
+          <p class="news-summary"><strong>摘要:</strong> 伊朗特使要求韩国船只必须经德黑兰协调方可通行霍尔木兹海峡。这一针对性限制展示了伊朗对航道的实际掌控力，并将其作为谈判筹码，直接威胁全球供应链安全。</p>
+          <p class="news-indicators"><strong>对应指标:</strong> 军事能力, 战争成本, 谈判信号</p>
+          <p class="news-reason"><strong>为何相关:</strong> 伊朗对特定国家船舶的通行限制显示其在利用海峡控制权进行政治敲诈。</p>
+          <div class="news-meta">
+            <span>C 0.75</span>
+            <span>I 0.175</span>
+            <span>相关性分 0.8</span>
+            
+            
+            
+          </div>
+        </a>
+        
+        <a class="news-item" data-news-item data-core-signals="negotiation_signal" href="https://news.google.com/rss/articles/CBMitgFBVV95cUxQWkhaOUI3Q0pWdHZITDQyS2RFVm41dkNIc2oxbEdhUktZNlI0UGJrYUNpQ25Hdm56Ymo5YVp4Z09QcXZ4R0NCZVN1NW1EaThZakRBcTJzSkFnWXR6YXJLY29BQ1dUdHY5dVNOTHQ0RnZHZGhPZG1kR1phNFNsSVJQdzIxcFZFRUNIX1hteUZQMHByRDlfY2VlekNLbjM5THhoWWh6NE9nakFfZXBHS0dyRFZpN2x3Z9IBuwFBVV95cUxNSWRGMENxc1VqZWxfVWVMWTJENVNkaHFsaFdQcVc1UlF5elA2N1l1emhIT25VVDhaWUdmaTVJUTBmOEJLQjlCemlzUTV3M2xfVVMtdTgwR19JWm1sN1RER3d6d2pEMEo1Unp2cG4ycFFjdXdpU1MxRWI2TmNmZEdmSEttS3pBelFSX0JNdkR3N0pLMUlEUG5uai1mUU81MVJkdnhXTUhiMHB4bGtWLXZVTWszRUwzaERoRHh3?oc=5" target="_blank" rel="noopener">
+          <div class="news-head">
+            <span class="news-source">rss:Google News Iran</span>
+            <span class="news-time">2026-03-26 10:00:00</span>
+          </div>
+          <h3>以色列担心美国可能与伊朗达成的停火协议会损害其战争目标 - 中东监测站</h3>
+          <p class="news-summary"><strong>摘要:</strong> 以色列担心美伊可能的停火协议会损害其战争目标。这种分歧表明西方阵营内部在应对伊朗问题上存在裂痕，可能延缓停火协议的达成或改变其条款。</p>
           <p class="news-indicators"><strong>对应指标:</strong> 谈判信号</p>
-          <p class="news-reason"><strong>为何相关:</strong> 冲突外溢至阿联酋并造成伤亡，是区域局势进一步恶化的明确信号。</p>
+          <p class="news-reason"><strong>为何相关:</strong> 揭示了盟友间在停火问题上的战略分歧，影响谈判进程。</p>
+          <div class="news-meta">
+            <span>C 0.52</span>
+            <span>I 0.1</span>
+            <span>相关性分 0.65</span>
+            
+            
+            
+          </div>
+        </a>
+        
+        <a class="news-item" data-news-item data-core-signals="military_capability" href="https://isp.netscape.com/pf/story/0001/20260326/c08108c2c5da7fd263098ff43748eac5" target="_blank" rel="noopener">
+          <div class="news-head">
+            <span class="news-source">gdelt</span>
+            <span class="news-time">2026-03-26 10:00:00</span>
+          </div>
+          <h3>伊朗战争扰乱能源供应，东南亚重新审视用于AI数据中心的核能计划</h3>
+          <p class="news-summary"><strong>摘要:</strong> 受伊朗战争导致能源供应中断影响，东南亚国家重新审视核电计划以支持AI数据中心。这表明战争正在迫使区域国家寻求能源独立，长期内可能重塑亚洲能源版图。</p>
+          <p class="news-indicators"><strong>对应指标:</strong> 军事能力</p>
+          <p class="news-reason"><strong>为何相关:</strong> 展示了能源危机驱动下的区域性能源政策转型，具有长期地缘经济意义。</p>
+          <div class="news-meta">
+            <span>C 0.75</span>
+            <span>I 0.5</span>
+            <span>相关性分 0.5</span>
+            
+            
+            
+          </div>
+        </a>
+        
+        <a class="news-item" data-news-item data-core-signals="war_cost" href="https://news.google.com/rss/articles/CBMimwFBVV95cUxQT3U4NHBkcE5xalkwSXRSSEFiQ1BQRndodTVydWIwS1RrdEtidFdYYkplWjZCQ3dWcHNJdFVrb0t5WUREVVpHQzNZNGp0RGNrSkRHRWstLTgwS0NXQU5wdHVseXI1NS1IQUljc2F0d215QndERmR6OHlnMVJOZVdCMmxUM2dhUlRuS1RmOE9nYS0zRjJKZ0Z0cnF5Y9IBoAFBVV95cUxPUkJ4VU4xSmY5aFd4c0dSNGhyVG02WjA1Sk1SVWZaYWY2U09MUWNvdTRBX0VqV0F4UkxBU09COWtkS09reFA1STNTMGZ4Q1FDUjNRcTVZUjUwSkdEeWZwUi1iV2Z3djdTbW1RMEF4Q0dSSlAwTl9uY210R1ZVTmVpU2ZjcnBCZnllRW9xR3ZtcEdXczVxd0taUmRwYUhrQ3FH?oc=5" target="_blank" rel="noopener">
+          <div class="news-head">
+            <span class="news-source">rss:Google News Hormuz Shipping</span>
+            <span class="news-time">2026-03-26 09:40:20</span>
+          </div>
+          <h3>据报道伊朗计划对通过霍尔木兹海峡的安全航行收费 - CNBC</h3>
+          <p class="news-summary"><strong>摘要:</strong> 据CNBC报道，伊朗计划对通过海峡的船舶征收“通行费”。这一举动公然挑战国际航行自由，旨在通过劫持全球能源命脉来缓解经济制裁压力。</p>
+          <p class="news-indicators"><strong>对应指标:</strong> 战争成本</p>
+          <p class="news-reason"><strong>为何相关:</strong> 伊朗计划对国际航道征税，标志着封锁手段向经济勒索转变。</p>
+          <div class="news-meta">
+            <span>C 0.52</span>
+            <span>I 0.075</span>
+            <span>相关性分 0.85</span>
+            
+            
+            
+          </div>
+        </a>
+        
+        <a class="news-item" data-news-item data-core-signals="negotiation_signal" href="https://news.google.com/rss/articles/CBMifkFVX3lxTFBxZVA3bjVXRFJ1Vkc0N0pvNEFfYW9wVnBXd2ttanFxYjZqRzRXT2JJbnF6V1BRNzVVSWxhdVJsUmxMazdaRFJMQzhRcFk5NWtISjBuOXpoNUcxMHpEM1N0OEc2MGZyX2tMTDZrN3J5ZHpWWHIzWjA3dDh4NmZfd9IBgwFBVV95cUxQUFp2bE45di12cTE1cl9kVHVuemg1MlV1WVJoaEh6RE1nR3loS1dUdDBpY3k4eXRFQ19VWG01Z0VSU1lycGNyNW96UkxtWmRrZU0yeGZLUHprazlmSnVQMWFIOFJLdmktYnBRWjFXRUFkN01qcmt6OGJuUnJUSGoyUkI2RQ?oc=5" target="_blank" rel="noopener">
+          <div class="news-head">
+            <span class="news-source">rss:Google News Iran</span>
+            <span class="news-time">2026-03-26 09:34:43</span>
+          </div>
+          <h3>特朗普政府提出15点伊朗和平建议，巴基斯坦提议举行会谈 - 福克斯新闻</h3>
+          <p class="news-summary"><strong>摘要:</strong> 特朗普政府提出了包含15个要点的详细伊朗和平建议，巴基斯坦提议作为对话平台。这是目前为止最具体的停火方案，其细则将成为未来各方讨价还价的核心基础。</p>
+          <p class="news-indicators"><strong>对应指标:</strong> 谈判信号</p>
+          <p class="news-reason"><strong>为何相关:</strong> 提出了具体的15点停火框架，是外交斡旋的重要转折点。</p>
+          <div class="news-meta">
+            <span>C 0.52</span>
+            <span>I 0.05</span>
+            <span>相关性分 0.85</span>
+            
+            
+            
+          </div>
+        </a>
+        
+        <a class="news-item" data-news-item data-core-signals="" href="https://www.aljazeera.net/ebusiness/2026/3/26/gold-dollar-progress-war" target="_blank" rel="noopener">
+          <div class="news-head">
+            <span class="news-source">gdelt</span>
+            <span class="news-time">2026-03-26 09:30:00</span>
+          </div>
+          <h3>黄金下跌、美元上涨，市场正密切关注战争走向</h3>
+          <p class="news-summary"><strong>摘要:</strong> 金价下跌而美元走强，市场正密切关注战争走向。避险资金流向美元反映出投资者对冲突可能失控的担忧，是金融市场风险定价的重要补充。</p>
+          <p class="news-indicators"><strong>对应指标:</strong> -</p>
+          <p class="news-reason"><strong>为何相关:</strong> 大宗商品和货币市场的联动反映了对战争长期化的避险情绪。</p>
+          <div class="news-meta">
+            <span>C 0.75</span>
+            <span>I 0.16</span>
+            <span>相关性分 0.45</span>
+            
+            
+            
+          </div>
+        </a>
+        
+        <a class="news-item" data-news-item data-core-signals="negotiation_signal" href="https://news.google.com/rss/articles/CBMiqAFBVV95cUxOd1Y5QXNCeU93dmt6R24zWHhJNXlZaHl2cVl0SVBHZVNNOU1QOUlod2xhZWFpYkNSUHZFRm9YeUhEbnVrZU9HOVhWd0NvMjNyNnpvaTdwakdUT210RnpvQjc3aDRySEdTNFVsbndpdlZBRzItSC1FV292YkoxMThVSldyZkkxNFp1eS1ZQTUwTFVZTmRCRGFETFpMLTlVNUpkaU56UVFPWlY?oc=5" target="_blank" rel="noopener">
+          <div class="news-head">
+            <span class="news-source">rss:Google News Iran</span>
+            <span class="news-time">2026-03-26 09:25:00</span>
+          </div>
+          <h3>德国认为伊朗问题没有退出策略，但提议协助停火 - politico.eu</h3>
+          <p class="news-summary"><strong>摘要:</strong> 德国表示虽无退出战略但愿协助调停。这反映了欧洲国家在维持伊朗地区稳定的外交努力，虽然目前缺乏实质性突破，但为未来外交斡旋预留了空间。</p>
+          <p class="news-indicators"><strong>对应指标:</strong> 谈判信号</p>
+          <p class="news-reason"><strong>为何相关:</strong> 展示了欧洲大国在调停冲突中的角色和立场。</p>
           <div class="news-meta">
             <span>C 0.52</span>
             <span>I 0.08</span>
-            <span>相关性分 0.7</span>
+            <span>相关性分 0.5</span>
             
             
             
@@ -401,71 +610,33 @@
             <span class="news-source">gdelt</span>
             <span class="news-time">2026-03-26 09:00:00</span>
           </div>
-          <h3>伊朗经巴基斯坦拒绝美国和平计划，提出包括控制霍尔木兹海峡在内的5项停战条件</h3>
-          <p class="news-summary"><strong>摘要:</strong> 伊朗通过巴基斯坦拒绝美国和平计划，并提出结束战争的5项条件，其中包括要求获得霍尔木兹海峡的控制权。此举表明伊朗在谈判中立场强硬，短期内达成停火协议的可能性较低。</p>
+          <h3>伊朗通过巴基斯坦拒绝美国和平计划，提出结束战争的5项条件，包括控制霍尔木兹海峡</h3>
+          <p class="news-summary"><strong>摘要:</strong> 伊朗通过巴基斯坦拒绝美国和平计划，并提出包括控制霍尔木兹海峡在内的5项停火条件。此举显示德黑兰在谈判中立场强硬，试图利用能源咽喉要道作为核心筹码，增加了外交解决的复杂性。</p>
           <p class="news-indicators"><strong>对应指标:</strong> 战争成本, 军事能力, 谈判信号</p>
-          <p class="news-reason"><strong>为何相关:</strong> 伊朗首次明确提出停战条件，特别是对霍尔木兹海峡的控制权要求，直接影响能源安全和战争终结路径。</p>
+          <p class="news-reason"><strong>为何相关:</strong> 伊朗提出的停火条件涉及霍尔木兹海峡控制权，直接影响全球能源安全和战争结局。</p>
           <div class="news-meta">
             <span>C 0.75</span>
             <span>I 0.7</span>
-            <span>相关性分 0.95</span>
+            <span>相关性分 0.9</span>
             
             
             
           </div>
         </a>
         
-        <a class="news-item" data-news-item data-core-signals="war_cost" href="https://news.google.com/rss/articles/CBMixgFBVV95cUxPNEdva0luSlQwMkVrSi1LdlVET3FXUzdvTmRvNUoyZGhxOFR1aVoyRk82U1Bhb1pzXzYybURHdW10RkJMb2VsU2xUYVJUaV9wSWtGWGM2bV8tTF9kTmJld0FtWUl3S05vWGpabE5FWU5DelRuMWpkcDJGdVQyRkdoZW5QNnZuakJJMmlRTGNPbjBoS3E0anNzU2hzSUJ1RjVPRTJ2LXEwa2NpUDhLcFZBQUxIa183WFZWWkphRmxfc0kxLUlJU1E?oc=5" target="_blank" rel="noopener">
+        <a class="news-item" data-news-item data-core-signals="negotiation_signal" href="https://api.gdeltproject.org/api/v2/doc/doc?query=%28Iran+OR+IRGC+OR+Israel+OR+ceasefire+OR+Tehran%29&amp;mode=TimelineVolRaw&amp;format=json&amp;timespan=168h" target="_blank" rel="noopener">
           <div class="news-head">
-            <span class="news-source">rss:Google News Hormuz Shipping</span>
-            <span class="news-time">2026-03-26 08:51:53</span>
+            <span class="news-source">gdelt_timeline</span>
+            <span class="news-time">2026-03-26 09:00:00</span>
           </div>
-          <h3>随着保险成本飙升，船只在霍尔木兹海峡寻求伊朗许可 - Euronews.com</h3>
-          <p class="news-summary"><strong>摘要:</strong> 随着霍尔木兹海峡航运保险成本激增，过境商船开始寻求伊朗方面的清关许可。这表明伊朗已在事实上掌握了海峡的准入审批权，改变了该海域的国际通行现状。</p>
-          <p class="news-indicators"><strong>对应指标:</strong> 战争成本</p>
-          <p class="news-reason"><strong>为何相关:</strong> 保险费率激增和伊朗的实际准入控制直接增加了全球供应链成本。</p>
-          <div class="news-meta">
-            <span>C 0.52</span>
-            <span>I 0.075</span>
-            <span>相关性分 0.72</span>
-            
-            
-            
-          </div>
-        </a>
-        
-        <a class="news-item" data-news-item data-core-signals="war_cost" href="https://news.google.com/rss/articles/CBMi3AFBVV95cUxPVEVSVzJRbTFsVEl6ZC02SWdtOUNrc2Jid3NYOHdBVzAxazdKTWl6ZmRLcDdXaFZhZzlMekpDYzFtbE5iOVNnT05JNHc4SHRUQ1g5em9MZGlrbXVnY3A4V2hJM2xreWRrRzVGRE9WVEFQMldpbzNnZUhkWGdRYTU0NE5KMTA1RlZjWjFQZFd0RUlqUFRyNkpHTGUzMmlzZTRnMGk0Z2w5RzRSN1I1aUpENkVxRU1KcU9mMFlDV2dwSzBZR3R2cEZXQ2FXaXd1Mmh6dERvRWJlek9fdWlQ0gHjAUFVX3lxTFBHUkVYcE8xZ0ZRSjNVLWwzZmNrVTVsMExIR1RvdkZUZEx3ejZkN2xQejRKRnFWOFZPZGc3ZVFPZkpSdTNSb3cwVW4zWld4Yi10WVY1SDNGSFlSWmtjNmJfbDJBSUx0dkNjSHp6V1R4RVk2SGtIS2Y4R1VDbEZtbng4dWJFaEVLcEdaeElpSTBvRWhBTzlmQUxfZFRGdHNlai1XSjQxRF93czdoajRJa0pyRTBub1JWMW0xTFAtRWoybU9tbEQtdzdLcDFSRTdyQ2xVdXpJMS1kd2hRQkNnYklSYmh3?oc=5" target="_blank" rel="noopener">
-          <div class="news-head">
-            <span class="news-source">rss:Google News Iran Conflict</span>
-            <span class="news-time">2026-03-26 08:46:04</span>
-          </div>
-          <h3>战争进入第27天：伊朗拒绝与美谈判，向“友好国家”开放霍尔木兹 - 印度快报</h3>
-          <p class="news-summary"><strong>摘要:</strong> 战争进入第27天，伊朗宣布拒绝与美国谈判，并采取差别化航运政策，仅允许“友好国家”通过霍尔木兹海峡。这一举措可能旨在分化国际社会对伊朗的制裁压力。</p>
-          <p class="news-indicators"><strong>对应指标:</strong> 战争成本</p>
-          <p class="news-reason"><strong>为何相关:</strong> 提到“仅对友好国家开放”的差别化封锁策略，是海峡管控手段的重要变化。</p>
-          <div class="news-meta">
-            <span>C 0.52</span>
-            <span>I 0.3</span>
-            <span>相关性分 0.82</span>
-            
-            
-            
-          </div>
-        </a>
-        
-        <a class="news-item" data-news-item data-core-signals="military_capability" href="https://www.haaretz.com/israel-news/israel-security/2026-03-26/ty-article-live/wall-street-journal-trump-tells-aides-to-wrap-up-iran-conflict-in-coming-weeks/0000019d-281c-d77a-a7ff-fffcacd50000" target="_blank" rel="noopener">
-          <div class="news-head">
-            <span class="news-source">gdelt</span>
-            <span class="news-time">2026-03-26 08:30:00</span>
-          </div>
-          <h3>今晨以来伊朗发动五波导弹袭击：医护人员称至少六人受伤</h3>
-          <p class="news-summary"><strong>摘要:</strong> 自26日早间起，伊朗已向以色列发动五轮导弹袭击，造成至少六人受伤。攻击频率的增加显示伊朗正在加强其远程打击攻势，冲突烈度未见减弱。</p>
-          <p class="news-indicators"><strong>对应指标:</strong> 军事能力</p>
-          <p class="news-reason"><strong>为何相关:</strong> 具体记录了伊朗的攻击频率和造成的伤亡，是衡量军事冲突烈度的实证数据。</p>
+          <h3>GDELT事件强度脉冲</h3>
+          <p class="news-summary"><strong>摘要:</strong> GDELT事件强度指数显示，关注度在3月23日达到峰值。虽然数据略微滞后，但通过监测舆论脉冲可以辅助判断冲突的社会影响力和升级节点。</p>
+          <p class="news-indicators"><strong>对应指标:</strong> 谈判信号</p>
+          <p class="news-reason"><strong>为何相关:</strong> 量化媒体关注度脉冲，可作为冲突烈度的辅助参考。</p>
           <div class="news-meta">
             <span>C 0.75</span>
             <span>I 0.3</span>
-            <span>相关性分 0.88</span>
+            <span>相关性分 0.5</span>
             
             
             
@@ -573,7 +744,7 @@
               </div>
               <p class="source-brief-copy"><strong>为何可信:</strong> ADSB 军机数据属于传感器类硬信号，适合发现空中加油、预警和军机活动异常。</p>
               <p class="source-brief-copy"><strong>当前状态:</strong> 正常 · inserted 1 items</p>
-              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-03-26T10:50:31+00:00 · <strong>最近入库:</strong> 1</p>
+              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-03-26T10:55:39+00:00 · <strong>最近入库:</strong> 1</p>
             </article>
             
             <article class="source-brief">
@@ -781,7 +952,7 @@
               </div>
               <p class="source-brief-copy"><strong>为何可信:</strong> 国际原油期货价格是最直接的外溢成本信号之一，能快速反映霍尔木兹、油运和地区升级风险。</p>
               <p class="source-brief-copy"><strong>当前状态:</strong> 正常 · inserted 2 items</p>
-              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-03-26T10:50:32+00:00 · <strong>最近入库:</strong> 2</p>
+              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-03-26T10:55:39+00:00 · <strong>最近入库:</strong> 2</p>
             </article>
             
             <article class="source-brief">
@@ -797,7 +968,7 @@
               </div>
               <p class="source-brief-copy"><strong>为何可信:</strong> Polymarket 反映真实资金下注形成的隐含概率，适合观察市场如何定价领导人变动、停火或升级预期。</p>
               <p class="source-brief-copy"><strong>当前状态:</strong> 正常 · inserted 8 items</p>
-              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-03-26T10:50:34+00:00 · <strong>最近入库:</strong> 8</p>
+              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-03-26T10:55:41+00:00 · <strong>最近入库:</strong> 8</p>
             </article>
             
             <article class="source-brief">
@@ -877,7 +1048,7 @@
               </div>
               <p class="source-brief-copy"><strong>为何可信:</strong> -</p>
               <p class="source-brief-copy"><strong>当前状态:</strong> 未配置 · ACLED requires account credentials and is calibration-only</p>
-              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-03-26T10:50:34+00:00 · <strong>最近入库:</strong> 0</p>
+              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-03-26T10:57:28+00:00 · <strong>最近入库:</strong> 0</p>
             </article>
             
             <article class="source-brief">
@@ -893,7 +1064,7 @@
               </div>
               <p class="source-brief-copy"><strong>为何可信:</strong> -</p>
               <p class="source-brief-copy"><strong>当前状态:</strong> 未配置 · NASA FIRMS requires a free NASA_FIRMS_MAP_KEY</p>
-              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-03-26T10:50:34+00:00 · <strong>最近入库:</strong> 0</p>
+              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-03-26T10:57:28+00:00 · <strong>最近入库:</strong> 0</p>
             </article>
             
             <article class="source-brief">
@@ -909,7 +1080,7 @@
               </div>
               <p class="source-brief-copy"><strong>为何可信:</strong> -</p>
               <p class="source-brief-copy"><strong>当前状态:</strong> 未配置 · ReliefWeb requires an approved RELIEFWEB_APPNAME</p>
-              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-03-26T10:50:34+00:00 · <strong>最近入库:</strong> 0</p>
+              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-03-26T10:57:28+00:00 · <strong>最近入库:</strong> 0</p>
             </article>
             
             <article class="source-brief">
@@ -925,7 +1096,7 @@
               </div>
               <p class="source-brief-copy"><strong>为何可信:</strong> -</p>
               <p class="source-brief-copy"><strong>当前状态:</strong> 未配置 · VesselFinder realtime API is commercial, not a free public feed</p>
-              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-03-26T10:50:34+00:00 · <strong>最近入库:</strong> 0</p>
+              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-03-26T10:57:28+00:00 · <strong>最近入库:</strong> 0</p>
             </article>
             
         </div>
