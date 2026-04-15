@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="mesandbox-snapshot-id" content="2026-04-14T07:30:13+00:00">
+  <meta name="mesandbox-snapshot-id" content="2026-04-15T07:26:33+00:00">
   <title>伊朗战局沙盘推演台</title>
   <style>
     :root {
@@ -162,32 +162,32 @@
     <div class="eyebrow">Decision Dashboard</div>
     <h1>伊朗战局沙盘推演台</h1>
     <p class="subtitle">面向研判与决策的实时战局评估与终局预判。</p>
-    <p class="compact-note">最新推演时间: 2026-04-14T07:30:13+00:00</p>
+    <p class="compact-note">最新推演时间: 2026-04-15T07:26:33+00:00</p>
 
     <div class="dashboard">
       <section class="summary-grid">
         <div class="card">
           <div class="stat-label">结束时间窗口</div>
-          <div class="stat-value">2026-05-15</div>
+          <div class="stat-value">2026-05-31</div>
           <div class="window-grid">
-            <div class="window-chip">P10<strong>2026-04-20</strong></div>
-            <div class="window-chip">P50<strong>2026-05-15</strong></div>
-            <div class="window-chip">P90<strong>2026-10-30</strong></div>
+            <div class="window-chip">P10<strong>2026-04-17</strong></div>
+            <div class="window-chip">P50<strong>2026-05-31</strong></div>
+            <div class="window-chip">P90<strong>2026-12-31</strong></div>
           </div>
-          <div class="mini-grid"><div class='mini-row'><span>7d</span><strong>0.248</strong></div><div class='mini-row'><span>14d</span><strong>0.382</strong></div><div class='mini-row'><span>30d</span><strong>0.5296</strong></div><div class='mini-row'><span>60d</span><strong>0.6385</strong></div></div>
+          <div class="mini-grid"><div class='mini-row'><span>7d</span><strong>0.2428</strong></div><div class='mini-row'><span>14d</span><strong>0.3769</strong></div><div class='mini-row'><span>30d</span><strong>0.5221</strong></div><div class='mini-row'><span>60d</span><strong>0.6304</strong></div></div>
         </div>
         <div class="card">
           <div class="stat-label">结果预判</div>
           <div class="stat-value">停火</div>
           <p class="compact-note">当前战争状态: 地区外溢</p>
-          <p class="compact-note">证据条目: 201</p>
-          <p class="compact-note">紧张指数: 59.5</p>
+          <p class="compact-note">证据条目: 200</p>
+          <p class="compact-note">紧张指数: 61.0</p>
         </div>
         <div class="card">
           <div class="stat-label">置信度</div>
-          <div class="stat-value">85.9</div>
+          <div class="stat-value">85.6</div>
           <p class="compact-note">等级: 高</p>
-          <p class="compact-note">置信说明: 本预测基于短期市场情绪与高密度军事动态。由于谈判信号（19条证据）相比战争成本（35条证据）在证据量上较单薄，且存在‘特朗普威胁’与‘油价下跌’的逻辑矛盾，中长期确定性较低。</p>
+          <p class="compact-note">置信说明: 中等。短期军事行动停止的信号极为明确（预测市场达100%），但外交信号与封锁执行力的矛盾显著增加了中长期政治走向的不确定性。</p>
         </div>
       </section>
 
@@ -205,22 +205,22 @@
             <article class="indicator-card">
               <div class="indicator-head">
                 <h3>核心指标</h3>
-                <span>组均值 92.9</span>
+                <span>组均值 94.4</span>
               </div>
               <div class="indicator-list">
                 
             <button type="button" class="indicator-row indicator-filter" data-signal-filter="military_capability" data-signal-label="军事能力" aria-pressed="false">
-              <span>军事能力 · 证据 8</span>
-              <strong>78.6</strong>
+              <span>军事能力 · 证据 9</span>
+              <strong>83.1</strong>
             </button>
             
             <button type="button" class="indicator-row indicator-filter" data-signal-filter="war_cost" data-signal-label="战争成本" aria-pressed="false">
-              <span>战争成本 · 证据 18</span>
+              <span>战争成本 · 证据 11</span>
               <strong>100.0</strong>
             </button>
             
             <button type="button" class="indicator-row indicator-filter" data-signal-filter="negotiation_signal" data-signal-label="谈判信号" aria-pressed="false">
-              <span>谈判信号 · 证据 9</span>
+              <span>谈判信号 · 证据 6</span>
               <strong>100.0</strong>
             </button>
             
@@ -238,139 +238,139 @@
       <p class="compact-note">仅展示最近7天内、经模型判定与结束时间或结果预判直接相关的信息。</p>
       <label class="news-control">
         <span>显示条数</span>
-        <select id="news-count-select"><option value='20' selected>20</option><option value='30' >30</option><option value='9999' >全部</option></select>
+        <select id="news-count-select"><option value='20' selected>20</option><option value='9999' >全部</option></select>
       </label>
       <div class="compact-note" id="news-filter-status">当前过滤: 全部</div>
-      <div class="compact-note">当前显示: <strong id="news-visible-count">0 / 41</strong></div>
+      <div class="compact-note">当前显示: <strong id="news-visible-count">0 / 20</strong></div>
     </div>
     <div class="news-grid">
+        <a class="news-item" data-news-item data-core-signals="military_capability,war_cost" href="https://polymarket.com/event/military-action-against-iran-ends-by-522" target="_blank" rel="noopener">
+          <div class="news-head">
+            <span class="news-source">polymarket_geopolitics</span>
+            <span class="news-time">2026-04-15 07:23:10</span>
+          </div>
+          <h3>针对伊朗的军事行动将于2026年4月17日前结束？</h3>
+          <p class="news-summary"><strong>摘要:</strong> 针对伊朗的军事行动在4月17日前结束的预测概率已推高至100%，反映出市场对美以停止对伊本土空袭已达成高度共识。该合约总成交量惊人地达到2114万美元，24小时成交额约697万美元，极高的流动性确证了这一地缘政治拐点的可信度。</p>
+          <p class="news-indicators"><strong>对应指标:</strong> 军事能力, 战争成本</p>
+          <p class="news-reason"><strong>为何相关:</strong> 预测市场概率已达100%，是军事行动停止的最直接信号。</p>
+          <div class="news-meta">
+            <span>C 0.78</span>
+            <span>I 0.6</span>
+            <span>相关性分 0.95</span>
+            <span>24h成交 6971702.0</span>
+            <span>成交量 21141192.0</span>
+            <span>流动性 5192366.0</span>
+          </div>
+        </a>
+        
+        <a class="news-item" data-news-item data-core-signals="military_capability,war_cost" href="https://polymarket.com/event/iran-military-action-against-by-april-30" target="_blank" rel="noopener">
+          <div class="news-head">
+            <span class="news-source">polymarket_geopolitics</span>
+            <span class="news-time">2026-04-15 07:20:27</span>
+          </div>
+          <h3>伊朗会在2026年4月30日前打击伊拉克吗？</h3>
+          <p class="news-summary"><strong>摘要:</strong> Polymarket上“伊朗在4月30日前袭击伊拉克”的概率已达100%，表明此类军事行动极可能已经发生或被视为必然。该市场总成交量约69万美元，24小时内有48万美元的成交激增，流动性高达174万美元，是评估地区冲突外溢至邻国的重要事实依据。</p>
+          <p class="news-indicators"><strong>对应指标:</strong> 军事能力, 战争成本</p>
+          <p class="news-reason"><strong>为何相关:</strong> 反映冲突扩大至伊拉克的实际状态或极高风险。</p>
+          <div class="news-meta">
+            <span>C 0.78</span>
+            <span>I 0.5815</span>
+            <span>相关性分 0.8</span>
+            <span>24h成交 483309.0</span>
+            <span>成交量 691896.0</span>
+            <span>流动性 1748262.0</span>
+          </div>
+        </a>
+        
+        <a class="news-item" data-news-item data-core-signals="military_capability,war_cost" href="https://polymarket.com/event/iran-x-israelus-conflict-ends-by" target="_blank" rel="noopener">
+          <div class="news-head">
+            <span class="news-source">polymarket_geopolitics</span>
+            <span class="news-time">2026-04-15 07:20:18</span>
+          </div>
+          <h3>伊朗与以色列/美国的冲突会在12月31日前结束吗？</h3>
+          <p class="news-summary"><strong>摘要:</strong> Polymarket预测美以伊冲突在12月31日前结束的概率高达96.6%。该市场定义“结束”为连续14天无军事行动，目前总成交额约257万美元。虽然短期局势紧张，但投资者普遍押注冲突不会演变成全年的全面战争，这为长期资产布局提供了参考。</p>
+          <p class="news-indicators"><strong>对应指标:</strong> 军事能力, 战争成本</p>
+          <p class="news-reason"><strong>为何相关:</strong> 长期停火概率影响战略规划与长期经济预测。</p>
+          <div class="news-meta">
+            <span>C 0.78</span>
+            <span>I 0.5</span>
+            <span>相关性分 0.7</span>
+            <span>24h成交 360170.0</span>
+            <span>成交量 2570324.0</span>
+            <span>流动性 396820.0</span>
+          </div>
+        </a>
+        
         <a class="news-item" data-news-item data-core-signals="military_capability,war_cost" href="https://polymarket.com/event/strait-of-hormuz-traffic-returns-to-normal-by-april-30" target="_blank" rel="noopener">
           <div class="news-head">
             <span class="news-source">polymarket_geopolitics</span>
-            <span class="news-time">2026-04-14 07:26:15</span>
+            <span class="news-time">2026-04-15 07:20:02</span>
           </div>
-          <h3>霍尔木兹海峡交通将在4月底恢复正常？</h3>
-          <p class="news-summary"><strong>摘要:</strong> 该市场追踪IMF Portwatch的7天移动平均船只通行数据。目前“Yes”赔率仅为0.255，流动性达30.9万美元。这表明多数投资者预计4月底前海峡日均船只呼叫量无法恢复到60次的正常水平。</p>
+          <h3>霍尔木兹海峡交通会在4月底前恢复正常吗？</h3>
+          <p class="news-summary"><strong>摘要:</strong> Polymarket预测霍尔木兹海峡交通在4月底前恢复正常的概率仅为24.5%，显示市场对航运受阻持持久悲观态度。该市场总成交额达887万美元，24小时成交71万美元，流动性充足，反映出投资者高度关注IMF Portwatch关于日均到港量是否能重回60艘以上正常水平的监测。</p>
           <p class="news-indicators"><strong>对应指标:</strong> 军事能力, 战争成本</p>
-          <p class="news-reason"><strong>为何相关:</strong> 船只通行量是衡量封锁影响最直接的指标。目前市场认为交通在4月底前恢复正常的概率仅为25.5%，能源供应链风险极高。</p>
+          <p class="news-reason"><strong>为何相关:</strong> 霍尔木兹海峡交通恢复概率是航运和能源供应安全的关键先行指标。</p>
           <div class="news-meta">
             <span>C 0.78</span>
             <span>I 0.7</span>
             <span>相关性分 0.8</span>
-            <span>24h成交 650711.0</span>
-            <span>成交量 8161833.0</span>
-            <span>流动性 309592.0</span>
+            <span>24h成交 712209.0</span>
+            <span>成交量 8871586.0</span>
+            <span>流动性 549629.0</span>
+          </div>
+        </a>
+        
+        <a class="news-item" data-news-item data-core-signals="military_capability,war_cost" href="https://polymarket.com/event/strait-of-hormuz-traffic-returns-to-normal-by-end-of-may" target="_blank" rel="noopener">
+          <div class="news-head">
+            <span class="news-source">polymarket_geopolitics</span>
+            <span class="news-time">2026-04-15 07:20:00</span>
+          </div>
+          <h3>霍尔木兹海峡交通会在5月底前恢复正常吗？</h3>
+          <p class="news-summary"><strong>摘要:</strong> 与4月相比，Polymarket对5月底前霍尔木兹海峡交通恢复正常的概率定价为57.5%，反映出市场预期航运中断可能在5月得到显著缓解。该市场总成交量约为79万美元，流动性11.6万美元。这暗示决策者需为至少一个月的严重能源贸易中断做好准备。</p>
+          <p class="news-indicators"><strong>对应指标:</strong> 军事能力, 战争成本</p>
+          <p class="news-reason"><strong>为何相关:</strong> 提供了中短期航运中断持续时间的市场预期。</p>
+          <div class="news-meta">
+            <span>C 0.78</span>
+            <span>I 0.6302</span>
+            <span>相关性分 0.75</span>
+            <span>24h成交 106498.0</span>
+            <span>成交量 793655.0</span>
+            <span>流动性 116368.0</span>
           </div>
         </a>
         
         <a class="news-item" data-news-item data-core-signals="military_capability,war_cost,negotiation_signal" href="https://polymarket.com/event/trump-announces-us-blockade-of-hormuz-lifted-by" target="_blank" rel="noopener">
           <div class="news-head">
             <span class="news-source">polymarket_geopolitics</span>
-            <span class="news-time">2026-04-14 07:25:41</span>
+            <span class="news-time">2026-04-15 07:19:59</span>
           </div>
-          <h3>唐纳德·特朗普会在2026年4月15日前宣布美国解除对霍尔木兹海峡的封锁吗？</h3>
-          <p class="news-summary"><strong>摘要:</strong> Polymarket数据显示，认为4月15日前解除封锁的概率仅为6.5%，24小时成交量突破10万美元。这印证了市场普遍预期封锁将是一项中长期军事行动，而非短期威慑手段。</p>
+          <h3>唐纳德·特朗普会在2026年4月15日前宣布解除美国对霍尔木兹海峡的封锁吗？</h3>
+          <p class="news-summary"><strong>摘要:</strong> 预测市场定价显示，特朗普在4月15日前宣布解除霍尔木兹海峡封锁的概率极低（仅2.8%）。此前美方于4月12日正式宣布实施封锁，目前市场普遍预期封锁状态将持续至4月底。该市场24小时成交量约10万美元，流动性约3.7万美元，反映了对政策短期内不会反转的强烈预期。</p>
           <p class="news-indicators"><strong>对应指标:</strong> 军事能力, 战争成本, 谈判信号</p>
-          <p class="news-reason"><strong>为何相关:</strong> 相比4月13日，4月15日前解除封锁的概率略高（0.065），但依然极低，显示封锁短期内极难撤销。</p>
+          <p class="news-reason"><strong>为何相关:</strong> 涉及美方封锁政策的存续，直接影响冲突走向与能源市场。</p>
           <div class="news-meta">
             <span>C 0.78</span>
-            <span>I 0.6579</span>
-            <span>相关性分 0.72</span>
-            <span>24h成交 102794.0</span>
-            <span>成交量 105671.0</span>
-            <span>流动性 26197.0</span>
-          </div>
-        </a>
-        
-        <a class="news-item" data-news-item data-core-signals="military_capability,war_cost" href="https://polymarket.com/event/military-action-against-iran-ends-by-522" target="_blank" rel="noopener">
-          <div class="news-head">
-            <span class="news-source">polymarket_geopolitics</span>
-            <span class="news-time">2026-04-14 07:25:31</span>
-          </div>
-          <h3>针对伊朗的军事行动将在2026年4月17日前结束？</h3>
-          <p class="news-summary"><strong>摘要:</strong> 该市场要求美以不打击伊朗本土或使领馆。目前“Yes”赔率锁定在1.000，24小时成交量达1326万美元。尽管海上封锁在持续，但市场对避免爆发新一轮大规模陆地或导弹袭击持极度乐观态度。</p>
-          <p class="news-indicators"><strong>对应指标:</strong> 军事能力, 战争成本</p>
-          <p class="news-reason"><strong>为何相关:</strong> 该预测市场成交量极高（1416万美元），且“Yes”价格接近1.0，表明市场强烈预期当前这一波直接军事打击将在4月17日前平息。</p>
-          <div class="news-meta">
-            <span>C 0.78</span>
-            <span>I 0.6</span>
-            <span>相关性分 0.9</span>
-            <span>24h成交 13266046.0</span>
-            <span>成交量 14169490.0</span>
-            <span>流动性 5146727.0</span>
-          </div>
-        </a>
-        
-        <a class="news-item" data-news-item data-core-signals="military_capability,war_cost,negotiation_signal" href="https://polymarket.com/event/trump-announces-us-blockade-of-hormuz-lifted-by" target="_blank" rel="noopener">
-          <div class="news-head">
-            <span class="news-source">polymarket_geopolitics</span>
-            <span class="news-time">2026-04-14 07:25:03</span>
-          </div>
-          <h3>唐纳德·特朗普会在2026年4月13日前宣布美国解除对霍尔木兹海峡的封锁吗？</h3>
-          <p class="news-summary"><strong>摘要:</strong> Polymarket预测市场中，认为该封锁在4月13日前解除的“Yes”赔率低至0.001，成交额约19.9万美元。特朗普于4月12日宣布对霍尔木兹海峡实施封锁，市场情绪极其悲观，反映出对短期内解除封锁不抱希望。</p>
-          <p class="news-indicators"><strong>对应指标:</strong> 军事能力, 战争成本, 谈判信号</p>
-          <p class="news-reason"><strong>为何相关:</strong> 预测市场价格显示，市场几乎不相信特朗普会在4月13日前解除封锁，这预示着航运压力将具有极高的持续性。</p>
-          <div class="news-meta">
-            <span>C 0.78</span>
-            <span>I 0.7057</span>
+            <span>I 0.6684</span>
             <span>相关性分 0.85</span>
-            <span>24h成交 184901.0</span>
-            <span>成交量 199137.0</span>
-            <span>流动性 49548.0</span>
-          </div>
-        </a>
-        
-        <a class="news-item" data-news-item data-core-signals="military_capability,war_cost" href="https://polymarket.com/event/iran-x-israelus-conflict-ends-by" target="_blank" rel="noopener">
-          <div class="news-head">
-            <span class="news-source">polymarket_geopolitics</span>
-            <span class="news-time">2026-04-14 07:25:02</span>
-          </div>
-          <h3>伊朗与以色列/美国冲突将在4月30日前结束？</h3>
-          <p class="news-summary"><strong>摘要:</strong> 针对4月底冲突结束的市场，Yes价格为0.755，成交量368万美元。市场对达成14天连续无军事行动的预期较为平稳，暗示虽然存在封锁等压力手段，但大规模交火的可能性较低。</p>
-          <p class="news-indicators"><strong>对应指标:</strong> 军事能力, 战争成本</p>
-          <p class="news-reason"><strong>为何相关:</strong> 4月30日的概率与4月15日相近，说明市场预期停火是较为稳定的基调。</p>
-          <div class="news-meta">
-            <span>C 0.78</span>
-            <span>I 0.4557</span>
-            <span>相关性分 0.7</span>
-            <span>24h成交 148691.0</span>
-            <span>成交量 3688938.0</span>
-            <span>流动性 90443.0</span>
-          </div>
-        </a>
-        
-        <a class="news-item" data-news-item data-core-signals="military_capability,war_cost" href="https://polymarket.com/event/iran-x-israelus-conflict-ends-by" target="_blank" rel="noopener">
-          <div class="news-head">
-            <span class="news-source">polymarket_geopolitics</span>
-            <span class="news-time">2026-04-14 07:21:35</span>
-          </div>
-          <h3>伊朗与以色列/美国冲突将在4月15日前结束？</h3>
-          <p class="news-summary"><strong>摘要:</strong> 市场要求连续14天无军事行动。目前“Yes”价格为0.729，成交量达838万美元。这反映出尽管存在封锁，市场仍押注双方能维持基本的非交战状态，避免局势演变为全面战争。</p>
-          <p class="news-indicators"><strong>对应指标:</strong> 军事能力, 战争成本</p>
-          <p class="news-reason"><strong>为何相关:</strong> 该市场赔率为0.729，显示有七成把握认为冲突能在明日前平息，是极短期的风向标。</p>
-          <div class="news-meta">
-            <span>C 0.78</span>
-            <span>I 0.5</span>
-            <span>相关性分 0.85</span>
-            <span>24h成交 536484.0</span>
-            <span>成交量 8385020.0</span>
-            <span>流动性 163506.0</span>
+            <span>24h成交 102809.0</span>
+            <span>成交量 202229.0</span>
+            <span>流动性 37795.0</span>
           </div>
         </a>
         
         <a class="news-item" data-news-item data-core-signals="war_cost" href="https://finance.yahoo.com/quote/CL=F" target="_blank" rel="noopener">
           <div class="news-head">
             <span class="news-source">oil_market</span>
-            <span class="news-time">2026-04-14 07:17:45</span>
+            <span class="news-time">2026-04-15 07:14:57</span>
           </div>
-          <h3>WTI原油期货报95.66美元（较前一收盘价下跌3.5%）</h3>
-          <p class="news-summary"><strong>摘要:</strong> WTI原油期货价格单日重挫3.45%至95.66美元，成交量达34577手。尽管美国正式启动封锁，但油价未能守住100美元关口，显示出能源市场对实际供应受阻规模的评估趋于审慎。</p>
+          <h3>WTI原油期货报91.01美元（较前一收盘价下跌0.3%）</h3>
+          <p class="news-summary"><strong>摘要:</strong> WTI原油期货价格目前报91.01美元/桶，当日小幅下跌0.3%，但仍处于高位。日内波幅剧烈，最高达92.38美元，最低86.96美元，交易量为30,617手。油价在高位的波动性反映了市场在封锁消息与外交传闻之间的博弈。</p>
           <p class="news-indicators"><strong>对应指标:</strong> 战争成本</p>
-          <p class="news-reason"><strong>为何相关:</strong> 油价大幅下跌反映出市场对封锁引发的供应中断恐慌有所缓解，或者是已在价格中充分消化了当前风险。</p>
+          <p class="news-reason"><strong>为何相关:</strong> 原油价格直接反映能源市场对封锁的风险评估。</p>
           <div class="news-meta">
             <span>C 0.9</span>
-            <span>I 0.5833</span>
-            <span>相关性分 0.85</span>
+            <span>I 0.5163</span>
+            <span>相关性分 0.6</span>
             
             
             
@@ -380,15 +380,34 @@
         <a class="news-item" data-news-item data-core-signals="war_cost" href="https://finance.yahoo.com/quote/BZ=F" target="_blank" rel="noopener">
           <div class="news-head">
             <span class="news-source">oil_market</span>
-            <span class="news-time">2026-04-14 07:17:38</span>
+            <span class="news-time">2026-04-15 07:14:47</span>
           </div>
-          <h3>布伦特原油期货报97.95美元（较前一收盘价下跌1.4%）</h3>
-          <p class="news-summary"><strong>摘要:</strong> 布伦特原油期货收于97.95美元，下跌1.42%，日内高点曾达99.41美元。原油市场在封锁执行首日表现出的价格疲软，可能暗示全球需求低迷或库存充足抵消了部分地缘政治溢价。</p>
+          <h3>布伦特原油期货报94.91美元（较前一收盘价上涨0.1%）</h3>
+          <p class="news-summary"><strong>摘要:</strong> 布伦特原油期货小幅上涨0.13%，报94.91美元/桶。日内最高点触及95.79美元，显示出海域封锁对全球原油供应溢价的支撑。由于霍尔木兹海峡是中东石油出口的大动脉，该价格持续维持在90美元上方，反映了全球供应链的高度紧绷。</p>
           <p class="news-indicators"><strong>对应指标:</strong> 战争成本</p>
-          <p class="news-reason"><strong>为何相关:</strong> 布伦特原油同样回落至100美元以下，是全球能源风险溢价波动的关键宏观指标。</p>
+          <p class="news-reason"><strong>为何相关:</strong> 布伦特原油作为国际基准，更能体现全球能源受威胁程度。</p>
           <div class="news-meta">
             <span>C 0.9</span>
-            <span>I 0.5402</span>
+            <span>I 0.5127</span>
+            <span>相关性分 0.6</span>
+            
+            
+            
+          </div>
+        </a>
+        
+        <a class="news-item" data-news-item data-core-signals="war_cost" href="https://news.google.com/rss/articles/CBMivwFBVV95cUxNam43bTZtRlVmOGE4Rm56N3NoM1hmN0syZVJHUXVzRS1nVHZIQ1plVnBoRWxveHMyellqcE1sbXVIUWdPa1poVDVkVmItcUJvMFFWM3dRMW9VOGZEWmd4dWpUNGJJNnZJM2doWENiXzlPVlZfTTVPU1phWktJdmQ1UVRHaVBBSWhiUnlTS0dMbGwybXJMakxIbE1wVUNreTZJODNhR2cwdEVSbWdKQ2pXRy13U1FDSnlFVFllRERBWdIBxAFBVV95cUxPRlA0Q29kWHV0SE1rSXFLYXotUjVZZGZseWp1RFJpNXIxZlVnWG5ZeXJfVUFxcTJHRVVseWlSZXcxZlh3RmJoMmJySG5rc21USDluOHlRQnhxdGdBOUptLS1LXzhJYmtjRTk1ZnJ6S1lSaXJUMDA2eW5wSHczUnVsNklBNzU1b1FvcVUzZzhfTXZtQ0dGei1hTDUtSEstUzh1MVZoSnNRellhMEZJQXhSYVVfSEFwZHFiQ2tRUnBKTUVRVmxK?oc=5" target="_blank" rel="noopener">
+          <div class="news-head">
+            <span class="news-source">rss:Google News Iran Conflict</span>
+            <span class="news-time">2026-04-15 07:11:49</span>
+          </div>
+          <h3>伊朗战争直播：特朗普称战争“接近结束”，霍尔木兹封锁仍在持续 - 半岛电视台</h3>
+          <p class="news-summary"><strong>摘要:</strong> 特朗普公开宣称战争“接近结束”，这一表态与持续的港口封锁形成对比。这表明美方的战略目标可能已转向通过封锁获取外交筹码，而非进一步扩大火力打击。决策者应警惕这种言论在心理预期上带来的降温效应，同时关注封锁力度的实际变化。</p>
+          <p class="news-indicators"><strong>对应指标:</strong> 战争成本</p>
+          <p class="news-reason"><strong>为何相关:</strong> 总统层面的定调通常预示着大规模军事行动的终结或转折。</p>
+          <div class="news-meta">
+            <span>C 0.52</span>
+            <span>I 0.3</span>
             <span>相关性分 0.8</span>
             
             
@@ -396,18 +415,18 @@
           </div>
         </a>
         
-        <a class="news-item" data-news-item data-core-signals="negotiation_signal" href="https://news.google.com/rss/articles/CBMi_gJBVV95cUxPUEtfcm5hTGpzekFGZ0tYdHFxV0gtQzNvdWpNSVptaXZVSVM0SkFMNG9XQUxzZi1jUWx5MkVDWG9oR3JKeUNyWGFaUGVBUDN5cEx4SmtsaXNLSm1COUQ1SGM2b3VRQ3Jrenl1SjNEN21rMUhhcmFZM0daYzg4QnNhazhWb1lSWVFDdDJOR1JDQW1Oa3dscW5SX1pSMm9tNE9HTnZXREpQLTBKdnQ4UGdTUnlORXdzTUlXV3lWZEFlWkFxaXFjSW5FMDV4OFNBeHVqVDRZTW5rVk1nY3lrQ2dQZWZna1V3YzQ1R3oxRXNZY0VzNnJoOW9QaXpOSl9WN1hrZHBKSUlPaU4wZ1hXSmVPLW4tRzVFanpQVFZXa1QxOUJMVUNfS3BRWE5TS21na1IzXzJveVlfemtJVnJwZERpaGdjQ0Nud3pGby1yX2pRNzNTcFVKVjg1VkRZaE5hT29LNHhUT2VjaU9lUzFuVHVSOEIxZGoyYnpuRktnWlRB0gGDA0FVX3lxTE8tZDl1cFdCS0FCNU12d0lyOHRoYzRmRVlFTkdCc2sxQUJ6aUtwX3VNX3lrSW9hbEFBcTVyeUotUllnYVYtcGREUDlpTnJveHRTTHdNSTk2MUVVN0lUUVptVGhJd05reE9qYUtBWkwzOXc0Ul80bmI0UFlpNXVOWkZ6ZWdxX0lab0xXdTNPTWhkX3ozUWs4WHBoaFhRS1NsTnNNZGE5UXlYbjVRUHIzT1BKejZBRWZ6RjRlSFJWMHI5SkFqV0VsendZYVpqSUNhYWo2V1hWOHBOYzNzN1lWUUlTcVgxVmh1UDhjcEdDOE9mSEJ4SkRib0VNMXdFQ205bzE4Mm1YZmZpZ2RYc3BXZVU0WjZNeHh6ekQ4OXFpVmV6ZEY5ZUZ2SE5IU3lfU2dtVl95cXkwVjZWbkh0Ri1rSlc0X0s5VVVhWVp0VVF6anM2YnZWYS10YURaYXJUYmpSTkdLRDlsSlpQNjUxSVVKNlRWSTJKUWtrN1FtRE9ESGUtV0JxQQ?oc=5" target="_blank" rel="noopener">
+        <a class="news-item" data-news-item data-core-signals="military_capability,negotiation_signal" href="http://www.laosnews.net/news/278985044/trump-not-considering-extending-ceasefire-with-iran-says-deal-is-preferable" target="_blank" rel="noopener">
           <div class="news-head">
-            <span class="news-source">rss:Google News Iran</span>
-            <span class="news-time">2026-04-14 07:05:26</span>
+            <span class="news-source">gdelt</span>
+            <span class="news-time">2026-04-15 06:30:00</span>
           </div>
-          <h3>美以伊战争新闻实时更新：伊朗在和谈临近之际向美国喊话“承认我们的权利或重返战争”——《印度时报》</h3>
-          <p class="news-summary"><strong>摘要:</strong> 伊朗向美国发出最后通牒：要么承认其合法权利，要么重新开战。这种在谈判前夕释放的极端信号，旨在通过战争威胁来对冲美国的封锁压力，迫使美方做出让步。</p>
-          <p class="news-indicators"><strong>对应指标:</strong> 谈判信号</p>
-          <p class="news-reason"><strong>为何相关:</strong> 伊朗给出了明确的最后通牒，将主权认同与战争状态直接挂钩，极具爆炸性。</p>
+          <h3>特朗普表示不考虑延长与伊朗的停火</h3>
+          <p class="news-summary"><strong>摘要:</strong> 特朗普明确表示不考虑延长与伊朗的临时停火协议，这一表态加剧了军事对抗风险。由于现有停火时限紧迫，美方的强硬姿态旨在通过封锁极限施压迫使伊朗在谈判中让步。这一官方立场直接否定了短期内通过现有框架达成缓和的可能性。</p>
+          <p class="news-indicators"><strong>对应指标:</strong> 军事能力, 谈判信号</p>
+          <p class="news-reason"><strong>为何相关:</strong> 特朗普的公开表态直接决定了短期内是否有停火希望。</p>
           <div class="news-meta">
-            <span>C 0.52</span>
-            <span>I 0.1</span>
+            <span>C 0.75</span>
+            <span>I 0.4</span>
             <span>相关性分 0.85</span>
             
             
@@ -415,113 +434,18 @@
           </div>
         </a>
         
-        <a class="news-item" data-news-item data-core-signals="military_capability,negotiation_signal" href="https://news.google.com/rss/articles/CBMiowFBVV95cUxNZjZGcE9IYUlKMjF6dGJra3Q5RU5Ha21nckRCTExIdE9rdmVpbVV2SDVLWjNJemR4bEowWGZBYlFBc3E3QlBvd2JmY21NQzhZdnBFdHpNWTZmSTViMm9OcHdGc0w4ZmZFN3JZQ01JWDhnVndWcjE2aTROaFIxWU12ZzltQVRaVWNGUF95OVlnUDA3VTctTFJtcGkyeWd1WTNkWWk00gGoAUFVX3lxTE9SX1JlMDVrVmZsMVNOSkhVUEVYN2dROERBYTVHV2s2QU9fdjE2LWtPRFNwMHZuZC1Sc3hBXzZJaVhYRkloY21xbXFoYU9KSk96endPZ1VHdkVCSTdyTDVJaktnczNHQjlQQXFHSEhJRF9yMUZrbXh2SlV2Yk9TUkpEZnJrOGJZQVBMdFhpWkQwVjRlRjBpeFBwVGNvTGdRWFJNUURSMVlZNg?oc=5" target="_blank" rel="noopener">
+        <a class="news-item" data-news-item data-core-signals="military_capability,negotiation_signal" href="https://www.clickondetroit.com/news/world/2026/04/15/hopes-rise-for-renewed-talks-as-us-military-says-iran-blockade-is-in-force/" target="_blank" rel="noopener">
           <div class="news-head">
-            <span class="news-source">rss:Google News Iran Talks</span>
-            <span class="news-time">2026-04-14 07:01:34</span>
+            <span class="news-source">gdelt</span>
+            <span class="news-time">2026-04-15 06:30:00</span>
           </div>
-          <h3>伊朗战争：美伊冲突第46天发生了什么？——半岛电视台</h3>
-          <p class="news-summary"><strong>摘要:</strong> 半岛电视台总结冲突进入第46天的概况。文章主要是对已知事实（如封锁开始）的汇总，未提供任何独家或深度的决策预判。</p>
+          <h3>随着美军表示伊朗封锁正在生效，恢复谈判的希望上升</h3>
+          <p class="news-summary"><strong>摘要:</strong> 美军确认对伊封锁已生效，同时外交层面传出重启谈判的信号。这种“军事压力与外交试探并行”的状态是决策者评估冲突是否转向降级的关键。目前封锁重点在于伊朗关联航运，而非全面关闭海峡，这为后续的外交周旋留出了战术空间。</p>
           <p class="news-indicators"><strong>对应指标:</strong> 军事能力, 谈判信号</p>
-          <p class="news-reason"><strong>为何相关:</strong> 纯碎的媒体概括，缺乏实质性新动态。</p>
+          <p class="news-reason"><strong>为何相关:</strong> 揭示了“以打促谈”的策略现状，兼具军事与外交价值。</p>
           <div class="news-meta">
-            <span>C 0.52</span>
-            <span>I 0.0</span>
-            <span>相关性分 0.2</span>
-            
-            
-            
-          </div>
-        </a>
-        
-        <a class="news-item" data-news-item data-core-signals="war_cost" href="https://news.google.com/rss/articles/CBMiwAFBVV95cUxPRWVNNkZtNlY5cUc2SHoyQXhZbWp0VHNuekRaWHc4al9KNlJOTW1NMkxaMnZvbHNnQlNfYnpsYjJkeHN2YVhIcWNfSnRCT1hnTG9JbFRwTkhQVHU5Szl1Y1BjY21ZMHJYZHpudHZPVWJQb3I5SFJudXZoUk50SVdpUUo0bm9FMEd3dEZIcDlWcHZ6V1lHUmcyQXZjRmhlZU01VkVUSWh0TkNBWkpKcG9od0RpX2RGS1pmdmV6MWZVbF_SAcYBQVVfeXFMT3FwaXYwbEQ3TXVBSDViRV9PSV8tLTFmNHpieWFBaWxZV2dYNk1xMU9CMmJ5YmtDRzJVTmVHX2ZuZTQwZVp0N05ZZThnSHotdGtlSW1DS2lNdTZtcG1fN0tFRE14REdRWDlpNm41dllCZGhwSlRIdEJNRTVjOHNjREVHSmV2OGgzbFl5VC0tdEZ1TWxadlBSRTFkZnpBZEhWdlNIS1VWM1g4OHpfMUd2MWpzY25OY2VqZU1OckZYUzlYdVlHRE5n?oc=5" target="_blank" rel="noopener">
-          <div class="news-head">
-            <span class="news-source">rss:Google News Iran</span>
-            <span class="news-time">2026-04-14 06:40:26</span>
-          </div>
-          <h3>伊朗战争直播：特朗普称德黑兰在美国封锁霍尔木兹海峡之际寻求达成协议——半岛电视台</h3>
-          <p class="news-summary"><strong>摘要:</strong> 特朗普表示在封锁压力下，德黑兰展现出了达成协议的意愿。这是典型的“胡萝卜加大棒”策略，旨在利用封锁带来的经济痛苦换取伊朗在核问题上的让步。</p>
-          <p class="news-indicators"><strong>对应指标:</strong> 战争成本</p>
-          <p class="news-reason"><strong>为何相关:</strong> 特朗普单方面称伊朗想要协议，可能是谈判筹码，也可能预示着德黑兰在高压下的立场软化。</p>
-          <div class="news-meta">
-            <span>C 0.52</span>
-            <span>I 0.3</span>
-            <span>相关性分 0.75</span>
-            
-            
-            
-          </div>
-        </a>
-        
-        <a class="news-item" data-news-item data-core-signals="war_cost" href="https://news.google.com/rss/articles/CBMiwAFBVV95cUxPRWVNNkZtNlY5cUc2SHoyQXhZbWp0VHNuekRaWHc4al9KNlJOTW1NMkxaMnZvbHNnQlNfYnpsYjJkeHN2YVhIcWNfSnRCT1hnTG9JbFRwTkhQVHU5Szl1Y1BjY21ZMHJYZHpudHZPVWJQb3I5SFJudXZoUk50SVdpUUo0bm9FMEd3dEZIcDlWcHZ6V1lHUmcyQXZjRmhlZU01VkVUSWh0TkNBWkpKcG9od0RpX2RGS1pmdmV6MWZVbF_SAcYBQVVfeXFMT3FwaXYwbEQ3TXVBSDViRV9PSV8tLTFmNHpieWFBaWxZV2dYNk1xMU9CMmJ5YmtDRzJVTmVHX2ZuZTQwZVp0N05ZZThnSHotdGtlSW1DS2lNdTZtcG1fN0tFRE14REdRWDlpNm41dllCZGhwSlRIdEJNRTVjOHNjREVHSmV2OGgzbFl5VC0tdEZ1TWxadlBSRTFkZnpBZEhWdlNIS1VWM1g4OHpfMUd2MWpzY25OY2VqZU1OckZYUzlYdVlHRE5n?oc=5" target="_blank" rel="noopener">
-          <div class="news-head">
-            <span class="news-source">rss:Google News Iran Conflict</span>
-            <span class="news-time">2026-04-14 06:40:26</span>
-          </div>
-          <h3>伊朗战争直播：特朗普称德黑兰在美国封锁霍尔木兹海峡之际寻求达成协议——半岛电视台</h3>
-          <p class="news-summary"><strong>摘要:</strong> 阿联酋半岛电视台重申特朗普关于伊朗意欲达成协议的言论。该报道侧重于海峡封锁启动后的心理战效应，反映出美方正试图通过信息传播瓦解对方的抵抗意志。</p>
-          <p class="news-indicators"><strong>对应指标:</strong> 战争成本</p>
-          <p class="news-reason"><strong>为何相关:</strong> 内容与索引25重复，仅来源不同。</p>
-          <div class="news-meta">
-            <span>C 0.52</span>
-            <span>I 0.3</span>
-            <span>相关性分 0.3</span>
-            
-            
-            
-          </div>
-        </a>
-        
-        <a class="news-item" data-news-item data-core-signals="military_capability" href="https://news.google.com/rss/articles/CBMi_gJBVV95cUxPUEtfcm5hTGpzekFGZ0tYdHFxV0gtQzNvdWpNSVptaXZVSVM0SkFMNG9XQUxzZi1jUWx5MkVDWG9oR3JKeUNyWGFaUGVBUDN5cEx4SmtsaXNLSm1COUQ1SGM2b3VRQ3Jrenl1SjNEN21rMUhhcmFZM0daYzg4QnNhazhWb1lSWVFDdDJOR1JDQW1Oa3dscW5SX1pSMm9tNE9HTnZXREpQLTBKdnQ4UGdTUnlORXdzTUlXV3lWZEFlWkFxaXFjSW5FMDV4OFNBeHVqVDRZTW5rVk1nY3lrQ2dQZWZna1V3YzQ1R3oxRXNZY0VzNnJoOW9QaXpOSl9WN1hrZHBKSUlPaU4wZ1hXSmVPLW4tRzVFanpQVFZXa1QxOUJMVUNfS3BRWE5TS21na1IzXzJveVlfemtJVnJwZERpaGdjQ0Nud3pGby1yX2pRNzNTcFVKVjg1VkRZaE5hT29LNHhUT2VjaU9lUzFuVHVSOEIxZGoyYnpuRktnWlRB0gGDA0FVX3lxTE8tZDl1cFdCS0FCNU12d0lyOHRoYzRmRVlFTkdCc2sxQUJ6aUtwX3VNX3lrSW9hbEFBcTVyeUotUllnYVYtcGREUDlpTnJveHRTTHdNSTk2MUVVN0lUUVptVGhJd05reE9qYUtBWkwzOXc0Ul80bmI0UFlpNXVOWkZ6ZWdxX0lab0xXdTNPTWhkX3ozUWs4WHBoaFhRS1NsTnNNZGE5UXlYbjVRUHIzT1BKejZBRWZ6RjRlSFJWMHI5SkFqV0VsendZYVpqSUNhYWo2V1hWOHBOYzNzN1lWUUlTcVgxVmh1UDhjcEdDOE9mSEJ4SkRib0VNMXdFQ205bzE4Mm1YZmZpZ2RYc3BXZVU0WjZNeHh6ekQ4OXFpVmV6ZEY5ZUZ2SE5IU3lfU2dtVl95cXkwVjZWbkh0Ri1rSlc0X0s5VVVhWVp0VVF6anM2YnZWYS10YURaYXJUYmpSTkdLRDlsSlpQNjUxSVVKNlRWSTJKUWtrN1FtRE9ESGUtV0JxQQ?oc=5" target="_blank" rel="noopener">
-          <div class="news-head">
-            <span class="news-source">rss:Google News Iran</span>
-            <span class="news-time">2026-04-14 06:28:07</span>
-          </div>
-          <h3>美以伊战争新闻实时更新：中国国家主席习近平呼吁尊重中东主权——《印度时报》</h3>
-          <p class="news-summary"><strong>摘要:</strong> 中方呼吁尊重中东地区主权。这一表态虽然中规中矩，但在当前封锁背景下，实际上是对美国海上执法合法性的间接挑战，增加了国际博弈的维度。</p>
-          <p class="news-indicators"><strong>对应指标:</strong> 军事能力</p>
-          <p class="news-reason"><strong>为何相关:</strong> 中国领导层的表态增加了国际社会对主权原则的关注，可能阻碍美国封锁的合法化过程。</p>
-          <div class="news-meta">
-            <span>C 0.52</span>
-            <span>I 0.1</span>
-            <span>相关性分 0.65</span>
-            
-            
-            
-          </div>
-        </a>
-        
-        <a class="news-item" data-news-item data-core-signals="war_cost" href="https://news.google.com/rss/articles/CBMikAFBVV95cUxOX0RqSEEyOW9jTzJFbXN5a3BuX3dabHJHSGx2UjZtZ1FYblRqaHltdUR0STc4bWRhRzZNelJUb3BuRTVQWWE5OGltUEVLdDFmbXN2Z3FRTjVwZjRENWxSLS1HVFRFZWlQb2doa3lHS29JNXA4MnlHR21BYXpwWkJFOEJaRGl0LVplcF95dUpxOW8?oc=5" target="_blank" rel="noopener">
-          <div class="news-head">
-            <span class="news-source">rss:Google News Hormuz Shipping</span>
-            <span class="news-time">2026-04-14 06:01:10</span>
-          </div>
-          <h3>受制裁中国油轮测试美国对霍尔木兹海峡的封锁——《劳氏日报》</h3>
-          <p class="news-summary"><strong>摘要:</strong> 劳氏日报报道，一艘受美制裁的中国油轮正在挑战霍尔木兹封锁。此事件是封锁令执行以来的首次重大外部挑战，直接考验美军拦截第三国商船的政治决心与军事红线。</p>
-          <p class="news-indicators"><strong>对应指标:</strong> 战争成本</p>
-          <p class="news-reason"><strong>为何相关:</strong> 中国油轮挑战封锁是重大地缘政治变量，可能导致中美冲突或封锁令名存实亡。</p>
-          <div class="news-meta">
-            <span>C 0.52</span>
-            <span>I 0.32</span>
-            <span>相关性分 0.95</span>
-            
-            
-            
-          </div>
-        </a>
-        
-        <a class="news-item" data-news-item data-core-signals="military_capability,negotiation_signal" href="https://news.google.com/rss/articles/CBMi_gJBVV95cUxPUEtfcm5hTGpzekFGZ0tYdHFxV0gtQzNvdWpNSVptaXZVSVM0SkFMNG9XQUxzZi1jUWx5MkVDWG9oR3JKeUNyWGFaUGVBUDN5cEx4SmtsaXNLSm1COUQ1SGM2b3VRQ3Jrenl1SjNEN21rMUhhcmFZM0daYzg4QnNhazhWb1lSWVFDdDJOR1JDQW1Oa3dscW5SX1pSMm9tNE9HTnZXREpQLTBKdnQ4UGdTUnlORXdzTUlXV3lWZEFlWkFxaXFjSW5FMDV4OFNBeHVqVDRZTW5rVk1nY3lrQ2dQZWZna1V3YzQ1R3oxRXNZY0VzNnJoOW9QaXpOSl9WN1hrZHBKSUlPaU4wZ1hXSmVPLW4tRzVFanpQVFZXa1QxOUJMVUNfS3BRWE5TS21na1IzXzJveVlfemtJVnJwZERpaGdjQ0Nud3pGby1yX2pRNzNTcFVKVjg1VkRZaE5hT29LNHhUT2VjaU9lUzFuVHVSOEIxZGoyYnpuRktnWlRB0gGDA0FVX3lxTE8tZDl1cFdCS0FCNU12d0lyOHRoYzRmRVlFTkdCc2sxQUJ6aUtwX3VNX3lrSW9hbEFBcTVyeUotUllnYVYtcGREUDlpTnJveHRTTHdNSTk2MUVVN0lUUVptVGhJd05reE9qYUtBWkwzOXc0Ul80bmI0UFlpNXVOWkZ6ZWdxX0lab0xXdTNPTWhkX3ozUWs4WHBoaFhRS1NsTnNNZGE5UXlYbjVRUHIzT1BKejZBRWZ6RjRlSFJWMHI5SkFqV0VsendZYVpqSUNhYWo2V1hWOHBOYzNzN1lWUUlTcVgxVmh1UDhjcEdDOE9mSEJ4SkRib0VNMXdFQ205bzE4Mm1YZmZpZ2RYc3BXZVU0WjZNeHh6ekQ4OXFpVmV6ZEY5ZUZ2SE5IU3lfU2dtVl95cXkwVjZWbkh0Ri1rSlc0X0s5VVVhWVp0VVF6anM2YnZWYS10YURaYXJUYmpSTkdLRDlsSlpQNjUxSVVKNlRWSTJKUWtrN1FtRE9ESGUtV0JxQQ?oc=5" target="_blank" rel="noopener">
-          <div class="news-head">
-            <span class="news-source">rss:Google News Iran</span>
-            <span class="news-time">2026-04-14 04:35:08</span>
-          </div>
-          <h3>美以伊战争新闻实时更新：真主党要求黎巴嫩取消与以色列的停战谈判——《印度时报》</h3>
-          <p class="news-summary"><strong>摘要:</strong> 真主党呼吁黎巴嫩政府取消与以色列的休战谈。这种内部拆台行为意味着即使美伊达成谅解，黎以边境的代理人冲突仍可能持续，增加了地区局势的碎片化风险。</p>
-          <p class="news-indicators"><strong>对应指标:</strong> 军事能力, 谈判信号</p>
-          <p class="news-reason"><strong>为何相关:</strong> 黎巴嫩内部的谈判分歧，真主党的阻挠直接影响北方战线的停火前景。</p>
-          <div class="news-meta">
-            <span>C 0.52</span>
-            <span>I 0.3</span>
+            <span>C 0.75</span>
+            <span>I 0.4</span>
             <span>相关性分 0.8</span>
             
             
@@ -529,75 +453,18 @@
           </div>
         </a>
         
-        <a class="news-item" data-news-item data-core-signals="military_capability,negotiation_signal" href="https://news.google.com/rss/articles/CBMi_gJBVV95cUxPUEtfcm5hTGpzekFGZ0tYdHFxV0gtQzNvdWpNSVptaXZVSVM0SkFMNG9XQUxzZi1jUWx5MkVDWG9oR3JKeUNyWGFaUGVBUDN5cEx4SmtsaXNLSm1COUQ1SGM2b3VRQ3Jrenl1SjNEN21rMUhhcmFZM0daYzg4QnNhazhWb1lSWVFDdDJOR1JDQW1Oa3dscW5SX1pSMm9tNE9HTnZXREpQLTBKdnQ4UGdTUnlORXdzTUlXV3lWZEFlWkFxaXFjSW5FMDV4OFNBeHVqVDRZTW5rVk1nY3lrQ2dQZWZna1V3YzQ1R3oxRXNZY0VzNnJoOW9QaXpOSl9WN1hrZHBKSUlPaU4wZ1hXSmVPLW4tRzVFanpQVFZXa1QxOUJMVUNfS3BRWE5TS21na1IzXzJveVlfemtJVnJwZERpaGdjQ0Nud3pGby1yX2pRNzNTcFVKVjg1VkRZaE5hT29LNHhUT2VjaU9lUzFuVHVSOEIxZGoyYnpuRktnWlRB0gGDA0FVX3lxTE8tZDl1cFdCS0FCNU12d0lyOHRoYzRmRVlFTkdCc2sxQUJ6aUtwX3VNX3lrSW9hbEFBcTVyeUotUllnYVYtcGREUDlpTnJveHRTTHdNSTk2MUVVN0lUUVptVGhJd05reE9qYUtBWkwzOXc0Ul80bmI0UFlpNXVOWkZ6ZWdxX0lab0xXdTNPTWhkX3ozUWs4WHBoaFhRS1NsTnNNZGE5UXlYbjVRUHIzT1BKejZBRWZ6RjRlSFJWMHI5SkFqV0VsendZYVpqSUNhYWo2V1hWOHBOYzNzN1lWUUlTcVgxVmh1UDhjcEdDOE9mSEJ4SkRib0VNMXdFQ205bzE4Mm1YZmZpZ2RYc3BXZVU0WjZNeHh6ekQ4OXFpVmV6ZEY5ZUZ2SE5IU3lfU2dtVl95cXkwVjZWbkh0Ri1rSlc0X0s5VVVhWVp0VVF6anM2YnZWYS10YURaYXJUYmpSTkdLRDlsSlpQNjUxSVVKNlRWSTJKUWtrN1FtRE9ESGUtV0JxQQ?oc=5" target="_blank" rel="noopener">
-          <div class="news-head">
-            <span class="news-source">rss:Google News Iran Conflict</span>
-            <span class="news-time">2026-04-14 04:35:08</span>
-          </div>
-          <h3>美以伊战争新闻实时更新：真主党要求黎巴嫩取消与以色列的停战谈判——《印度时报》</h3>
-          <p class="news-summary"><strong>摘要:</strong> 印度时报报道真主党阻挠黎巴嫩政府与以色列接触。这一动态凸显了真主党作为地区冲突关键变量的顽固性，使得任何全面的地区和平协议都显得举步维艰。</p>
-          <p class="news-indicators"><strong>对应指标:</strong> 军事能力, 谈判信号</p>
-          <p class="news-reason"><strong>为何相关:</strong> 内容与索引27完全重复。</p>
-          <div class="news-meta">
-            <span>C 0.52</span>
-            <span>I 0.3</span>
-            <span>相关性分 0.3</span>
-            
-            
-            
-          </div>
-        </a>
-        
-        <a class="news-item" data-news-item data-core-signals="war_cost" href="https://news.google.com/rss/articles/CBMizAFBVV95cUxNa0ZDQ3dmc1dUeUd5WHByYUpEemJmM1NsVy14TW1xNl81ekItMjQ2VEJrUnJUUE1OaXpCdHItSWlrTmlWOTRlWFN3c2oxb3lJc2ozTkNRc0ZidVEtZ0RqUFFhRVg3bzVjSTNuYk9ZX1dJb3NpMW1jV25KRXFfTXExbXN6OXdidzVUTVlhSFB6RTczcmtlM3VCZlp4RU1wZi11MlBZN295bzFVTG8xcFFIb0o0X3JBMDFpaXhmdGFWbXF0d1pmYTYxZElSQTg?oc=5" target="_blank" rel="noopener">
+        <a class="news-item" data-news-item data-core-signals="war_cost" href="https://news.google.com/rss/articles/CBMihwFBVV95cUxQTi1zYWNVRjhZZ0ZiNWJlX2duN1hlWXJBdjM5eVFZcnNmVjZwY1JZbXU5WFl1TEMwTlJVdE9mUVFtZTFTNUJaWUM3QzBmMFBBX2h0cmN4UUZHVzBrVC1XU3prMTdLLUJYeWRNSkp0cmhIX1c2YmMwTUt4Si1HVWdHZ1kzVk5jZ0E?oc=5" target="_blank" rel="noopener">
           <div class="news-head">
             <span class="news-source">rss:Google News Hormuz Shipping</span>
-            <span class="news-time">2026-04-14 03:42:00</span>
+            <span class="news-time">2026-04-15 06:25:34</span>
           </div>
-          <h3>数据显示：尽管有美国封锁，受美国制裁的油轮仍通过霍尔木兹海峡——路透社</h3>
-          <p class="news-summary"><strong>摘要:</strong> 路透社援引航运数据证实，受美制裁的油轮仍成功穿越海峡。这不仅挑战了封锁的权威性，也暗示美军目前的拦截网可能存在灰色地带或故意释放的压力阀。</p>
+          <h3>美国海军依靠人工智能扫除伊朗在霍尔木兹海峡布下的水雷 - 亚洲时报</h3>
+          <p class="news-summary"><strong>摘要:</strong> 美国海军正利用AI技术清除伊朗在霍尔木兹海峡布设的水雷。水雷战是伊朗最强力的不对称反制手段，美方的AI扫雷行动直接关系到封锁区内非关联航运的安全及美军舰艇的生存率。这一技术对抗的成败将决定海峡是否会从“受限通行”变成“完全禁航”。</p>
           <p class="news-indicators"><strong>对应指标:</strong> 战争成本</p>
-          <p class="news-reason"><strong>为何相关:</strong> 实测数据证明封锁并非密不透风，对评估制裁的真实效力至关重要。</p>
-          <div class="news-meta">
-            <span>C 0.75</span>
-            <span>I 0.125</span>
-            <span>相关性分 0.88</span>
-            
-            
-            
-          </div>
-        </a>
-        
-        <a class="news-item" data-news-item data-core-signals="war_cost" href="https://news.google.com/rss/articles/CBMi9gFBVV95cUxQSTRQMEhWSHE1clRRdURVUC1JcUFncXhyalJsdVJVSElCSWVrd19VMFU3eFY1OXI0SnRuaVJrdFp0M2xVN2RPTEdxWXU1SkhzTHowZWQzc0p1U1hzQUZNRExaZFo5RjVfeGsxR0duSU1XU3RqQ2R6aHEweWNKdkRjYURuem5uTjdFandTaG5JN3pTQUhqSDY3ZFlqRmVHUVNnR19CX1QyLU0tWEhnbTQ3VWsyYzRGTV9OS2NvZHBNUXJ1RzFDYnE1a2E4UVI1dVFNNWRZMFh3XzVwU203anRyYms5bGdzekZ0c0Znd2t5bEVPNl94WHfSAfsBQVVfeXFMTmdleFR3QkVZQlp1c053SUE5cGo0b3VWemcxVHJ0NGN6VkJJX3JYanJkYnlFWldKSXV3eTczdnIwU1czLUtoZTAxUGZtYy1pdm1YSzJ2QjlCRFVEd29sMldKQnJMLWhEWnp1WFpGU0VxMEJ6d0REb2J1REZuVXpwa0VDTTBXOTZqLUJYMGozeVR0VmJUTTJEcDNHZjdkWU9PNktRem5BdVFXRkRSN2RBWXo0ZEVia1kwNGgwYkgtNTZwMjZKQVk0SXo5NXpOQkE0R2tTXzdKSkxwVmZ5UW13NFRZVEs2bTIwcGhzNWozYUlfLVg2T3hEOVZ1VkE?oc=5" target="_blank" rel="noopener">
-          <div class="news-head">
-            <span class="news-source">rss:Google News Hormuz Shipping</span>
-            <span class="news-time">2026-04-14 03:33:55</span>
-          </div>
-          <h3>尽管有特朗普封锁，受美国制裁的中国油轮仍横跨霍尔木兹海峡——《经济时报》</h3>
-          <p class="news-summary"><strong>摘要:</strong> 一艘中国油轮无视特朗普的封锁令成功穿越霍尔木兹海峡。这一结果可能鼓励其他航运公司效仿，从而极大地削弱美国海上封锁的经济影响力和威慑力。</p>
-          <p class="news-indicators"><strong>对应指标:</strong> 战争成本</p>
-          <p class="news-reason"><strong>为何相关:</strong> 具体个案证实封锁存在漏洞，对评估封锁效力至关重要。</p>
+          <p class="news-reason"><strong>为何相关:</strong> 技术手段的引入反映了对抗烈度的升级和保障航运的尝试。</p>
           <div class="news-meta">
             <span>C 0.52</span>
-            <span>I 0.32</span>
-            <span>相关性分 0.92</span>
-            
-            
-            
-          </div>
-        </a>
-        
-        <a class="news-item" data-news-item data-core-signals="war_cost,military_capability" href="https://news.google.com/rss/articles/CBMitwFBVV95cUxQV1FHWmx6NkVFQXQ4bzYxRmxzZWdJZkxrSUZsMmZzc3JZZ2xTUmtVcUd4OWx2THpYVWUwTTFuMDhTdExJejU4RUNoS21Ub25UaWZGYnQ1OHBvNzU2ZzM0Q0FyRlc3SjZxZnZEbWlzVnRhT2s4MDNpdXAzNE5wdmVCNHFzOGQzeEQyakc5S2ZhQjRHZWcxZUpTSUNWUno5RXNmVEpDeEZkZEFJS0lfNE96TjNHYVRzU28?oc=5" target="_blank" rel="noopener">
-          <div class="news-head">
-            <span class="news-source">rss:Google News Hormuz Shipping</span>
-            <span class="news-time">2026-04-14 03:18:00</span>
-          </div>
-          <h3>特朗普对霍尔木兹海峡的封锁威胁到海盗行为，并存在与中国爆发全面战争的风险——《独立报》</h3>
-          <p class="news-summary"><strong>摘要:</strong> 独立报警告称，针对海峡的封锁极易演变为针对中方资产的“海盗行为”，并存在引发中美直接军事对抗的风险。这种升级逻辑是决策者评估冲突溢出效应时的关键考量。</p>
-          <p class="news-indicators"><strong>对应指标:</strong> 战争成本, 军事能力</p>
-          <p class="news-reason"><strong>为何相关:</strong> 分析了封锁可能导致的更广泛冲突风险，尤其是与中国的海上摩擦风险。</p>
-          <div class="news-meta">
-            <span>C 0.52</span>
-            <span>I 0.32</span>
+            <span>I 0.075</span>
             <span>相关性分 0.6</span>
             
             
@@ -605,37 +472,37 @@
           </div>
         </a>
         
-        <a class="news-item" data-news-item data-core-signals="negotiation_signal" href="https://www.moneycontrol.com/world/ball-in-iran-s-court-jd-vance-flags-stalemate-after-21-hour-nuclear-talks-collapse-article-13888014.html" target="_blank" rel="noopener">
+        <a class="news-item" data-news-item data-core-signals="war_cost" href="https://news.google.com/rss/articles/CBMivwFBVV95cUxQZFVYTkpaOUlsc1lXMEstem5HMWtOOWhNQmhQb0k2V2ZRb1VWRFN4NmtUTGhGYl9sczFjYUh0VlQ3Mkpnc01NMWZlSDZ3V2xobnNodWllZXlrcnl6MXdoc1JWVGVqUHIwM1dmeGh0aFpndWZGZGlMNG9MNExVS0JfRWtYcXlnTjBrMHJKXzZoTU1BN2x0LTlEbGdOdlBVeHhfNGV0R0lxYXl5NG1VSXBYZnlpV2FwSkU2aUdVWjhQSQ?oc=5" target="_blank" rel="noopener">
           <div class="news-head">
-            <span class="news-source">gdelt</span>
-            <span class="news-time">2026-04-14 02:45:00</span>
+            <span class="news-source">rss:Google News Hormuz Shipping</span>
+            <span class="news-time">2026-04-15 06:13:00</span>
           </div>
-          <h3>球在伊朗一边：詹姆斯·大卫·万斯在21小时核谈判破裂后指出陷入僵局</h3>
-          <p class="news-summary"><strong>摘要:</strong> 美伊之间21小时的高强度核谈判宣告破裂。万斯称谈判已陷入僵局，这一外交努力的失败意味着短期内通过和平手段解决封锁问题的希望几乎破灭。</p>
-          <p class="news-indicators"><strong>对应指标:</strong> 谈判信号</p>
-          <p class="news-reason"><strong>为何相关:</strong> 长达21小时谈判的崩溃是极度负面的信号，预示着接下来会有更激烈的对抗。</p>
+          <h3>通过霍尔木兹海峡的中国关联油轮 Rich Starry 号掉头返回 - WION</h3>
+          <p class="news-summary"><strong>摘要:</strong> 一艘名为“Rich Starry”的中国关联油轮在通过霍尔木兹海峡后选择掉头返回。这一动向表明，即使是与主要大国有关联的船只也在修正航线以避开美方封锁区。这不仅验证了封锁的物理约束力，也反映了航运公司在政治压力下的风险回避行为。</p>
+          <p class="news-indicators"><strong>对应指标:</strong> 战争成本</p>
+          <p class="news-reason"><strong>为何相关:</strong> 涉及中国关联船只，是评估外部介入和封锁有效性的重要案例。</p>
           <div class="news-meta">
-            <span>C 0.75</span>
-            <span>I 0.125</span>
-            <span>相关性分 0.92</span>
+            <span>C 0.52</span>
+            <span>I 0.32</span>
+            <span>相关性分 0.75</span>
             
             
             
           </div>
         </a>
         
-        <a class="news-item" data-news-item data-core-signals="war_cost,military_capability" href="https://www.indiatvnews.com/news/world/china-fires-don-t-interfere-warning-to-us-over-strait-of-hormuz-blockade-2026-04-14-1037427" target="_blank" rel="noopener">
+        <a class="news-item" data-news-item data-core-signals="military_capability,negotiation_signal" href="https://news.google.com/rss/articles/CBMigAFBVV95cUxNMW1lcTdTd0t4UXdWc1NqQ09Rb3VQRjUxejRkN1FMNV9Eb0JXbGxjaVpMRmJGOE4wUWZQQW4xR1RUZ1JOOWVPdmNNOTJqaWdfYUZZZWtYSjRqU2JsaWhjb3ZJbDJOSG9samNsa3JZV2M2dHJMSWR1U005a2Jmam5seQ?oc=5" target="_blank" rel="noopener">
           <div class="news-head">
-            <span class="news-source">gdelt</span>
-            <span class="news-time">2026-04-14 02:45:00</span>
+            <span class="news-source">rss:Google News Iran Talks</span>
+            <span class="news-time">2026-04-15 06:09:52</span>
           </div>
-          <h3>中国就霍尔木兹海峡封锁向美国发出“不得干涉”警告</h3>
-          <p class="news-summary"><strong>摘要:</strong> 中国官方警告美国不要干涉海峡事务。这一强硬表态暗示若封锁波及中方合法贸易，中方可能采取反制。这使得单一的地区冲突具备了演变为多国参与的海上僵局的风险。</p>
-          <p class="news-indicators"><strong>对应指标:</strong> 战争成本, 军事能力</p>
-          <p class="news-reason"><strong>为何相关:</strong> 中国外交部的明确警告增加了国际冲突的复杂性，封锁演变成大国博弈的风险激增。</p>
+          <h3>万斯称，美伊在经过21小时谈判后未能达成和平协议 - 纽约时报</h3>
+          <p class="news-summary"><strong>摘要:</strong> 美方证实，在经过21小时的高强度谈判后，美伊未能就和平协议达成一致。副总统万斯指出了双方之间深刻的“不信任”。这一谈判失败标志着短期外交突破的可能性极低，预示着海峡封锁和军事对峙将进入更长期的僵持阶段，局势面临再次升级风险。</p>
+          <p class="news-indicators"><strong>对应指标:</strong> 军事能力, 谈判信号</p>
+          <p class="news-reason"><strong>为何相关:</strong> 21小时谈判失败是近期外交努力最重要的负面里程碑。</p>
           <div class="news-meta">
-            <span>C 0.75</span>
-            <span>I 0.15</span>
+            <span>C 0.52</span>
+            <span>I 0.05</span>
             <span>相关性分 0.9</span>
             
             
@@ -643,37 +510,18 @@
           </div>
         </a>
         
-        <a class="news-item" data-news-item data-core-signals="war_cost,negotiation_signal" href="https://www.newsx.com/world/us-iran-peace-talks-tehran-reluctant-on-islamabad-geneva-emerges-as-new-venue-donald-trump-deal-before-ceasefire-deadline-strait-of-hormuz-news-198631/" target="_blank" rel="noopener">
+        <a class="news-item" data-news-item data-core-signals="war_cost,military_capability" href="https://news.google.com/rss/articles/CBMizAFBVV95cUxQRE9DdjhRUk1QYUxWMEwyNFBIdVoyX2VuSHJFTUlLSFBMRzE1MGZ1TWEwTkp0NllXWWhzVFFxeTc2dUx4dlJaRVp2Q1pOMHFZYVhjNm9lb0NJOXBYb2ZaUS1PZy1xN3VkNjN6V0lrQkFsdWxYQWtWWFA5UWRId3BkMkpIY0pER040ZVA2LVEwVENzSmwtOWEyaUFfUVJOSXV3RDAwMVVPeW9TNWpRWmhNTkUwTU9QY3RNVnpiaUV5bVJMNXNsczlPQ2NVSkvSAdMBQVVfeXFMTXliWkdZVzIxbnZNWXBXYkFVU0o3clVfaDVPckVQTjMxOV9ySXlSOXppenl1SzlmcWUtVW9NR3FBbEVwWDlTeDl5bUdBWEw5ZWdIXzRhNkoxSkpmQWkwSXV2QTN4bWswRE1CcDNlNjVQYUlDeFBWRDdHamQ3NWMwRks1QXRoMTVKbE9EMElUQ0pwczlyYzJVa1RsNXcxNlVTczd3VDFmTVNGRHotYUFwc3pEZ2FQZEs4YjRRSW5wUmp4TkNRUmtTZW1kZUVUblF1OW16VQ?oc=5" target="_blank" rel="noopener">
           <div class="news-head">
-            <span class="news-source">gdelt</span>
-            <span class="news-time">2026-04-14 02:45:00</span>
+            <span class="news-source">rss:Google News Hormuz Shipping</span>
+            <span class="news-time">2026-04-15 04:27:22</span>
           </div>
-          <h3>美伊和谈重大反转：德黑兰不愿在伊斯兰堡？日内瓦成为新地点</h3>
-          <p class="news-summary"><strong>摘要:</strong> 美伊和平谈判出现重大转折，德黑兰对在巴基斯坦伊斯兰堡举行会谈表现迟疑，日内瓦正作为备选新地点。谈判地点的博弈发生在停火期限临近之际，增加了外交努力达成共识的复杂性。</p>
-          <p class="news-indicators"><strong>对应指标:</strong> 战争成本, 谈判信号</p>
-          <p class="news-reason"><strong>为何相关:</strong> 谈判地点的变动（从伊斯兰堡转往日内瓦）往往反映出参与方的立场调整或对调停者的不信任，是预测和平可能性的重要信号。</p>
+          <h3>伊以战争：美国制裁的油轮在驶离海湾一天后返回霍尔木兹海峡 - 印度报</h3>
+          <p class="news-summary"><strong>摘要:</strong> 一艘受美国制裁的油轮在驶离波斯湾仅一天后，被迫掉头返回霍尔木兹海峡。这一具体航运事件验证了美国海上封锁的实效性。此类个案反映了航运企业对美方制裁及军事围堵的畏惧，直接导致通过该海峡的能源贸易流量出现实质性萎缩。</p>
+          <p class="news-indicators"><strong>对应指标:</strong> 战争成本, 军事能力</p>
+          <p class="news-reason"><strong>为何相关:</strong> 受制裁油轮的动向是封锁执行力度的具体微观证据。</p>
           <div class="news-meta">
-            <span>C 0.75</span>
-            <span>I 0.7</span>
-            <span>相关性分 0.82</span>
-            
-            
-            
-          </div>
-        </a>
-        
-        <a class="news-item" data-news-item data-core-signals="military_capability,war_cost" href="https://www.moneycontrol.com/world/us-israel-iran-war-news-live-updates-dubai-abu-dhabi-missile-drone-attacks-mines-in-strait-of-hormuz-14th-april-2026-liveblog-13888031.html" target="_blank" rel="noopener">
-          <div class="news-head">
-            <span class="news-source">gdelt</span>
-            <span class="news-time">2026-04-14 02:45:00</span>
-          </div>
-          <h3>美伊战争新闻直播：伊朗无视铀浓缩压力，革命卫队高级指挥官称“我们不会停止”</h3>
-          <p class="news-summary"><strong>摘要:</strong> 伊朗革命卫队高级指挥官明确表示不会停止铀浓缩计划。此番表态正值美国实施霍尔木兹海峡封锁的关键时刻，反映出德黑兰面对极限施压时的强硬防御姿态，进一步缩小了双方妥协的空间。</p>
-          <p class="news-indicators"><strong>对应指标:</strong> 军事能力, 战争成本</p>
-          <p class="news-reason"><strong>为何相关:</strong> 伊朗在受压时期重申铀浓缩立场，直接打击了外交降温的希望，加剧了核对峙与潜在的军事升级风险。</p>
-          <div class="news-meta">
-            <span>C 0.75</span>
-            <span>I 0.7</span>
+            <span>C 0.52</span>
+            <span>I 0.5</span>
             <span>相关性分 0.75</span>
             
             
@@ -681,132 +529,18 @@
           </div>
         </a>
         
-        <a class="news-item" data-news-item data-core-signals="war_cost,military_capability" href="https://www.marinij.com/2026/04/13/iran-us-blockade-explainer/" target="_blank" rel="noopener">
-          <div class="news-head">
-            <span class="news-source">gdelt</span>
-            <span class="news-time">2026-04-14 02:45:00</span>
-          </div>
-          <h3>美国在霍尔木兹海峡附近的封锁将如何运作及其对全球经济的未来影响</h3>
-          <p class="news-summary"><strong>摘要:</strong> 媒体分析了霍尔木兹封锁对全球供应链和能源价格的潜在破坏性。这种宏观风险评估强调了封锁的双刃剑性质，即在打击伊朗的同时也会削弱盟友和全球市场的信心。</p>
-          <p class="news-indicators"><strong>对应指标:</strong> 战争成本, 军事能力</p>
-          <p class="news-reason"><strong>为何相关:</strong> 分析了封锁对全球经济的长期冲击，有助于决策者评估制裁的次生伤害。</p>
-          <div class="news-meta">
-            <span>C 0.75</span>
-            <span>I 0.15</span>
-            <span>相关性分 0.55</span>
-            
-            
-            
-          </div>
-        </a>
-        
-        <a class="news-item" data-news-item data-core-signals="war_cost,negotiation_signal" href="https://news.google.com/rss/articles/CBMi-AFBVV95cUxOSno5ZnZvME1EbFlIZFJQUk4tbzctdlVnaURyeDB1dGk3Y0RGZ1dUazA3d2J1TEg1a3RRWHNNZE40ZmJjTnh3Wi1QZC1Vb0NuR1dueFlXeDNVWmtGVXNJVElaZ05MR19iTDZLbzE3bFF6Q2pySmdYbG5VMnRva2stVWF6TkZPMURwSTQyMVVMUmR3bC13YUlGcU5GbHJzR2tHYzF5TGNfUXUwbXBjTWhCZ3M1NE5FTjI4TktkSnNEazVjNkc5QlRoNTNOVmFfdHdaWkNFTDRDUVZPcUM4bzdRVWlNUnhudHR2ZklLQmNiRW55d1hzUzZrVdIB_gFBVV95cUxORkUxbHFrQmNHZkZoanM1VFpCb3lnSlpTbzQwTVd2T0ZHMTdDclBkaTkybVNjYWlHQXNKdGhGQ1ltV0p5U3NmbndFemh5aEwwVzlKeUU3UEE0NlhUaDNhMktkbm0zNGhzTkJHUFBTSl8yMU52eTRabUNpekhHeGFyazZJOGtxZ2ZtOHcwQUtmd0RnNENZQllfSXI0VUJCam9zSTU4SmdBWXF3eXBvOEtOWnNJSms3NFpobmM1Qk9uVU40bUl0THpUZUxWV3U5Z3gwdVNmYW9rQ2x5Y1ZMMWdTdFRmYllSLXpuOElrOFlfeDFDa1VHNUxackRzUzVHQQ?oc=5" target="_blank" rel="noopener">
-          <div class="news-head">
-            <span class="news-source">rss:Google News Iran Conflict</span>
-            <span class="news-time">2026-04-14 02:17:14</span>
-          </div>
-          <h3>美以伊战争第46天：美国开始封锁霍尔木兹海峡；华盛顿、德黑兰关注第二轮谈判——《经济时报》</h3>
-          <p class="news-summary"><strong>摘要:</strong> 美伊伊三方战争进入第46天，美国正式启动霍尔木兹封锁，同时美伊双方正酝酿第二轮谈判。局势呈现出“极端军事施压”与“关键外交渠道”并行的特征，进入博弈深水区。</p>
-          <p class="news-indicators"><strong>对应指标:</strong> 战争成本, 谈判信号</p>
-          <p class="news-reason"><strong>为何相关:</strong> 明确了战争进入第46天及封锁启动，同时提到双方有意开启第二轮谈，具有很高的信息密度。</p>
-          <div class="news-meta">
-            <span>C 0.52</span>
-            <span>I 0.4</span>
-            <span>相关性分 0.82</span>
-            
-            
-            
-          </div>
-        </a>
-        
-        <a class="news-item" data-news-item data-core-signals="military_capability,negotiation_signal" href="https://news.google.com/rss/articles/CBMiqAFBVV95cUxPb0sxUm1CRGNIX09zLTNJaTVWVUNKWndxU0VfaXJhMmJMWFc5T3VoWXJJcVVNZTU0R3M4ZTNJcDdZQ2RNdkQxR3llTWVfM0hCYXQ5WkU4RDNQbThVWEhabk13aDVnRVdnTmRPOGhTOFVvNnJVODZNZVFkdnJXVDQzcTg3Z3Z2b0I4MHNYd0pGdGNkdGdoa1FFZXhHWmtyUGxETWgwY0R1a03SAagBQVVfeXFMT29LMVJtQkRjSF9Pcy0zSWk1VlVDSlp3cVNFX2lyYTJiTFhXOU91aFlySXFVTWU1NEdzOGUzSXA3WUNkTXZEMUd5ZU1lXzNIQmF0OVpFOEQzUG04VVhIWm5Nd2g1Z0VXZ05kTzhoUzhVbzZyVTg2TWVRZHZyV1Q0M3E4N2d2dm9CODBzWHdKRnRjZHRnaGtRRWV4R1prclBsRE1oMGNEdWtN?oc=5" target="_blank" rel="noopener">
-          <div class="news-head">
-            <span class="news-source">rss:Google News Iran Talks</span>
-            <span class="news-time">2026-04-14 02:14:51</span>
-          </div>
-          <h3>伊朗谴责美国封锁为“严重侵犯主权”——《新海峡时报》在线</h3>
-          <p class="news-summary"><strong>摘要:</strong> 马来西亚新海峡时报报道伊朗谴责封锁为侵权。这反映了德黑兰正试图在东盟及穆斯林国家群体中寻找同情与外交支持，以对抗美方的外交孤立。</p>
-          <p class="news-indicators"><strong>对应指标:</strong> 军事能力, 谈判信号</p>
-          <p class="news-reason"><strong>为何相关:</strong> 内容与索引14重复。</p>
-          <div class="news-meta">
-            <span>C 0.52</span>
-            <span>I 0.0</span>
-            <span>相关性分 0.35</span>
-            
-            
-            
-          </div>
-        </a>
-        
-        <a class="news-item" data-news-item data-core-signals="war_cost,military_capability" href="https://news.google.com/rss/articles/CBMilwFBVV95cUxOalphYVF6R1RmNFMxWXhnWWRnZGFudTBZYmluTDNXOE5YZ2I2SVFDcjdwc1hIVGdaU096SlI0aDFZYnI3dVQwb0pWYk55UDdVdm9raVFfZ29SRHVvOC1NYzAzYXRIalRJejBhT3A4NjQ1WFRmc3RydTRjRHJvRVNnemY1TmpGUGxLT3Z1ODVWR0RlZENJb2VV0gGcAUFVX3lxTE1rZGpxWUtRb1Ztc0xKUmhjMzc5WEMzZW10dVAwRkZGcllwQXI2LTUxeEFObnVldHB1OGE5RC1BdmJ4VUlraFlGSlc4SlQ5SkZlalpBMnI2MHE1Vk82bFljTnppYVF0eWtlWExSSzZ1cFZwc2JFSDhHeGhIQzY0d29TS1d3VXRneXNtaVNmZU9Qd1Z0YXFyY0xwd1Qwdg?oc=5" target="_blank" rel="noopener">
+        <a class="news-item" data-news-item data-core-signals="war_cost" href="https://news.google.com/rss/articles/CBMi4AFBVV95cUxOcFhlOVdLSmVCRy16UFBlOVR1RTVuUXpXbjdQUE80b2d4REdyNWFHdDd3bEpreEpSOGloZ1pYLXU3QUVSdlg5aHFOMkMzb2tPVUNCbWVSUFk4NTBtQUhKNXJYTFVYeEt0N2R6aXNacklIaTZDZlFGYUZFcWlkUTVLWXhZdW9pQmdhamRsVmJyLUFPekRrTFZOZ2FsZDNEdU5mblFVVEhMVFVOWl9rNEhwN3NFb2t2TXNsRXl0LUU0Vm5LRzNDaDI5eGRpa21MOEs5SlY0NjJ5cHFrclFRWVNWcNIB5gFBVV95cUxQR2pCUWx5cjNaeG5sakhwMERodDVzMXlER2JTQkdMQnZBTzhMZjloZFF1cFNSdzFVSmVFT05KZm83bmVGQWFzQkNEM25TT3JSQ0l1TEFISHZTNXBIQ2xwWkgtV0gxN1pFZTY5cFZpazhWSW55WFQ4R3N4MXRJT01scGlhd3RYWTVHdUt5N2VrdXlkaElYTGphckpVS09CeXZqZDdoRmtqV09VNW1JcWtfLXZmdjhMZmRFc18xV2VEQl9lNi1iYUg1SkVPN21QOHZtSkFPVlhnU0g5d0xHMWQwMWhuSmVGQQ?oc=5" target="_blank" rel="noopener">
           <div class="news-head">
             <span class="news-source">rss:Google News Hormuz Shipping</span>
-            <span class="news-time">2026-04-14 01:15:00</span>
+            <span class="news-time">2026-04-15 04:19:06</span>
           </div>
-          <h3>实时更新：美国对霍尔木兹海峡伊朗港口的军事封锁开始——CBS新闻</h3>
-          <p class="news-summary"><strong>摘要:</strong> CBS News确认美军对伊朗港口的封锁已经开始。此次行动不仅针对原油出口，还涉及普通港口物流，旨在通过多维度经济制裁迫使伊朗在谈判中做出实质性让步。</p>
-          <p class="news-indicators"><strong>对应指标:</strong> 战争成本, 军事能力</p>
-          <p class="news-reason"><strong>为何相关:</strong> 确认美军封锁进入实操阶段，对航运业有重大警示作用。</p>
-          <div class="news-meta">
-            <span>C 0.52</span>
-            <span>I 0.4</span>
-            <span>相关性分 0.55</span>
-            
-            
-            
-          </div>
-        </a>
-        
-        <a class="news-item" data-news-item data-core-signals="military_capability,negotiation_signal" href="https://news.google.com/rss/articles/CBMisAFBVV95cUxPWWlkRFQ1ZHBXdGV3blMwWXpsR1RMVnFkSHBhZ1FhalhnR1M0ME56bUtBQmdTX3FEYXZnTFllU0FQemNXUE9nZmMzZG9RS0NTZ0QydUlFZmZ6U1dYQW8yZkMzZGIteHlGeTZqWUIyMUhsQVVhclg4MnRDc2JmTjJOWXpNMVhsMUJMMmxQRGxJWjFlNERJMmh6a3FWLVM5VFZQMW45U2JmLVpBNEtqb2F0RA?oc=5" target="_blank" rel="noopener">
-          <div class="news-head">
-            <span class="news-source">rss:Google News Iran Talks</span>
-            <span class="news-time">2026-04-14 00:30:00</span>
-          </div>
-          <h3>美伊谈判失败：对危机外交的误读与巴基斯坦的戏码——《印度叙事》</h3>
-          <p class="news-summary"><strong>摘要:</strong> 报道分析了巴基斯坦调停努力为何失败，指责其错读了危机外交的复杂性。这提醒决策者不能过度寄希望于第三方的斡旋，当前的博弈可能回归到直接的实力对抗。</p>
-          <p class="news-indicators"><strong>对应指标:</strong> 军事能力, 谈判信号</p>
-          <p class="news-reason"><strong>为何相关:</strong> 对巴基斯坦调停失败的分析，揭示了当前外交途径的脆弱性。</p>
-          <div class="news-meta">
-            <span>C 0.52</span>
-            <span>I 0.0</span>
-            <span>相关性分 0.5</span>
-            
-            
-            
-          </div>
-        </a>
-        
-        <a class="news-item" data-news-item data-core-signals="war_cost" href="https://news.google.com/rss/articles/CBMikwJBVV95cUxPZnE3NWRESGZnYTNXYkI5VlMyQThBbkY4X3FZSS1HeG1LTXZWZjd4OVBTalBSQm5GLWpJVjdnNHJhNFluZGdLS3YtR1J1bml5aHFaV2liR0QzMEh1RG1nRUdjUWYwZVQtaVI5Mm1wd1YzcHVrbkQtcWg3UnBOSlN5a1ZTX25rQlJaSkJDd09zczEyUy01SWczcEdyMVA3cUV4cWhfZHp5enNBSVRqdmYyeWRINHlTWDZZVHl3cGtRb3JJODhFbXJVaHg1Qi1sdlJnSnp2clNxS08zRVlkQVlYOXJ2RjE5Z0Jtc0xIbGhLbG1mZXh4UFJnVHZjQmFfR0c3UFdOVjd0WnNqSC1CZm5ZTkU5MNIBmwJBVV95cUxPbEk4SjB3elpDZFRiSk5OaXB6Sm5EMW9mam1tb1FGaklmaFo4NkNOTUFzaV9yaGNMRTZjZ0ZqQm54R0tja1dmSmQydklUc285THRjSFI0VUV1Vk9ubXBkTXBRcU9zVnMzaGxaUEtUbGlwWXk3UzZqT0NfQVpicGVDN0piVWJJSjRIV3dEQjdEOTVfeXgxZks1LXZiZnpncjlhbEJMMy13S01jQ2ZlRTBfT0plc3FmXzlXdEQxNXNNMWZYdllCS1FOdkVhSHVGWFQyV0FWYU0zSVc4cjg5SkUxX1ByeUN2cnVwRUtQZDVrRXFlRTNrZ2pkd0x4ekg1YXhnSmozTk5PNXV3MWZrUVA0YWJETElPRHlKVC1n?oc=5" target="_blank" rel="noopener">
-          <div class="news-head">
-            <span class="news-source">rss:Google News Iran Conflict</span>
-            <span class="news-time">2026-04-14 00:26:41</span>
-          </div>
-          <h3>美伊以战争实时更新：特朗普对霍尔木兹海峡及伊朗港口的海上封锁期限截止——NDTV</h3>
-          <p class="news-summary"><strong>摘要:</strong> NDTV报道指出特朗普针对霍尔木兹海峡及伊朗港口的海上封锁最后期限已到。这意味着美军海军可能开始执行强制拦截任务，极大提升了在关键航道发生正面军事冲突的即时风险。</p>
+          <h3>中国船只未能突破美国封锁，在短暂获胜后返回霍尔木兹 | 世界新闻 - 印度斯坦时报</h3>
+          <p class="news-summary"><strong>摘要:</strong> 一艘中国船只在尝试突破美国封锁后失败，最终被迫返回霍尔木兹海峡。这一具体冲突事件增加了地缘政治复杂性，可能引发中美之间的外交交涉。事件确证了美军在执行封锁时具有坚定的物理拦截意志，即使面对主要大国的商业利益也不退缩。</p>
           <p class="news-indicators"><strong>对应指标:</strong> 战争成本</p>
-          <p class="news-reason"><strong>为何相关:</strong> 封锁最后期限的结束标志着行动进入实操拦截阶段，是局势升级的关键节点。</p>
+          <p class="news-reason"><strong>为何相关:</strong> 直接涉及中国船只与封锁的对抗结果，具高度敏感性。</p>
           <div class="news-meta">
             <span>C 0.52</span>
-            <span>I 0.5</span>
-            <span>相关性分 0.78</span>
-            
-            
-            
-          </div>
-        </a>
-        
-        <a class="news-item" data-news-item data-core-signals="military_capability" href="https://www.presstv.ir/Detail/2026/04/14/766815/Hezbollah-attacks-Israel-military-settlements" target="_blank" rel="noopener">
-          <div class="news-head">
-            <span class="news-source">presstv_latest</span>
-            <span class="news-time">2026-04-14 00:00:00</span>
-          </div>
-          <h3>巴勒斯坦：随着报复性袭击加剧，真主党展示“难以探测”的无人机</h3>
-          <p class="news-summary"><strong>摘要:</strong> 真主党展示了一种“难以探测”的新型无人机，并宣称将加大报复性打击力度。该武器的出现提高了真主党突破现有防空网的概率，可能导致以色列北境军事压力骤增。</p>
-          <p class="news-indicators"><strong>对应指标:</strong> 军事能力</p>
-          <p class="news-reason"><strong>为何相关:</strong> 新型武器亮相预示着报复手段的升级，增加了以色列及美军的防空压力。</p>
-          <div class="news-meta">
-            <span>C 0.82</span>
-            <span>I 0.4</span>
+            <span>I 0.075</span>
             <span>相关性分 0.75</span>
             
             
@@ -814,189 +548,18 @@
           </div>
         </a>
         
-        <a class="news-item" data-news-item data-core-signals="" href="https://www.presstv.ir/Detail/2026/04/14/766813/Tehran--US-naval-blockade-gross-violation-of-Iran-s-sovereignty-and-territorial-integrity" target="_blank" rel="noopener">
-          <div class="news-head">
-            <span class="news-source">presstv_latest</span>
-            <span class="news-time">2026-04-14 00:00:00</span>
-          </div>
-          <h3>政治：伊拉瓦尼称美国海上封锁严重侵犯伊朗领土完整</h3>
-          <p class="news-summary"><strong>摘要:</strong> 伊朗代表伊拉瓦尼谴责美国海上封锁严重侵犯伊朗领土完整。这种外交辞令通常是德黑兰发起不对称反击或国际法律诉讼的前兆，强调了伊朗对海峡控制权的底线红线。</p>
-          <p class="news-indicators"><strong>对应指标:</strong> -</p>
-          <p class="news-reason"><strong>为何相关:</strong> 伊朗驻联合国代表的外交谴责反映了德黑兰在主权问题上的原则立场，是后续报复行动的法理铺垫。</p>
-          <div class="news-meta">
-            <span>C 0.82</span>
-            <span>I 0.4</span>
-            <span>相关性分 0.5</span>
-            
-            
-            
-          </div>
-        </a>
-        
-        <a class="news-item" data-news-item data-core-signals="war_cost" href="https://www.presstv.ir/Detail/2026/04/14/766812/Tehran-warns-of-dangerous-repercussions-from-US-provocations-in-Strait-of-Hormuz" target="_blank" rel="noopener">
-          <div class="news-head">
-            <span class="news-source">presstv_latest</span>
-            <span class="news-time">2026-04-14 00:00:00</span>
-          </div>
-          <h3>德黑兰警告美国在霍尔木兹海峡的挑衅行为将带来危险后果</h3>
-          <p class="news-summary"><strong>摘要:</strong> 伊朗新闻电视台报道德黑兰警告美国挑衅将面临“危险后果”。此类警告往往预示着伊朗可能在海峡以外地区通过代理人发起非对称报复，以平衡海上劣势。</p>
-          <p class="news-indicators"><strong>对应指标:</strong> 战争成本</p>
-          <p class="news-reason"><strong>为何相关:</strong> 德黑兰的官方警告通常伴随着具体的报复性部署，反映了伊朗的防御决心。</p>
-          <div class="news-meta">
-            <span>C 0.82</span>
-            <span>I 0.125</span>
-            <span>相关性分 0.5</span>
-            
-            
-            
-          </div>
-        </a>
-        
-        <a class="news-item" data-news-item data-core-signals="" href="https://www.presstv.ir/Detail/2026/04/14/766814/Iran-seeks-compensation-from-5-Arab-states-for-allowing-territories-to-be-used-for-aggression-" target="_blank" rel="noopener">
-          <div class="news-head">
-            <span class="news-source">presstv_latest</span>
-            <span class="news-time">2026-04-14 00:00:00</span>
-          </div>
-          <h3>政治：伊朗因五个阿拉伯国家怂恿美以侵略而寻求赔偿</h3>
-          <p class="news-summary"><strong>摘要:</strong> 德黑兰要求五个阿拉伯国家因“纵容”美以侵略而支付赔偿。这种外交攻势旨在向中东邻国施压，使其在配合美国封锁或支持以色列行动时产生更多顾忌。</p>
-          <p class="news-indicators"><strong>对应指标:</strong> -</p>
-          <p class="news-reason"><strong>为何相关:</strong> 伊朗试图通过经济赔偿诉求在阿拉伯世界制造分歧，削弱美以的地区联盟。</p>
-          <div class="news-meta">
-            <span>C 0.82</span>
-            <span>I 0.05</span>
-            <span>相关性分 0.4</span>
-            
-            
-            
-          </div>
-        </a>
-        
-        <a class="news-item" data-news-item data-core-signals="war_cost" href="https://news.google.com/rss/articles/CBMi6gFBVV95cUxPdENCelBTelN6dWJERkJ3ei03TDFxV05OMlhpNUE3OENydTFkUERHOXNhSGRlZFlKUHVKcmZ2LVlBc1VldDlMOTlVVjVwWjBwTlRPUThoRWdtSDNsSndhZUFzZ0UweWpQYU5JXzNYTEhtbjU2YlA0LUxTWm83VE9UcTV3QTBYa1dLMjBpV2lhQnliZFFSbUszZHo4T0ZKM212VmFYSHB5VjFybHFoZGI0V0MweFlSSjVWdVpzWDJzRlkwYXlBNmdnWldSdk84SklZeUNNeG52cjBjUERhdDJ2aHRCRlRsOWNUckHSAe8BQVVfeXFMTkk5Smc4NFg4OUUzOWd0eXRNMV9VUWVHOXpKdkRnYlFwczIwdEdVZ1ZQTWUzSU5iRXI3Vm0wN2lvd0o2UkNhbVRIbG9vRS1VNG5mLTBReUZmSk5BUldOM2toOTItTWc3QVlMd2dDaGJYdVFCTEtGa0t6d0h6WlJ2WGROYnE0aHNFbTdJMXNfaEtuajcxYzNRQXVmYlBtdTRRdm52STkzWHhuR3R5d2pHT1JBVWJ2TEdObVlaTWdvemNMT0tpdVZfNnFORWp6Q0VhMUF4RnAySnBEZUNhOTZqVFhzSVBQYkgwVUxPVjF3Qk0?oc=5" target="_blank" rel="noopener">
-          <div class="news-head">
-            <span class="news-source">rss:Google News Iran Conflict</span>
-            <span class="news-time">2026-04-13 23:40:52</span>
-          </div>
-          <h3>伊以战争实时更新：万斯在美国实施霍尔木兹海峡封锁之际谴责伊朗进行“经济恐怖主义”——Firstpost</h3>
-          <p class="news-summary"><strong>摘要:</strong> 美国副总统万斯指责伊朗进行“经济恐怖主义”，并表示封锁是必要的反制。这种措辞升级将当前的经济博弈定性为反恐斗争的一部分，为长期执行封锁提供了国内政治合法性。</p>
-          <p class="news-indicators"><strong>对应指标:</strong> 战争成本</p>
-          <p class="news-reason"><strong>为何相关:</strong> 万斯的强硬定性预示着美方在封锁问题上不太可能轻易让步，政治立场高度一致。</p>
-          <div class="news-meta">
-            <span>C 0.52</span>
-            <span>I 0.3</span>
-            <span>相关性分 0.6</span>
-            
-            
-            
-          </div>
-        </a>
-        
-        <a class="news-item" data-news-item data-core-signals="negotiation_signal" href="https://news.google.com/rss/articles/CBMiiwFBVV95cUxQeU9PSmx6eVBjTUg2NXVHRzd5WjJqTXZTUnpCMWpSWHc1bHVQQ3lPdk5LS3BxdXlOWF9rMkpiUlFsaWdGaldvdFpROWR0bjVFeG16ektBeHdROVlxbTBsMDFaeC1FdjdrckhCd3R2djYyX3hQMm5IdEtWWFByUUpEazNXV1h3RXNmZnp3?oc=5" target="_blank" rel="noopener">
-          <div class="news-head">
-            <span class="news-source">rss:Google News Iran</span>
-            <span class="news-time">2026-04-13 23:18:00</span>
-          </div>
-          <h3>美国对伊朗的封锁令脆弱的停火协议再添疑云——美联社</h3>
-          <p class="news-summary"><strong>摘要:</strong> 美联社指出封锁令使脆弱的停火协议面临彻底崩溃。封锁被德黑兰视为事实上的宣战，若伊朗无法通过海峡获得基本生存物资，其重返战场的动机将大幅增强。</p>
-          <p class="news-indicators"><strong>对应指标:</strong> 谈判信号</p>
-          <p class="news-reason"><strong>为何相关:</strong> 封锁与停火存在逻辑矛盾，美联社的分析揭示了协议可能崩溃的系统性风险。</p>
-          <div class="news-meta">
-            <span>C 0.75</span>
-            <span>I 0.24</span>
-            <span>相关性分 0.72</span>
-            
-            
-            
-          </div>
-        </a>
-        
-        <a class="news-item" data-news-item data-core-signals="war_cost" href="https://news.google.com/rss/articles/CBMiigJBVV95cUxNeGhNbnA2MlllRklmdjhmZl9IeFVCWUZ3MXdaSHF5TDR0SW4wM3RXTzY4YkZjX2dfZzJyQl9mcTRMY25xWnVudDV1UGZwUzBLWXFTbEZvTnZIRkhVem9rNTd5MFRnY2lMNlVXaDVXNjNFRHdGLXI3QVZoVTVYQUp1Z3JxU1pIQlRrZmhoTWJ0X01LZDc3MGVGS1A0RkxlRjNlVEZId2huTXpKZXZpM19rSVlvZktaX1lTb3M3VldjR1hMcXlJa28tMG01amtRS3o0ZU1fQmNLT0JJejBlc015WEpqUmdNMXljeXRtTTFiV3N5dXljZ0RxLWpJSFJvM3pKUHI1Q0FYdTg1UQ?oc=5" target="_blank" rel="noopener">
+        <a class="news-item" data-news-item data-core-signals="war_cost" href="https://news.google.com/rss/articles/CBMijgJBVV95cUxNNTVpY0gtOFpzR0JGb3dwenNOb1JWQ3pZdkJub0VjWWRmZ182SkZZWkNNaGlqRjhIN0kzREZmODBIbi1ZWmlqbzZJNTZ3U1VSZlZudFpnX19nd0hmWUZNMkFya2Q4VnJZMnRDX0NaRE02SDUzS1NneWNuU09yUFhrUnhqdTBIVkJWbUdkdTFvd1kxWVdOcVNWUlRXdEg2M2s4d3d3N2IyYXNwWXRBdkZ4ZmNfMkJaMTduc1lzcFQybzZHdkxKQ1U1eFQ2a3puM282eGtQTTh0d0x2QkVhZUJ6N3VoS2lFLU1tbm1MWVZBR2RrTTJyUlpseVBaQllIekZHVnNZekRUVDdEa0xEU1E?oc=5" target="_blank" rel="noopener">
           <div class="news-head">
             <span class="news-source">rss:Google News Hormuz Shipping</span>
-            <span class="news-time">2026-04-13 23:02:35</span>
+            <span class="news-time">2026-04-15 03:49:03</span>
           </div>
-          <h3>霍尔木兹海峡的航运已受到伊朗军方干扰，部分船只目前还面临美国的封锁——IslanderNews.com</h3>
-          <p class="news-summary"><strong>摘要:</strong> 霍尔木兹海峡航运正同时面临伊朗军事干扰与美军海上封锁。这种双重压力导致保险费率飙升，部分货轮被迫绕道，全球能源与物资流转效率显著下降。</p>
+          <h3>美伊战争最新消息：霍尔木兹海峡真的关闭了吗？美国封锁伊朗关联航运首日后的变与不变 - 周日卫报</h3>
+          <p class="news-summary"><strong>摘要:</strong> 《星期日卫报》详细分析了美国对伊航运封锁实施首日的情况，指出封锁并未完全关闭海峡，而是精准打击“伊朗关联”船只。这一细节区分了“海峡封锁”与“目标拦截”的不同性质，有助于决策者更精确地评估对非关联中立国航运的附带损伤风险。</p>
           <p class="news-indicators"><strong>对应指标:</strong> 战争成本</p>
-          <p class="news-reason"><strong>为何相关:</strong> 说明航运面临美伊双方的“双重打击”，对全球供应链稳定性构成了严峻威胁。</p>
+          <p class="news-reason"><strong>为何相关:</strong> 提供了封锁首日的实地执行详情，有助于修正风险模型。</p>
           <div class="news-meta">
             <span>C 0.52</span>
-            <span>I 0.32</span>
-            <span>相关性分 0.65</span>
-            
-            
-            
-          </div>
-        </a>
-        
-        <a class="news-item" data-news-item data-core-signals="military_capability,negotiation_signal" href="https://news.google.com/rss/articles/CBMiT0FVX3lxTE02NlJZQ0c2RnVpcUNLWVhXTXJyRGNJd05ubDhKUkdMNGU2Z3ozY3cwN0xDQW5RRTQ0UWE3SzRrVFVvLUZUdHppRXpzaExvdDQ?oc=5" target="_blank" rel="noopener">
-          <div class="news-head">
-            <span class="news-source">rss:Google News Iran Talks</span>
-            <span class="news-time">2026-04-13 21:49:08</span>
-          </div>
-          <h3>实时更新：美伊裂痕——《黎明报》</h3>
-          <p class="news-summary"><strong>摘要:</strong> 《黎明报》的一个直播更新链接。在缺乏具体内容提取的情况下，该条目仅能作为媒体维持关注度的证明，无具体情报价值。</p>
-          <p class="news-indicators"><strong>对应指标:</strong> 军事能力, 谈判信号</p>
-          <p class="news-reason"><strong>为何相关:</strong> 无实质内容的实时更新占位符。</p>
-          <div class="news-meta">
-            <span>C 0.52</span>
-            <span>I 0.0</span>
-            <span>相关性分 0.1</span>
-            
-            
-            
-          </div>
-        </a>
-        
-        <a class="news-item" data-news-item data-core-signals="war_cost,military_capability,negotiation_signal" href="https://news.google.com/rss/articles/CBMijgJBVV95cUxOcHcydXBmaWNqc1lSQld2UzRfMUxZR3h5Qk9WSGo0Zi1lOG5WbFFvUFlpVHFENzlRQWltanl0U21ILTl3amlsRFp0eDBnZElQblZSZzg5bmZ4LUFqRlhkbkpsaUFTZVRyLUhmWjUwUTk4N1VyRFBKMktHeUM5MlRwekNaOWFtczdiZlNuUC1sWktrck5wbGJtU2hjLUtqanA4QjNhMGVBR01mclJKN2k0cm45ZllxVHZQTGtzYVg0RzlPQm0xQThGdHhjaTZvSEtuck8zczNFSUFfdXRuS0dUQ2hMaG9XcWJ4TkpfMjVyT3g2YWNENl84RjJfQUU0dGNERFlCNXd1Mi1MbkQ1TUE?oc=5" target="_blank" rel="noopener">
-          <div class="news-head">
-            <span class="news-source">rss:Google News Iran Conflict</span>
-            <span class="news-time">2026-04-13 21:45:34</span>
-          </div>
-          <h3>美以伊战争最新消息：在霍尔木兹海峡封锁升级之际，特朗普发出新谈判信号，真主党拒绝与以色列谈判——《星期日卫报》</h3>
-          <p class="news-summary"><strong>摘要:</strong> 特朗普在升级封锁的同时发出谈判信号，但黎巴嫩真主党对此持强硬拒绝态度。这种“边打边谈”的策略遭遇阻力，预示着地区代理人战争可能并不会随美伊接触而迅速降温。</p>
-          <p class="news-indicators"><strong>对应指标:</strong> 战争成本, 军事能力, 谈判信号</p>
-          <p class="news-reason"><strong>为何相关:</strong> 特朗普释放谈判信号与真主党拒绝谈判形成对比，揭示了多方博弈中的外交僵局。</p>
-          <div class="news-meta">
-            <span>C 0.52</span>
-            <span>I 0.5</span>
-            <span>相关性分 0.8</span>
-            
-            
-            
-          </div>
-        </a>
-        
-        <a class="news-item" data-news-item data-core-signals="military_capability,negotiation_signal" href="https://news.google.com/rss/articles/CBMihgFBVV95cUxNbkVaSlNBVEtza2ZIak9udnBIeGE5NGpjUVk0TDQ1R0VjdUhoZVdLdElxLUtfa0t5cTA3b3ZURkNfa2w3UUtQNU1ZYzU1eFNtc0xpTWNzX0ZwX19lckZqcWIxcXBlenBNTzVtRlJrNmlhWWtSV3ZKYUtJUFJpel9NR2NjT3ZDQQ?oc=5" target="_blank" rel="noopener">
-          <div class="news-head">
-            <span class="news-source">rss:Google News Iran Talks</span>
-            <span class="news-time">2026-04-13 21:34:38</span>
-          </div>
-          <h3>特朗普否认黎巴嫩是停火协议的一部分，与调解人巴基斯坦的说法相左——AOL.com</h3>
-          <p class="news-summary"><strong>摘要:</strong> 特朗普否认黎巴嫩被包含在目前的停火范围内，直接矛盾了调停方巴基斯坦的说法。这种外交信号的错乱反映了各方在停火地理范围和适用主体上存在严重分歧。</p>
-          <p class="news-indicators"><strong>对应指标:</strong> 军事能力, 谈判信号</p>
-          <p class="news-reason"><strong>为何相关:</strong> 美国与调停方（巴基斯坦）的口径不一，暴露了停火协议在核心界定上的混乱。</p>
-          <div class="news-meta">
-            <span>C 0.52</span>
-            <span>I 0.08</span>
-            <span>相关性分 0.78</span>
-            
-            
-            
-          </div>
-        </a>
-        
-        <a class="news-item" data-news-item data-core-signals="negotiation_signal" href="https://news.google.com/rss/articles/CBMitgFBVV95cUxOSl9rblpadEJYLVBlak5fY2JBa3M3UXJ0NVNheDZrM1lyd2tPWWJaSnJQY1pCZVl6cmZXeWNMOUswUTdVbjhOS1dmUkFuVjU3WFFsbkJRME0ycVZpMUJ4U0xIa3c0TzRoVXRWWnBVMTNheldpa0FDbHFONzRKRnBaS2R0RHlQRHN0X0NpRFIwTGZCRlhJMTJKWXF4T3dreUk2eTBaVjJudWhOVkg1REE1TTNnRlBVUQ?oc=5" target="_blank" rel="noopener">
-          <div class="news-head">
-            <span class="news-source">rss:Google News Iran</span>
-            <span class="news-time">2026-04-13 21:30:21</span>
-          </div>
-          <h3>美国和伊朗考虑举行第二次会晤，以期重启停火谈判——彭博社</h3>
-          <p class="news-summary"><strong>摘要:</strong> 彭博社报道美伊正考虑举行第二轮会谈以挽救脆弱的停火。这表明尽管存在封锁，但双方均未完全关闭外交大门，谈判可能成为防止局势失控的最后保险。</p>
-          <p class="news-indicators"><strong>对应指标:</strong> 谈判信号</p>
-          <p class="news-reason"><strong>为何相关:</strong> 确认了谈判渠道依然开启，提供了局势降温的潜在时间表。</p>
-          <div class="news-meta">
-            <span>C 0.52</span>
-            <span>I 0.16</span>
+            <span>I 0.4</span>
             <span>相关性分 0.7</span>
             
             
@@ -1004,19 +567,57 @@
           </div>
         </a>
         
-        <a class="news-item" data-news-item data-core-signals="war_cost,military_capability" href="https://www.krwg.org/national-news/2026-04-13/trump-vows-to-sink-iranian-ships-approaching-a-u-s-blockade-of-strait-of-hormuz" target="_blank" rel="noopener">
+        <a class="news-item" data-news-item data-core-signals="war_cost" href="https://news.google.com/rss/articles/CBMikgFBVV95cUxNLWxFYk9xRjlQOVRSRXdTWnh5bzNWOUNUWVEzTmpEaGVYTVpMeGJ4bFBpZGYxcVNjcnFFTk9WNlA2cm9IRFdpQU45dUhqMHFLOHJuc0dreVZxR2o5bm5oU3k2eks5aXdJMHV0X1k4bGpnQk91R0d2dVVNekg1STFCSVpVbEljeVo4djdnaU9nSmJZdw?oc=5" target="_blank" rel="noopener">
           <div class="news-head">
-            <span class="news-source">gdelt</span>
-            <span class="news-time">2026-04-13 21:15:00</span>
+            <span class="news-source">rss:Google News Hormuz Shipping</span>
+            <span class="news-time">2026-04-15 03:15:30</span>
           </div>
-          <h3>特朗普誓言击沉接近美国霍尔木兹海峡封锁线的伊朗船只</h3>
-          <p class="news-summary"><strong>摘要:</strong> 特朗普发誓将击沉任何试图挑战封锁线的伊朗舰船。这一明确的武力威胁显著提高了在霍尔木兹海峡发生直接海上冲突及伤亡的概率，是极其危险的升级信号。</p>
-          <p class="news-indicators"><strong>对应指标:</strong> 战争成本, 军事能力</p>
-          <p class="news-reason"><strong>为何相关:</strong> 极度强硬的交战规则变更（ROE），直接将冲突推向海战边缘。</p>
+          <h3>两艘来自伊朗港口的船只不顾美国封锁通过霍尔木兹 - 印度航运新闻</h3>
+          <p class="news-summary"><strong>摘要:</strong> 据印度航运新闻报道，尽管美方实施了封锁，仍有两艘从伊朗港口出发的货轮成功穿过霍尔木兹海峡。这一突破性事件表明美国封锁并非密不透风，可能存在地理或技术上的盲点。这对于评估伊朗维持其基本进出口贸易的能力至关重要。</p>
+          <p class="news-indicators"><strong>对应指标:</strong> 战争成本</p>
+          <p class="news-reason"><strong>为何相关:</strong> 提供了封锁漏洞的证据，是评估封锁成功率的负面指标。</p>
           <div class="news-meta">
-            <span>C 0.75</span>
-            <span>I 0.15</span>
-            <span>相关性分 0.95</span>
+            <span>C 0.52</span>
+            <span>I 0.1</span>
+            <span>相关性分 0.75</span>
+            
+            
+            
+          </div>
+        </a>
+        
+        <a class="news-item" data-news-item data-core-signals="military_capability,negotiation_signal" href="https://news.google.com/rss/articles/CBMikgFBVV95cUxNenlEY3B4eEpDckI2bllJNTJVNzU1SDNMYjlPTzlpTC11UzA0TTRGUWstSnlSeWdsZURiNjBIODNxRmR6d01kbXUtUl95Q1FrSmFpOE9hQVRnZ2QzQWsyMkVnRkIxdHdrWVZqMzNfbXgza0EtZElMaHEyQlZtZzBsR1ppZWVvWWV2R2w5YUZ3ZkVWQdIBlwFBVV95cUxOb0dhOFBmYUVaMFFOMVZISkMzVWk1N2oxZmxiR3QxbjBqZlJXNlBwQ3VVX2VCdWpDbmEtMXFYcEJoYmJiVkJBMXU4bm1LemR5YzRhVHBGcDBQRzJNVkw3a2ZyRDJYSk1nZTdsRS1ZUjNab25aWG10V1RKdllNbFM3bTJ1SDhkN1J3bXlPS2dBbVVpLVRaM3VJ?oc=5" target="_blank" rel="noopener">
+          <div class="news-head">
+            <span class="news-source">rss:Google News Iran</span>
+            <span class="news-time">2026-04-15 02:41:00</span>
+          </div>
+          <h3>实时更新：特朗普权衡与伊朗进行更多谈判，美国称对伊朗港口的封锁已“全面实施” - CBS新闻</h3>
+          <p class="news-summary"><strong>摘要:</strong> 美国政府正式确认对伊朗港口的封锁已“全面实施”。与此同时，特朗普正在评估后续谈判意愿。这种“先彻底合围再谈”的战术意味着美方已掌握了航运控制主动权。CBS报道强调了封锁的物理到位，这要求决策者必须重新评估伊朗能源出口归零的可能性。</p>
+          <p class="news-indicators"><strong>对应指标:</strong> 军事能力, 谈判信号</p>
+          <p class="news-reason"><strong>为何相关:</strong> 官方宣布“全面实施”标志着封锁进入了常态化和高压期。</p>
+          <div class="news-meta">
+            <span>C 0.52</span>
+            <span>I 0.05</span>
+            <span>相关性分 0.85</span>
+            
+            
+            
+          </div>
+        </a>
+        
+        <a class="news-item" data-news-item data-core-signals="military_capability,negotiation_signal" href="https://news.google.com/rss/articles/CBMikgFBVV95cUxNenlEY3B4eEpDckI2bllJNTJVNzU1SDNMYjlPTzlpTC11UzA0TTRGUWstSnlSeWdsZURiNjBIODNxRmR6d01kbXUtUl95Q1FrSmFpOE9hQVRnZ2QzQWsyMkVnRkIxdHdrWVZqMzNfbXgza0EtZElMaHEyQlZtZzBsR1ppZWVvWWV2R2w5YUZ3ZkVWQdIBlwFBVV95cUxOb0dhOFBmYUVaMFFOMVZISkMzVWk1N2oxZmxiR3QxbjBqZlJXNlBwQ3VVX2VCdWpDbmEtMXFYcEJoYmJiVkJBMXU4bm1LemR5YzRhVHBGcDBQRzJNVkw3a2ZyRDJYSk1nZTdsRS1ZUjNab25aWG10V1RKdllNbFM3bTJ1SDhkN1J3bXlPS2dBbVVpLVRaM3VJ?oc=5" target="_blank" rel="noopener">
+          <div class="news-head">
+            <span class="news-source">rss:Google News Iran Conflict</span>
+            <span class="news-time">2026-04-15 01:31:00</span>
+          </div>
+          <h3>实时更新：伊朗战争随着美国封锁港口而持续；黎巴嫩和以色列举行直接谈判 - CBS新闻</h3>
+          <p class="news-summary"><strong>摘要:</strong> 在对伊港口封锁持续的同时，黎巴嫩与以色列展开直接对话。这种地缘政治的交叉进展意味着中东乱局正在分层处理：黎以边境寻求降温，而美伊对抗则通过封锁维持高压。这种局部缓和与局部高压并行的格局，是当前冲突最显著的特征。</p>
+          <p class="news-indicators"><strong>对应指标:</strong> 军事能力, 谈判信号</p>
+          <p class="news-reason"><strong>为何相关:</strong> 涉及多方外交（黎巴嫩-以色列）与对伊封锁的同步进展。</p>
+          <div class="news-meta">
+            <span>C 0.52</span>
+            <span>I 0.2</span>
+            <span>相关性分 0.8</span>
             
             
             
@@ -1123,8 +724,8 @@
                 </div>
               </div>
               <p class="source-brief-copy"><strong>为何可信:</strong> ADSB 军机数据属于传感器类硬信号，适合发现空中加油、预警和军机活动异常。</p>
-              <p class="source-brief-copy"><strong>当前状态:</strong> 正常 · inserted 4 items</p>
-              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-04-15T06:56:52+00:00 · <strong>最近入库:</strong> 4</p>
+              <p class="source-brief-copy"><strong>当前状态:</strong> 正常 · inserted 3 items</p>
+              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-04-15T07:24:58+00:00 · <strong>最近入库:</strong> 3</p>
             </article>
             
             <article class="source-brief">
@@ -1187,8 +788,24 @@
                 </div>
               </div>
               <p class="source-brief-copy"><strong>为何可信:</strong> 霍尔木兹航运聚合流用于补捉海运与能源外溢信号，重点看是否影响通航与油运节奏。</p>
-              <p class="source-brief-copy"><strong>当前状态:</strong> 正常 · inserted 93 items</p>
-              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-04-15T06:57:36+00:00 · <strong>最近入库:</strong> 93</p>
+              <p class="source-brief-copy"><strong>当前状态:</strong> 正常 · inserted 89 items</p>
+              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-04-15T07:25:03+00:00 · <strong>最近入库:</strong> 89</p>
+            </article>
+            
+            <article class="source-brief">
+              <div class="source-brief-top">
+                <div>
+                  <div class="source-brief-name">Google News Iran</div>
+                  <div class="source-brief-id">rss_google_news_iran</div>
+                </div>
+                <div class="source-availability">
+                  <span class="source-dot dot-ok"></span>
+                  <span>可用</span>
+                </div>
+              </div>
+              <p class="source-brief-copy"><strong>为何可信:</strong> -</p>
+              <p class="source-brief-copy"><strong>当前状态:</strong> 正常 · inserted 96 items</p>
+              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-04-15T07:25:03+00:00 · <strong>最近入库:</strong> 96</p>
             </article>
             
             <article class="source-brief">
@@ -1203,8 +820,8 @@
                 </div>
               </div>
               <p class="source-brief-copy"><strong>为何可信:</strong> Google News 作为聚合入口有助于补足多家媒体首发覆盖，但必须依赖后续筛选和去重。</p>
-              <p class="source-brief-copy"><strong>当前状态:</strong> 正常 · inserted 87 items</p>
-              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-04-15T07:01:37+00:00 · <strong>最近入库:</strong> 87</p>
+              <p class="source-brief-copy"><strong>当前状态:</strong> 正常 · inserted 86 items</p>
+              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-04-15T07:25:04+00:00 · <strong>最近入库:</strong> 86</p>
             </article>
             
             <article class="source-brief">
@@ -1219,8 +836,8 @@
                 </div>
               </div>
               <p class="source-brief-copy"><strong>为何可信:</strong> 这一订阅专门跟踪抗议、罢工、通胀和社会不稳，用来补足国内支持度与精英联盟稳定的证据。</p>
-              <p class="source-brief-copy"><strong>当前状态:</strong> 正常 · inserted 32 items</p>
-              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-04-15T07:01:38+00:00 · <strong>最近入库:</strong> 32</p>
+              <p class="source-brief-copy"><strong>当前状态:</strong> 正常 · inserted 34 items</p>
+              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-04-15T07:25:05+00:00 · <strong>最近入库:</strong> 34</p>
             </article>
             
             <article class="source-brief">
@@ -1235,8 +852,8 @@
                 </div>
               </div>
               <p class="source-brief-copy"><strong>为何可信:</strong> 这一订阅专门跟踪制裁、金融限制和出口管制变化，用来补足制裁压力指标的证据面。</p>
-              <p class="source-brief-copy"><strong>当前状态:</strong> 正常 · inserted 7 items</p>
-              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-04-15T07:01:38+00:00 · <strong>最近入库:</strong> 7</p>
+              <p class="source-brief-copy"><strong>当前状态:</strong> 正常 · inserted 6 items</p>
+              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-04-15T07:25:05+00:00 · <strong>最近入库:</strong> 6</p>
             </article>
             
             <article class="source-brief">
@@ -1252,7 +869,7 @@
               </div>
               <p class="source-brief-copy"><strong>为何可信:</strong> 这一订阅专门跟踪接班、权力斗争和高层调整，用来补足领导层稳定与精英联盟稳定的证据。</p>
               <p class="source-brief-copy"><strong>当前状态:</strong> 正常 · inserted 10 items</p>
-              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-04-15T07:01:38+00:00 · <strong>最近入库:</strong> 10</p>
+              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-04-15T07:25:05+00:00 · <strong>最近入库:</strong> 10</p>
             </article>
             
             <article class="source-brief">
@@ -1267,8 +884,8 @@
                 </div>
               </div>
               <p class="source-brief-copy"><strong>为何可信:</strong> 这一订阅专门跟踪停火、斡旋和秘密渠道动态，用来强化谈判信号指标。</p>
-              <p class="source-brief-copy"><strong>当前状态:</strong> 正常 · inserted 34 items</p>
-              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-04-15T07:01:39+00:00 · <strong>最近入库:</strong> 34</p>
+              <p class="source-brief-copy"><strong>当前状态:</strong> 正常 · inserted 32 items</p>
+              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-04-15T07:25:06+00:00 · <strong>最近入库:</strong> 32</p>
             </article>
             
             <article class="source-brief">
@@ -1316,7 +933,7 @@
               </div>
               <p class="source-brief-copy"><strong>为何可信:</strong> 国际原油期货价格是最直接的外溢成本信号之一，能快速反映霍尔木兹、油运和地区升级风险。</p>
               <p class="source-brief-copy"><strong>当前状态:</strong> 正常 · inserted 2 items</p>
-              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-04-15T06:57:32+00:00 · <strong>最近入库:</strong> 2</p>
+              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-04-15T07:24:59+00:00 · <strong>最近入库:</strong> 2</p>
             </article>
             
             <article class="source-brief">
@@ -1332,7 +949,7 @@
               </div>
               <p class="source-brief-copy"><strong>为何可信:</strong> Polymarket 反映真实资金下注形成的隐含概率，适合观察市场如何定价领导人变动、停火或升级预期。</p>
               <p class="source-brief-copy"><strong>当前状态:</strong> 正常 · inserted 8 items</p>
-              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-04-15T06:57:34+00:00 · <strong>最近入库:</strong> 8</p>
+              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-04-15T07:25:02+00:00 · <strong>最近入库:</strong> 8</p>
             </article>
             
             <article class="source-brief">
@@ -1364,7 +981,7 @@
               </div>
               <p class="source-brief-copy"><strong>为何可信:</strong> Radio Farda 提供与伊朗内部政治和社会动向相关的补充观察，适合识别国内不稳定信号。</p>
               <p class="source-brief-copy"><strong>当前状态:</strong> 正常 · inserted 0 items</p>
-              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-04-15T07:01:39+00:00 · <strong>最近入库:</strong> 0</p>
+              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-04-15T07:25:06+00:00 · <strong>最近入库:</strong> 0</p>
             </article>
             
             <article class="source-brief">
@@ -1380,23 +997,7 @@
               </div>
               <p class="source-brief-copy"><strong>为何可信:</strong> 联合国新闻在措辞上更克制，适合补充地区安全与人道后果的国际机构视角。</p>
               <p class="source-brief-copy"><strong>当前状态:</strong> 正常 · inserted 14 items</p>
-              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-04-15T07:01:40+00:00 · <strong>最近入库:</strong> 14</p>
-            </article>
-            
-            <article class="source-brief">
-              <div class="source-brief-top">
-                <div>
-                  <div class="source-brief-name">Google News Iran</div>
-                  <div class="source-brief-id">rss_google_news_iran</div>
-                </div>
-                <div class="source-availability">
-                  <span class="source-dot dot-issue"></span>
-                  <span>异常</span>
-                </div>
-              </div>
-              <p class="source-brief-copy"><strong>为何可信:</strong> -</p>
-              <p class="source-brief-copy"><strong>当前状态:</strong> 错误 · The read operation timed out</p>
-              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-04-15T07:01:36+00:00 · <strong>最近入库:</strong> 0</p>
+              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-04-15T07:25:06+00:00 · <strong>最近入库:</strong> 14</p>
             </article>
             
             <article class="source-brief">
@@ -1412,7 +1013,7 @@
               </div>
               <p class="source-brief-copy"><strong>为何可信:</strong> 联合国和平与安全频道适合识别斡旋、停火和安理会层面的正式动向。</p>
               <p class="source-brief-copy"><strong>当前状态:</strong> 错误 · not well-formed (invalid token): line 1, column 0</p>
-              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-04-15T07:01:40+00:00 · <strong>最近入库:</strong> 0</p>
+              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-04-15T07:25:06+00:00 · <strong>最近入库:</strong> 0</p>
             </article>
             
             <article class="source-brief">
@@ -1428,7 +1029,7 @@
               </div>
               <p class="source-brief-copy"><strong>为何可信:</strong> -</p>
               <p class="source-brief-copy"><strong>当前状态:</strong> 未配置 · ACLED requires account credentials and is calibration-only</p>
-              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-04-15T07:11:23+00:00 · <strong>最近入库:</strong> 0</p>
+              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-04-15T07:26:49+00:00 · <strong>最近入库:</strong> 0</p>
             </article>
             
             <article class="source-brief">
@@ -1444,7 +1045,7 @@
               </div>
               <p class="source-brief-copy"><strong>为何可信:</strong> -</p>
               <p class="source-brief-copy"><strong>当前状态:</strong> 未配置 · NASA FIRMS requires a free NASA_FIRMS_MAP_KEY</p>
-              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-04-15T07:11:23+00:00 · <strong>最近入库:</strong> 0</p>
+              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-04-15T07:26:49+00:00 · <strong>最近入库:</strong> 0</p>
             </article>
             
             <article class="source-brief">
@@ -1460,7 +1061,7 @@
               </div>
               <p class="source-brief-copy"><strong>为何可信:</strong> -</p>
               <p class="source-brief-copy"><strong>当前状态:</strong> 未配置 · ReliefWeb requires an approved RELIEFWEB_APPNAME</p>
-              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-04-15T07:11:23+00:00 · <strong>最近入库:</strong> 0</p>
+              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-04-15T07:26:49+00:00 · <strong>最近入库:</strong> 0</p>
             </article>
             
             <article class="source-brief">
@@ -1476,7 +1077,7 @@
               </div>
               <p class="source-brief-copy"><strong>为何可信:</strong> -</p>
               <p class="source-brief-copy"><strong>当前状态:</strong> 未配置 · VesselFinder realtime API is commercial, not a free public feed</p>
-              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-04-15T07:11:23+00:00 · <strong>最近入库:</strong> 0</p>
+              <p class="source-brief-copy"><strong>最近抓取:</strong> 2026-04-15T07:26:49+00:00 · <strong>最近入库:</strong> 0</p>
             </article>
             
         </div>
